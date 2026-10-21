@@ -19,11 +19,25 @@ json 格式必须严格为：
 def build_user_prompt(request: RevisionRequest) -> str:
     """把项目内部的修订请求整理成发送给模型的用户消息。"""
 
-    return (
-        "请根据本轮修改要求修改原文。\n\n"
-        f"原文：\n{request.source_text}\n\n"
-        f"本轮修改要求：\n{request.instruction}"
-    )
+    sections = [
+        "请根据本轮修改要求修改原文。",
+        f"原文：\n{request.source_text}",
+        f"本轮修改要求：\n{request.instruction}",
+    ]
+
+    if request.feedback_history:
+        sections.append(
+            "下面是此前被拒绝的候选和用户反馈。请避免重复这些问题。"
+        )
+        for index, feedback in enumerate(request.feedback_history, start=1):
+            sections.append(
+                f"第 {index} 次被拒绝的候选：\n"
+                f"{feedback.rejected_candidate.text}\n"
+                f"该候选的修改说明：\n{feedback.rejected_candidate.reason}\n"
+                f"用户拒绝原因：\n{feedback.user_feedback}"
+            )
+
+    return "\n\n".join(sections)
 
 
 class DeepSeekCandidateGenerator:

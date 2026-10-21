@@ -4,13 +4,44 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from writing_assistant.cli import display_history, make_text_preview, read_action
-from writing_assistant.models import RevisionCandidate, RevisionRecord
+from writing_assistant.cli import (
+    display_history,
+    make_text_preview,
+    read_action,
+    read_rejection_reason,
+    run_revision_session,
+)
+from writing_assistant.models import (
+    RevisionCandidate,
+    RevisionRecord,
+    RevisionRequest,
+    RevisionStatus,
+)
+from writing_assistant.storage.json_store import JsonRevisionStore
+from writing_assistant.workflow import RevisionWorkflow
+
+
+class FakeGenerator:
+    def __init__(self) -> None:
+        self.calls: list[RevisionRequest] = []
+
+    @property
+    def model_name(self) -> str:
+        return "fake-model"
+
+    def generate(self, request: RevisionRequest) -> RevisionCandidate:
+        self.calls.append(request)
+        round_number = len(self.calls)
+        return RevisionCandidate(
+            text=f"第 {round_number} 版候选",
+            reason=f"第 {round_number} 次测试生成",
+        )
 
 
 class CliHistoryTests(unittest.TestCase):
@@ -71,6 +102,57 @@ class CliHistoryTests(unittest.TestCase):
             display_history([record])
 
         self.assertIn("修改要求：未记录", output.getvalue())
+
+    def test_read_rejection_reason_repeats_after_blank_input(self) -> None:
+        answers = iter(["   ", "语气太强了"])
+        output = StringIO()
+
+        with redirect_stdout(output):
+            reason = read_rejection_reason(lambda _prompt: next(answers))
+
+        self.assertEqual(reason, "语气太强了")
+        self.assertIn("拒绝原因不能为空", output.getvalue())
+
+    def test_revision_session_retries_after_rejection_until_acceptance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            store = JsonRevisionStore(Path(directory) / "revisions.json")
+            generator = FakeGenerator()
+            workflow = RevisionWorkflow(
+                generator=generator,
+                store=store,
+                max_input_chars=100,
+            )
+            answers = iter(
+                [
+                    "这个项目太好了啊",
+                    "删除口语化表达",
+                    "n",
+                    "语气太强，只需要删除语气词",
+                    "y",
+                ]
+            )
+            output = StringIO()
+
+            with redirect_stdout(output):
+                final_record = run_revision_session(
+                    workflow,
+                    lambda _prompt: next(answers),
+                )
+
+            records = store.list_all()
+
+        self.assertEqual(len(generator.calls), 2)
+        self.assertEqual(len(records), 2)
+        self.assertEqual(records[0].status, RevisionStatus.REJECTED)
+        self.assertEqual(
+            records[0].rejection_reason,
+            "语气太强，只需要删除语气词",
+        )
+        self.assertEqual(records[1].status, RevisionStatus.ACCEPTED)
+        self.assertEqual(records[1].previous_record_id, records[0].id)
+        self.assertEqual(len(generator.calls[1].feedback_history), 1)
+        self.assertEqual(final_record.id, records[1].id)
+        self.assertIn("将根据反馈重新生成", output.getvalue())
 
 
 if __name__ == "__main__":

@@ -10,7 +10,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from writing_assistant.errors import GenerationError
 from writing_assistant.llm.deepseek import DeepSeekCandidateGenerator
-from writing_assistant.models import RevisionRequest
+from writing_assistant.models import (
+    RevisionCandidate,
+    RevisionFeedback,
+    RevisionRequest,
+)
 
 
 class FakeCompletions:
@@ -70,6 +74,29 @@ class DeepSeekCandidateGeneratorTests(unittest.TestCase):
         self.assertEqual(user_message["role"], "user")
         self.assertIn("这个项目太好了啊", user_message["content"])
         self.assertIn("删除口语化表达，使语气更简洁", user_message["content"])
+
+    def test_feedback_history_is_included_in_user_message(self) -> None:
+        request = RevisionRequest(
+            source_text="这个项目太好了啊",
+            instruction="删除口语化表达，使语气更简洁",
+            feedback_history=(
+                RevisionFeedback(
+                    rejected_candidate=RevisionCandidate(
+                        text="这个项目非常出色。",
+                        reason="替换口语化表达",
+                    ),
+                    user_feedback="语气太强，只需要删除语气词",
+                ),
+            ),
+        )
+        client = make_client('{"text":"这个项目太好了","reason":"删除语气词"}')
+
+        self.build_generator(client).generate(request)
+
+        user_content = client.test_completions.arguments["messages"][1]["content"]
+        self.assertIn("这个项目非常出色。", user_content)
+        self.assertIn("替换口语化表达", user_content)
+        self.assertIn("语气太强，只需要删除语气词", user_content)
 
     def test_invalid_json_is_reported(self) -> None:
         client = make_client("not json")

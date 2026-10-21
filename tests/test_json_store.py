@@ -55,7 +55,12 @@ class JsonRevisionStoreTests(unittest.TestCase):
 
     def test_old_record_without_instruction_can_still_be_read(self) -> None:
         record_data = self.make_record().to_dict()
-        record_data.pop("instruction")
+        for field_name in (
+            "instruction",
+            "rejection_reason",
+            "previous_record_id",
+        ):
+            record_data.pop(field_name)
         self.file_path.parent.mkdir(parents=True)
         self.file_path.write_text(
             json.dumps(
@@ -68,6 +73,27 @@ class JsonRevisionStoreTests(unittest.TestCase):
         loaded_record = self.store.list_all()[0]
 
         self.assertIsNone(loaded_record.instruction)
+        self.assertIsNone(loaded_record.rejection_reason)
+        self.assertIsNone(loaded_record.previous_record_id)
+
+    def test_rejected_retry_record_round_trips_feedback_fields(self) -> None:
+        first_record = self.make_record()
+        first_record.reject("语气太强了")
+        self.store.add(first_record)
+        retry_record = RevisionRecord.create_pending(
+            original_text="原文",
+            instruction="使表达更简洁",
+            candidate=RevisionCandidate(text="第二版候选", reason="根据反馈调整"),
+            model="fake-model",
+            previous_record_id=first_record.id,
+        )
+        self.store.add(retry_record)
+
+        loaded_first = self.store.get(first_record.id)
+        loaded_retry = self.store.get(retry_record.id)
+
+        self.assertEqual(loaded_first.rejection_reason, "语气太强了")
+        self.assertEqual(loaded_retry.previous_record_id, first_record.id)
 
 
 if __name__ == "__main__":

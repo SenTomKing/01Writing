@@ -92,15 +92,72 @@ class RevisionWorkflowTests(unittest.TestCase):
 
     def test_reject_keeps_original_as_final_text(self) -> None:
         record = self.workflow.create_candidate(self.make_request())
-        decided = self.workflow.decide(record.id, accept=False)
+        decided = self.workflow.decide(
+            record.id,
+            accept=False,
+            rejection_reason="语气太强了",
+        )
         self.assertEqual(decided.status, RevisionStatus.REJECTED)
         self.assertEqual(decided.final_text, "原文")
+        self.assertEqual(decided.rejection_reason, "语气太强了")
+
+    def test_reject_requires_reason_and_keeps_record_pending(self) -> None:
+        record = self.workflow.create_candidate(self.make_request())
+
+        with self.assertRaisesRegex(ValidationError, "拒绝原因不能为空"):
+            self.workflow.decide(record.id, accept=False)
+
+        self.assertEqual(self.store.get(record.id).status, RevisionStatus.PENDING)
+
+    def test_retry_request_contains_saved_feedback(self) -> None:
+        first_record = self.workflow.create_candidate(self.make_request())
+        rejected_record = self.workflow.decide(
+            first_record.id,
+            accept=False,
+            rejection_reason="  语气太强了  ",
+        )
+
+        retry_request = self.workflow.create_retry_request(
+            self.make_request(),
+            rejected_record.id,
+        )
+        second_record = self.workflow.create_candidate(
+            retry_request,
+            previous_record_id=rejected_record.id,
+        )
+
+        self.assertEqual(len(retry_request.feedback_history), 1)
+        feedback = retry_request.feedback_history[0]
+        self.assertEqual(feedback.rejected_candidate, first_record.candidate)
+        self.assertEqual(feedback.user_feedback, "语气太强了")
+        self.assertEqual(second_record.previous_record_id, rejected_record.id)
+        self.assertEqual(self.generator.calls[-1], retry_request)
+
+    def test_retry_link_rejects_mismatched_feedback_history(self) -> None:
+        first_record = self.workflow.create_candidate(self.make_request())
+        rejected_record = self.workflow.decide(
+            first_record.id,
+            accept=False,
+            rejection_reason="语气太强了",
+        )
+
+        with self.assertRaisesRegex(InvalidDecisionError, "反馈历史.*不一致"):
+            self.workflow.create_candidate(
+                self.make_request(),
+                previous_record_id=rejected_record.id,
+            )
+
+        self.assertEqual(len(self.generator.calls), 1)
 
     def test_same_record_cannot_be_decided_twice(self) -> None:
         record = self.workflow.create_candidate(self.make_request())
         self.workflow.decide(record.id, accept=True)
         with self.assertRaises(InvalidDecisionError):
-            self.workflow.decide(record.id, accept=False)
+            self.workflow.decide(
+                record.id,
+                accept=False,
+                rejection_reason="不合适",
+            )
 
     def test_list_history_returns_saved_records_in_storage_order(self) -> None:
         first_record = self.workflow.create_candidate(
@@ -110,7 +167,11 @@ class RevisionWorkflowTests(unittest.TestCase):
         second_record = self.workflow.create_candidate(
             self.make_request(source_text="第二段原文")
         )
-        self.workflow.decide(second_record.id, accept=False)
+        self.workflow.decide(
+            second_record.id,
+            accept=False,
+            rejection_reason="不合适",
+        )
 
         records = self.workflow.list_history()
 

@@ -24,14 +24,6 @@ class RevisionStatus(str, Enum):
 
 
 @dataclass(frozen=True, slots=True)
-class RevisionRequest:
-    """使用者提交的一次修订请求。"""
-
-    source_text: str
-    instruction: str
-
-
-@dataclass(frozen=True, slots=True)
 class RevisionCandidate:
     """模型生成的一条修改候选。"""
 
@@ -52,6 +44,23 @@ class RevisionCandidate:
         return cls(text=text, reason=reason)
 
 
+@dataclass(frozen=True, slots=True)
+class RevisionFeedback:
+    """一条被拒绝候选及使用者给出的修改反馈。"""
+
+    rejected_candidate: RevisionCandidate
+    user_feedback: str
+
+
+@dataclass(frozen=True, slots=True)
+class RevisionRequest:
+    """使用者提交的一次修订请求及其反馈历史。"""
+
+    source_text: str
+    instruction: str
+    feedback_history: tuple[RevisionFeedback, ...] = ()
+
+
 @dataclass(slots=True)
 class RevisionRecord:
     """从原文到人工决定的一次完整修订记录。"""
@@ -65,6 +74,8 @@ class RevisionRecord:
     decided_at: str | None = None
     final_text: str | None = None
     instruction: str | None = None
+    rejection_reason: str | None = None
+    previous_record_id: str | None = None
 
     @classmethod
     def create_pending(
@@ -74,6 +85,7 @@ class RevisionRecord:
         instruction: str,
         candidate: RevisionCandidate,
         model: str,
+        previous_record_id: str | None = None,
     ) -> RevisionRecord:
         return cls(
             id=str(uuid4()),
@@ -83,6 +95,7 @@ class RevisionRecord:
             model=model,
             status=RevisionStatus.PENDING,
             created_at=utc_now(),
+            previous_record_id=previous_record_id,
         )
 
     def accept(self) -> None:
@@ -91,10 +104,11 @@ class RevisionRecord:
         self.final_text = self.candidate.text
         self.decided_at = utc_now()
 
-    def reject(self) -> None:
+    def reject(self, rejection_reason: str) -> None:
         self._ensure_pending()
         self.status = RevisionStatus.REJECTED
         self.final_text = self.original_text
+        self.rejection_reason = rejection_reason
         self.decided_at = utc_now()
 
     def _ensure_pending(self) -> None:
@@ -107,6 +121,8 @@ class RevisionRecord:
             "status": self.status.value,
             "original_text": self.original_text,
             "instruction": self.instruction,
+            "rejection_reason": self.rejection_reason,
+            "previous_record_id": self.previous_record_id,
             "candidate": self.candidate.to_dict(),
             "final_text": self.final_text,
             "model": self.model,
@@ -131,12 +147,18 @@ class RevisionRecord:
         decided_at = data.get("decided_at")
         final_text = data.get("final_text")
         instruction = data.get("instruction")
+        rejection_reason = data.get("rejection_reason")
+        previous_record_id = data.get("previous_record_id")
         if decided_at is not None and not isinstance(decided_at, str):
             raise ValueError("decided_at 必须是字符串或 null")
         if final_text is not None and not isinstance(final_text, str):
             raise ValueError("final_text 必须是字符串或 null")
         if instruction is not None and not isinstance(instruction, str):
             raise ValueError("instruction 必须是字符串或 null")
+        if rejection_reason is not None and not isinstance(rejection_reason, str):
+            raise ValueError("rejection_reason 必须是字符串或 null")
+        if previous_record_id is not None and not isinstance(previous_record_id, str):
+            raise ValueError("previous_record_id 必须是字符串或 null")
 
         return cls(
             id=data["id"],
@@ -148,4 +170,6 @@ class RevisionRecord:
             decided_at=decided_at,
             final_text=final_text,
             instruction=instruction,
+            rejection_reason=rejection_reason,
+            previous_record_id=previous_record_id,
         )

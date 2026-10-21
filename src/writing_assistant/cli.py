@@ -3,11 +3,12 @@
 from collections.abc import Callable
 
 from .config import AppConfig, load_config
-from .errors import WritingAssistantError
+from .errors import ValidationError, WritingAssistantError
 from .llm.deepseek import DeepSeekCandidateGenerator
-from .models import RevisionRecord, RevisionRequest
+from .models import RevisionRecord, RevisionRequest, RevisionStatus
 from .storage.json_store import JsonRevisionStore
 from .workflow import RevisionWorkflow
+from .validation import validate_rejection_reason
 
 
 HISTORY_PREVIEW_CHARS = 40
@@ -56,6 +57,19 @@ def read_action(input_function: Callable[[str], str] = input) -> str:
         print("请输入 1 或 2。")
 
 
+def read_rejection_reason(
+    input_function: Callable[[str], str] = input,
+) -> str:
+    """持续询问，直到获得有效的拒绝原因。"""
+
+    while True:
+        reason = input_function("请输入拒绝原因：")
+        try:
+            return validate_rejection_reason(reason)
+        except ValidationError as exc:
+            print(f"请输入有效的拒绝原因：{exc}")
+
+
 def make_text_preview(
     text: str | None,
     *,
@@ -91,7 +105,63 @@ def display_history(records: list[RevisionRecord]) -> None:
         )
         print(f"修改要求：{instruction_preview}")
         print(f"最终正文：{make_text_preview(record.final_text)}")
+        if record.status is RevisionStatus.REJECTED:
+            reason = record.rejection_reason or "未记录"
+            print(f"拒绝原因：{make_text_preview(reason)}")
+        if record.previous_record_id is not None:
+            print(f"上一条记录 ID：{record.previous_record_id}")
         print(f"创建时间：{record.created_at}")
+
+
+def display_candidate(record: RevisionRecord) -> None:
+    """显示一条等待人工决定的修改候选。"""
+
+    print("\n原文：")
+    print(record.original_text)
+    print("\n修改候选：")
+    print(record.candidate.text)
+    print("\n修改原因：")
+    print(record.candidate.reason)
+
+
+def run_revision_session(
+    workflow: RevisionWorkflow,
+    input_function: Callable[[str], str] = input,
+) -> RevisionRecord:
+    """运行一轮人工反馈循环，直到使用者接受候选。"""
+
+    source_text = input_function("请输入一段文字：")
+    instruction = input_function("请输入本轮修改要求：")
+    request = RevisionRequest(
+        source_text=source_text,
+        instruction=instruction,
+    )
+    previous_record_id: str | None = None
+
+    while True:
+        record = workflow.create_candidate(
+            request,
+            previous_record_id=previous_record_id,
+        )
+        display_candidate(record)
+
+        accept = read_decision(input_function)
+        if accept:
+            decided_record = workflow.decide(record.id, accept=True)
+            print("\n已接受修改。")
+            print("最终正文：")
+            print(decided_record.final_text)
+            return decided_record
+
+        rejection_reason = read_rejection_reason(input_function)
+        decided_record = workflow.decide(
+            record.id,
+            accept=False,
+            rejection_reason=rejection_reason,
+        )
+        print("\n已拒绝本次候选，将根据反馈重新生成。")
+        request = workflow.create_retry_request(request, decided_record.id)
+        previous_record_id = decided_record.id
 
 
 def main() -> int:
@@ -105,30 +175,7 @@ def main() -> int:
             display_history(records)
             return 0
 
-        source_text = input("请输入一段文字：")
-        instruction = input("请输入本轮修改要求：")
-        request = RevisionRequest(
-            source_text=source_text,
-            instruction=instruction,
-        )
-        record = workflow.create_candidate(request)
-
-        print("\n原文：")
-        print(record.original_text)
-        print("\n修改候选：")
-        print(record.candidate.text)
-        print("\n修改原因：")
-        print(record.candidate.reason)
-
-        accept = read_decision()
-        decided_record = workflow.decide(record.id, accept=accept)
-
-        if accept:
-            print("\n已接受修改。")
-        else:
-            print("\n已拒绝修改，保留原文。")
-        print("最终正文：")
-        print(decided_record.final_text)
+        run_revision_session(workflow)
         print(f"\n修订记录已保存到：{config.data_file}")
         return 0
     except (KeyboardInterrupt, EOFError):
