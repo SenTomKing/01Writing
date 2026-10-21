@@ -24,6 +24,14 @@ class RevisionStatus(str, Enum):
 
 
 @dataclass(frozen=True, slots=True)
+class RevisionRequest:
+    """使用者提交的一次修订请求。"""
+
+    source_text: str
+    instruction: str
+
+
+@dataclass(frozen=True, slots=True)
 class RevisionCandidate:
     """模型生成的一条修改候选。"""
 
@@ -56,18 +64,21 @@ class RevisionRecord:
     created_at: str
     decided_at: str | None = None
     final_text: str | None = None
+    instruction: str | None = None
 
     @classmethod
     def create_pending(
         cls,
         *,
         original_text: str,
+        instruction: str,
         candidate: RevisionCandidate,
         model: str,
     ) -> RevisionRecord:
         return cls(
             id=str(uuid4()),
             original_text=original_text,
+            instruction=instruction,
             candidate=candidate,
             model=model,
             status=RevisionStatus.PENDING,
@@ -95,6 +106,7 @@ class RevisionRecord:
             "id": self.id,
             "status": self.status.value,
             "original_text": self.original_text,
+            "instruction": self.instruction,
             "candidate": self.candidate.to_dict(),
             "final_text": self.final_text,
             "model": self.model,
@@ -118,10 +130,13 @@ class RevisionRecord:
 
         decided_at = data.get("decided_at")
         final_text = data.get("final_text")
+        instruction = data.get("instruction")
         if decided_at is not None and not isinstance(decided_at, str):
             raise ValueError("decided_at 必须是字符串或 null")
         if final_text is not None and not isinstance(final_text, str):
             raise ValueError("final_text 必须是字符串或 null")
+        if instruction is not None and not isinstance(instruction, str):
+            raise ValueError("instruction 必须是字符串或 null")
 
         return cls(
             id=data["id"],
@@ -132,4 +147,5 @@ class RevisionRecord:
             created_at=data["created_at"],
             decided_at=decided_at,
             final_text=final_text,
+            instruction=instruction,
         )

@@ -9,23 +9,27 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from writing_assistant.errors import InvalidDecisionError, ValidationError
-from writing_assistant.models import RevisionCandidate, RevisionStatus
+from writing_assistant.models import (
+    RevisionCandidate,
+    RevisionRequest,
+    RevisionStatus,
+)
 from writing_assistant.storage.json_store import JsonRevisionStore
 from writing_assistant.workflow import RevisionWorkflow
 
 
 class FakeGenerator:
     def __init__(self) -> None:
-        self.calls: list[str] = []
+        self.calls: list[RevisionRequest] = []
 
     @property
     def model_name(self) -> str:
         return "fake-model"
 
-    def generate(self, original_text: str) -> RevisionCandidate:
-        self.calls.append(original_text)
+    def generate(self, request: RevisionRequest) -> RevisionCandidate:
+        self.calls.append(request)
         return RevisionCandidate(
-            text=f"{original_text}（修改后）",
+            text=f"{request.source_text}（修改后）",
             reason="测试修改",
         )
 
@@ -43,41 +47,69 @@ class RevisionWorkflowTests(unittest.TestCase):
             max_input_chars=100,
         )
 
+    @staticmethod
+    def make_request(
+        source_text: str = "原文",
+        instruction: str = "使表达更清楚",
+    ) -> RevisionRequest:
+        return RevisionRequest(
+            source_text=source_text,
+            instruction=instruction,
+        )
+
     def test_invalid_input_does_not_call_generator(self) -> None:
         with self.assertRaises(ValidationError):
-            self.workflow.create_candidate("   ")
+            self.workflow.create_candidate(self.make_request(source_text="   "))
+        self.assertEqual(self.generator.calls, [])
+        self.assertEqual(self.store.list_all(), [])
+
+    def test_invalid_instruction_does_not_call_generator(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "修改要求不能为空"):
+            self.workflow.create_candidate(self.make_request(instruction="   "))
         self.assertEqual(self.generator.calls, [])
         self.assertEqual(self.store.list_all(), [])
 
     def test_candidate_is_saved_as_pending_before_decision(self) -> None:
-        record = self.workflow.create_candidate("原文")
+        record = self.workflow.create_candidate(
+            self.make_request(
+                source_text="  原文  ",
+                instruction="  使表达更清楚  ",
+            )
+        )
         saved = self.store.get(record.id)
         self.assertEqual(saved.status, RevisionStatus.PENDING)
         self.assertIsNone(saved.final_text)
+        self.assertEqual(saved.original_text, "原文")
+        self.assertEqual(saved.instruction, "使表达更清楚")
+        self.assertEqual(self.generator.calls, [self.make_request()])
 
     def test_accept_uses_candidate_as_final_text(self) -> None:
-        record = self.workflow.create_candidate("原文")
+        record = self.workflow.create_candidate(self.make_request())
         decided = self.workflow.decide(record.id, accept=True)
         self.assertEqual(decided.status, RevisionStatus.ACCEPTED)
         self.assertEqual(decided.final_text, "原文（修改后）")
         self.assertIsNotNone(decided.decided_at)
 
     def test_reject_keeps_original_as_final_text(self) -> None:
-        record = self.workflow.create_candidate("原文")
+        record = self.workflow.create_candidate(self.make_request())
         decided = self.workflow.decide(record.id, accept=False)
         self.assertEqual(decided.status, RevisionStatus.REJECTED)
         self.assertEqual(decided.final_text, "原文")
 
     def test_same_record_cannot_be_decided_twice(self) -> None:
-        record = self.workflow.create_candidate("原文")
+        record = self.workflow.create_candidate(self.make_request())
         self.workflow.decide(record.id, accept=True)
         with self.assertRaises(InvalidDecisionError):
             self.workflow.decide(record.id, accept=False)
 
     def test_list_history_returns_saved_records_in_storage_order(self) -> None:
-        first_record = self.workflow.create_candidate("第一段原文")
+        first_record = self.workflow.create_candidate(
+            self.make_request(source_text="第一段原文")
+        )
         self.workflow.decide(first_record.id, accept=True)
-        second_record = self.workflow.create_candidate("第二段原文")
+        second_record = self.workflow.create_candidate(
+            self.make_request(source_text="第二段原文")
+        )
         self.workflow.decide(second_record.id, accept=False)
 
         records = self.workflow.list_history()

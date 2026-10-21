@@ -4,16 +4,26 @@ import json
 from typing import Any
 
 from ..errors import ConfigurationError, GenerationError, ValidationError
-from ..models import RevisionCandidate
+from ..models import RevisionCandidate, RevisionRequest
 from ..validation import validate_candidate_payload
 
 
 SYSTEM_PROMPT = """你是中文写作修改助手。
-请在不改变原意、不捏造事实的前提下，优化用户文字的准确性、清晰度和流畅度。
+请遵守用户本轮给出的修改要求，并且不要改变原意或捏造事实。
 只返回一个 json 对象，不要返回 Markdown 代码块或额外解释。
 json 格式必须严格为：
 {"text": "修改后的完整文字", "reason": "简明说明主要修改"}
 """
+
+
+def build_user_prompt(request: RevisionRequest) -> str:
+    """把项目内部的修订请求整理成发送给模型的用户消息。"""
+
+    return (
+        "请根据本轮修改要求修改原文。\n\n"
+        f"原文：\n{request.source_text}\n\n"
+        f"本轮修改要求：\n{request.instruction}"
+    )
 
 
 class DeepSeekCandidateGenerator:
@@ -55,13 +65,13 @@ class DeepSeekCandidateGenerator:
     def model_name(self) -> str:
         return self._model
 
-    def generate(self, original_text: str) -> RevisionCandidate:
+    def generate(self, request: RevisionRequest) -> RevisionCandidate:
         try:
             response = self._client.chat.completions.create(
                 model=self._model,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": original_text},
+                    {"role": "user", "content": build_user_prompt(request)},
                 ],
                 response_format={"type": "json_object"},
                 max_tokens=2_048,

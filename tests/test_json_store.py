@@ -1,5 +1,6 @@
 """JSON 存储测试。"""
 
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -24,6 +25,7 @@ class JsonRevisionStoreTests(unittest.TestCase):
     def make_record() -> RevisionRecord:
         return RevisionRecord.create_pending(
             original_text="原文",
+            instruction="使表达更简洁",
             candidate=RevisionCandidate(text="候选", reason="原因"),
             model="fake-model",
         )
@@ -50,6 +52,22 @@ class JsonRevisionStoreTests(unittest.TestCase):
             self.file_path.read_text(encoding="utf-8"),
             broken_content,
         )
+
+    def test_old_record_without_instruction_can_still_be_read(self) -> None:
+        record_data = self.make_record().to_dict()
+        record_data.pop("instruction")
+        self.file_path.parent.mkdir(parents=True)
+        self.file_path.write_text(
+            json.dumps(
+                {"schema_version": 1, "revisions": [record_data]},
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        loaded_record = self.store.list_all()[0]
+
+        self.assertIsNone(loaded_record.instruction)
 
 
 if __name__ == "__main__":

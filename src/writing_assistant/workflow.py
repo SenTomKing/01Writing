@@ -1,10 +1,10 @@
 """组织“生成候选—保存待确认记录—人工决定”的业务流程。"""
 
-from .errors import InvalidDecisionError
+from .errors import InvalidDecisionError, ValidationError
 from .llm.base import CandidateGenerator
-from .models import RevisionRecord, RevisionStatus
+from .models import RevisionRecord, RevisionRequest, RevisionStatus
 from .storage.base import RevisionStore
-from .validation import validate_candidate, validate_input
+from .validation import validate_candidate, validate_input, validate_instruction
 
 
 class RevisionWorkflow:
@@ -19,20 +19,27 @@ class RevisionWorkflow:
         self._store = store
         self._max_input_chars = max_input_chars
 
-    def create_candidate(self, original_text: str) -> RevisionRecord:
-        """校验原文、生成候选，并在返回前保存 pending 记录。"""
+    def create_candidate(self, request: RevisionRequest) -> RevisionRecord:
+        """校验修订请求、生成候选，并在返回前保存 pending 记录。"""
 
-        normalized_text = validate_input(
-            original_text,
-            max_chars=self._max_input_chars,
+        if not isinstance(request, RevisionRequest):
+            raise ValidationError("修订请求必须是 RevisionRequest")
+
+        normalized_request = RevisionRequest(
+            source_text=validate_input(
+                request.source_text,
+                max_chars=self._max_input_chars,
+            ),
+            instruction=validate_instruction(request.instruction),
         )
-        candidate = self._generator.generate(normalized_text)
+        candidate = self._generator.generate(normalized_request)
         candidate = validate_candidate(
             candidate,
             max_text_chars=self._max_input_chars * 2,
         )
         record = RevisionRecord.create_pending(
-            original_text=normalized_text,
+            original_text=normalized_request.source_text,
+            instruction=normalized_request.instruction,
             candidate=candidate,
             model=self._generator.model_name,
         )

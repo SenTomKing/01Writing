@@ -7,6 +7,7 @@ from .models import RevisionCandidate
 
 
 DEFAULT_MAX_INPUT_CHARS = 10_000
+DEFAULT_MAX_INSTRUCTION_CHARS = 2_000
 MAX_REASON_CHARS = 2_000
 
 
@@ -26,6 +27,26 @@ def validate_input(
     if len(normalized) > max_chars:
         raise ValidationError(
             f"输入不能超过 {max_chars} 个字符，当前为 {len(normalized)} 个字符"
+        )
+    return normalized
+
+
+def validate_instruction(
+    instruction: Any,
+    *,
+    max_chars: int = DEFAULT_MAX_INSTRUCTION_CHARS,
+) -> str:
+    """校验并规范化本轮修改要求。"""
+
+    if not isinstance(instruction, str):
+        raise ValidationError("修改要求必须是字符串")
+
+    normalized = instruction.strip()
+    if not normalized:
+        raise ValidationError("修改要求不能为空或只包含空白字符")
+    if len(normalized) > max_chars:
+        raise ValidationError(
+            f"修改要求不能超过 {max_chars} 个字符，当前为 {len(normalized)} 个字符"
         )
     return normalized
 

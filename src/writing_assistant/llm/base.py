@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from ..models import RevisionCandidate
+from ..models import RevisionCandidate, RevisionRequest
 
 
 class CandidateGenerator(Protocol):
@@ -11,4 +11,4 @@ class CandidateGenerator(Protocol):
     @property
     def model_name(self) -> str: ...
 
-    def generate(self, original_text: str) -> RevisionCandidate: ...
+    def generate(self, request: RevisionRequest) -> RevisionCandidate: ...

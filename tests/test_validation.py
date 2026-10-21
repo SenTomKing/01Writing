@@ -13,6 +13,7 @@ from writing_assistant.validation import (
     validate_candidate,
     validate_candidate_payload,
     validate_input,
+    validate_instruction,
 )
 
 
@@ -52,6 +53,22 @@ class ValidateCandidateTests(unittest.TestCase):
             validate_candidate(candidate, max_text_chars=100),
             candidate,
         )
+
+
+class ValidateInstructionTests(unittest.TestCase):
+    def test_normal_instruction_is_trimmed(self) -> None:
+        self.assertEqual(
+            validate_instruction("  使表达更简洁  "),
+            "使表达更简洁",
+        )
+
+    def test_blank_instruction_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "修改要求不能为空"):
+            validate_instruction(" \n\t ")
+
+    def test_overlong_instruction_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "修改要求不能超过"):
+            validate_instruction("写得更简洁", max_chars=3)
 
 
 if __name__ == "__main__":

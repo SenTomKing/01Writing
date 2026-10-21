@@ -5,7 +5,7 @@ from collections.abc import Callable
 from .config import AppConfig, load_config
 from .errors import WritingAssistantError
 from .llm.deepseek import DeepSeekCandidateGenerator
-from .models import RevisionRecord
+from .models import RevisionRecord, RevisionRequest
 from .storage.json_store import JsonRevisionStore
 from .workflow import RevisionWorkflow
 
@@ -84,6 +84,12 @@ def display_history(records: list[RevisionRecord]) -> None:
         print(f"\n[{index}] 状态：{record.status.value}")
         print(f"记录 ID：{record.id}")
         print(f"原文：{make_text_preview(record.original_text)}")
+        instruction_preview = (
+            make_text_preview(record.instruction)
+            if record.instruction is not None
+            else "未记录"
+        )
+        print(f"修改要求：{instruction_preview}")
         print(f"最终正文：{make_text_preview(record.final_text)}")
         print(f"创建时间：{record.created_at}")
 
@@ -99,8 +105,13 @@ def main() -> int:
             display_history(records)
             return 0
 
-        original_text = input("请输入一段文字：")
-        record = workflow.create_candidate(original_text)
+        source_text = input("请输入一段文字：")
+        instruction = input("请输入本轮修改要求：")
+        request = RevisionRequest(
+            source_text=source_text,
+            instruction=instruction,
+        )
+        record = workflow.create_candidate(request)
 
         print("\n原文：")
         print(record.original_text)

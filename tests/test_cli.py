@@ -40,6 +40,7 @@ class CliHistoryTests(unittest.TestCase):
     def test_display_history_prints_saved_record(self) -> None:
         record = RevisionRecord.create_pending(
             original_text="原文",
+            instruction="使表达更简洁",
             candidate=RevisionCandidate(text="候选", reason="测试原因"),
             model="fake-model",
         )
@@ -53,7 +54,23 @@ class CliHistoryTests(unittest.TestCase):
         self.assertIn("共有 1 条修订记录", printed)
         self.assertIn("状态：accepted", printed)
         self.assertIn("原文：原文", printed)
+        self.assertIn("修改要求：使表达更简洁", printed)
         self.assertIn("最终正文：候选", printed)
+
+    def test_display_history_marks_old_record_without_instruction(self) -> None:
+        record = RevisionRecord.create_pending(
+            original_text="旧原文",
+            instruction="临时要求",
+            candidate=RevisionCandidate(text="旧候选", reason="测试原因"),
+            model="fake-model",
+        )
+        record.instruction = None
+        output = StringIO()
+
+        with redirect_stdout(output):
+            display_history([record])
+
+        self.assertIn("修改要求：未记录", output.getvalue())
 
 
 if __name__ == "__main__":
