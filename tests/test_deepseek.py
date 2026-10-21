@@ -1,0 +1,79 @@
+"""DeepSeek 响应解析测试，不访问真实网络。"""
+
+from pathlib import Path
+from types import SimpleNamespace
+import sys
+import unittest
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from writing_assistant.errors import GenerationError
+from writing_assistant.llm.deepseek import DeepSeekCandidateGenerator
+
+
+class FakeCompletions:
+    def __init__(self, response: object) -> None:
+        self.response = response
+        self.arguments: dict[str, object] | None = None
+
+    def create(self, **kwargs: object) -> object:
+        self.arguments = kwargs
+        return self.response
+
+
+def make_client(content: str | None, finish_reason: str = "stop") -> object:
+    response = SimpleNamespace(
+        choices=[
+            SimpleNamespace(
+                finish_reason=finish_reason,
+                message=SimpleNamespace(content=content),
+            )
+        ]
+    )
+    completions = FakeCompletions(response)
+    return SimpleNamespace(
+        chat=SimpleNamespace(completions=completions),
+        test_completions=completions,
+    )
+
+
+class DeepSeekCandidateGeneratorTests(unittest.TestCase):
+    def build_generator(self, client: object) -> DeepSeekCandidateGenerator:
+        return DeepSeekCandidateGenerator(
+            api_key="test-key",
+            base_url="https://api.deepseek.com",
+            model="test-model",
+            timeout_seconds=10,
+            max_candidate_chars=100,
+            client=client,
+        )
+
+    def test_valid_json_becomes_candidate(self) -> None:
+        client = make_client('{"text":"修改后","reason":"更清楚"}')
+        candidate = self.build_generator(client).generate("原文")
+        self.assertEqual(candidate.text, "修改后")
+        self.assertEqual(candidate.reason, "更清楚")
+        self.assertEqual(
+            client.test_completions.arguments["response_format"],
+            {"type": "json_object"},
+        )
+
+    def test_invalid_json_is_reported(self) -> None:
+        client = make_client("not json")
+        with self.assertRaisesRegex(GenerationError, "合法 JSON"):
+            self.build_generator(client).generate("原文")
+
+    def test_empty_content_is_reported(self) -> None:
+        client = make_client("")
+        with self.assertRaisesRegex(GenerationError, "空内容"):
+            self.build_generator(client).generate("原文")
+
+    def test_truncated_content_is_reported(self) -> None:
+        client = make_client("{}", finish_reason="length")
+        with self.assertRaisesRegex(GenerationError, "截断"):
+            self.build_generator(client).generate("原文")
+
+
+if __name__ == "__main__":
+    unittest.main()

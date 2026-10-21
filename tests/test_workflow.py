@@ -1,0 +1,79 @@
+"""核心工作流测试。"""
+
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from writing_assistant.errors import InvalidDecisionError, ValidationError
+from writing_assistant.models import RevisionCandidate, RevisionStatus
+from writing_assistant.storage.json_store import JsonRevisionStore
+from writing_assistant.workflow import RevisionWorkflow
+
+
+class FakeGenerator:
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+
+    @property
+    def model_name(self) -> str:
+        return "fake-model"
+
+    def generate(self, original_text: str) -> RevisionCandidate:
+        self.calls.append(original_text)
+        return RevisionCandidate(
+            text=f"{original_text}（修改后）",
+            reason="测试修改",
+        )
+
+
+class RevisionWorkflowTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
+        file_path = Path(self.temporary_directory.name) / "revisions.json"
+        self.store = JsonRevisionStore(file_path)
+        self.generator = FakeGenerator()
+        self.workflow = RevisionWorkflow(
+            generator=self.generator,
+            store=self.store,
+            max_input_chars=100,
+        )
+
+    def test_invalid_input_does_not_call_generator(self) -> None:
+        with self.assertRaises(ValidationError):
+            self.workflow.create_candidate("   ")
+        self.assertEqual(self.generator.calls, [])
+        self.assertEqual(self.store.list_all(), [])
+
+    def test_candidate_is_saved_as_pending_before_decision(self) -> None:
+        record = self.workflow.create_candidate("原文")
+        saved = self.store.get(record.id)
+        self.assertEqual(saved.status, RevisionStatus.PENDING)
+        self.assertIsNone(saved.final_text)
+
+    def test_accept_uses_candidate_as_final_text(self) -> None:
+        record = self.workflow.create_candidate("原文")
+        decided = self.workflow.decide(record.id, accept=True)
+        self.assertEqual(decided.status, RevisionStatus.ACCEPTED)
+        self.assertEqual(decided.final_text, "原文（修改后）")
+        self.assertIsNotNone(decided.decided_at)
+
+    def test_reject_keeps_original_as_final_text(self) -> None:
+        record = self.workflow.create_candidate("原文")
+        decided = self.workflow.decide(record.id, accept=False)
+        self.assertEqual(decided.status, RevisionStatus.REJECTED)
+        self.assertEqual(decided.final_text, "原文")
+
+    def test_same_record_cannot_be_decided_twice(self) -> None:
+        record = self.workflow.create_candidate("原文")
+        self.workflow.decide(record.id, accept=True)
+        with self.assertRaises(InvalidDecisionError):
+            self.workflow.decide(record.id, accept=False)
+
+
+if __name__ == "__main__":
+    unittest.main()

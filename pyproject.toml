@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "01writing"
+version = "0.1.0"
+description = "一个带人工确认和修订记录的 AI 辅助写作工具"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.0,<3.0",
+    "python-dotenv>=1.0,<2.0",
+]
+
+[project.scripts]
+writing-assistant = "writing_assistant.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,43 @@
+# 本地学习资料与 AI 协作规则
+AGENTS.md
+学习课题/
+
+# 密钥与本地环境
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python 环境与缓存
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# 开发工具设置
+.idea/
+.vscode/
+.cursor/
+
+# 私人文档与运行数据
+data/
+uploads/
+outputs/
+private/
+logs/
+*.log
+*.pdf
+*.doc
+*.docx
+
+# 操作系统生成文件
+Thumbs.db
+.DS_Store
