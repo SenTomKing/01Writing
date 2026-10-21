@@ -5,8 +5,12 @@ from collections.abc import Callable
 from .config import AppConfig, load_config
 from .errors import WritingAssistantError
 from .llm.deepseek import DeepSeekCandidateGenerator
+from .models import RevisionRecord
 from .storage.json_store import JsonRevisionStore
 from .workflow import RevisionWorkflow
+
+
+HISTORY_PREVIEW_CHARS = 40
 
 
 def build_workflow(config: AppConfig) -> RevisionWorkflow:
@@ -39,10 +43,61 @@ def read_decision(input_function: Callable[[str], str] = input) -> bool:
         print("请输入 y 或 n。")
 
 
+def read_action(input_function: Callable[[str], str] = input) -> str:
+    """持续询问，直到使用者选择新建修订或查看历史。"""
+
+    while True:
+        print("\n请选择操作：")
+        print("1. 新建修订")
+        print("2. 查看修订历史")
+        choice = input_function("请输入 1 或 2：").strip()
+        if choice in {"1", "2"}:
+            return choice
+        print("请输入 1 或 2。")
+
+
+def make_text_preview(
+    text: str | None,
+    *,
+    max_chars: int = HISTORY_PREVIEW_CHARS,
+) -> str:
+    """把多行长文本整理成适合历史列表显示的单行摘要。"""
+
+    if text is None:
+        return "尚未决定"
+
+    single_line_text = " ".join(text.split())
+    if len(single_line_text) <= max_chars:
+        return single_line_text
+    return f"{single_line_text[:max_chars]}…"
+
+
+def display_history(records: list[RevisionRecord]) -> None:
+    """在终端显示修订历史，不改变任何记录。"""
+
+    if not records:
+        print("\n暂无修订记录。")
+        return
+
+    print(f"\n共有 {len(records)} 条修订记录：")
+    for index, record in enumerate(records, start=1):
+        print(f"\n[{index}] 状态：{record.status.value}")
+        print(f"记录 ID：{record.id}")
+        print(f"原文：{make_text_preview(record.original_text)}")
+        print(f"最终正文：{make_text_preview(record.final_text)}")
+        print(f"创建时间：{record.created_at}")
+
+
 def main() -> int:
     try:
         config = load_config()
         workflow = build_workflow(config)
+
+        action = read_action()
+        if action == "2":
+            records = workflow.list_history()
+            display_history(records)
+            return 0
 
         original_text = input("请输入一段文字：")
         record = workflow.create_candidate(original_text)

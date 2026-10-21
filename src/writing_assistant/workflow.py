@@ -56,3 +56,8 @@ class RevisionWorkflow:
 
         self._store.update(record)
         return record
+
+    def list_history(self) -> list[RevisionRecord]:
+        """返回全部修订记录，供命令行界面展示历史。"""
+
+        return self._store.list_all()

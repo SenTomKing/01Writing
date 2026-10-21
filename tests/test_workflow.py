@@ -74,6 +74,19 @@ class RevisionWorkflowTests(unittest.TestCase):
         with self.assertRaises(InvalidDecisionError):
             self.workflow.decide(record.id, accept=False)
 
+    def test_list_history_returns_saved_records_in_storage_order(self) -> None:
+        first_record = self.workflow.create_candidate("第一段原文")
+        self.workflow.decide(first_record.id, accept=True)
+        second_record = self.workflow.create_candidate("第二段原文")
+        self.workflow.decide(second_record.id, accept=False)
+
+        records = self.workflow.list_history()
+
+        self.assertEqual(
+            [record.id for record in records],
+            [first_record.id, second_record.id],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
