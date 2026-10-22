@@ -1,6 +1,6 @@
 """组织“生成候选—保存待确认记录—人工决定”的业务流程。"""
 
-from .errors import InvalidDecisionError, ValidationError
+from .errors import InvalidDecisionError, ValidationError, VersionConflictError
 from .llm.base import CandidateGenerator
 from .models import (
     RevisionFeedback,
@@ -8,7 +8,7 @@ from .models import (
     RevisionRequest,
     RevisionStatus,
 )
-from .storage.base import RevisionStore
+from .storage.base import ProjectStore
 from .validation import (
     validate_candidate,
     validate_feedback,
@@ -23,7 +23,7 @@ class RevisionWorkflow:
         self,
         *,
         generator: CandidateGenerator,
-        store: RevisionStore,
+        store: ProjectStore,
         max_input_chars: int,
     ) -> None:
         self._generator = generator
@@ -35,6 +35,8 @@ class RevisionWorkflow:
         request: RevisionRequest,
         *,
         previous_record_id: str | None = None,
+        document_id: str | None = None,
+        base_version_id: str | None = None,
     ) -> RevisionRecord:
         """校验修订请求、生成候选，并在返回前保存 pending 记录。"""
 
@@ -76,6 +78,31 @@ class RevisionWorkflow:
                 or normalized_request.feedback_history[-1] != expected_feedback
             ):
                 raise InvalidDecisionError("反馈历史与上一条拒绝记录不一致")
+            expected_request = self.get_retry_request(previous_record_id)
+            if normalized_request != expected_request:
+                raise InvalidDecisionError("反馈历史或原文、要求与已保存的任务不一致")
+            if document_id is None:
+                document_id = previous_record.document_id
+                base_version_id = previous_record.base_version_id
+            if (document_id, base_version_id) != (
+                previous_record.document_id, previous_record.base_version_id,
+            ):
+                raise InvalidDecisionError("反馈重试不能切换文档或基准版本")
+        elif normalized_request.feedback_history:
+            raise InvalidDecisionError("反馈历史必须连接已保存的拒绝记录")
+
+        if (document_id is None) != (base_version_id is None):
+            raise ValidationError("文档和基准版本编号必须同时提供")
+        if document_id is not None:
+            document = self._store.get_document(document_id)
+            base = self._store.get_text_version(base_version_id)
+            if document.current_version_id != base.id or base.document_id != document.id:
+                raise VersionConflictError("当前正文已经变化，请重新打开文档发起修订")
+            if base.content != normalized_request.source_text:
+                raise InvalidDecisionError("文档修订原文必须等于基准版本正文")
+            for unfinished in self._store.list_unfinished(document.id):
+                if unfinished.id != previous_record_id:
+                    raise InvalidDecisionError("这篇文档还有未完成任务，请先继续或放弃")
 
         candidate = self._generator.generate(normalized_request)
         candidate = validate_candidate(
@@ -88,6 +115,8 @@ class RevisionWorkflow:
             candidate=candidate,
             model=self._generator.model_name,
             previous_record_id=previous_record_id,
+            document_id=document_id,
+            base_version_id=base_version_id,
         )
         self._store.add(record)
         return record
@@ -118,7 +147,7 @@ class RevisionWorkflow:
         except ValueError as exc:
             raise InvalidDecisionError(str(exc)) from exc
 
-        self._store.update(record)
+        self._store.save_decision(record)
         return record
 
     def create_retry_request(
@@ -139,15 +168,68 @@ class RevisionWorkflow:
         if record.instruction is None:
             raise InvalidDecisionError("拒绝记录缺少原修改要求，无法继续生成")
 
-        feedback = RevisionFeedback(
-            rejected_candidate=record.candidate,
-            user_feedback=record.rejection_reason,
+        restored = self.get_retry_request(record.id)
+        if (
+            validate_input(request.source_text, max_chars=self._max_input_chars) != restored.source_text
+            or validate_instruction(request.instruction) != restored.instruction
+            or request.feedback_history != restored.feedback_history[:-1]
+        ):
+            raise InvalidDecisionError("传入请求与已保存的反馈链不一致")
+        return restored
+
+    def create_document_candidate(self, document_id: str, instruction: str) -> RevisionRecord:
+        """从磁盘的当前正文生成候选，关联文档与基准版本。"""
+
+        document = self._store.get_document(document_id.strip())
+        version = self._store.get_text_version(document.current_version_id)
+        return self.create_candidate(
+            RevisionRequest(source_text=version.content, instruction=instruction),
+            document_id=document.id,
+            base_version_id=version.id,
         )
+
+    def get_retry_request(self, rejected_record_id: str) -> RevisionRequest:
+        """仅根据持久化反馈链重建上下文，进程重启不会遗失此前反馈。"""
+
+        record = self._store.get(rejected_record_id)
+        if record.status is not RevisionStatus.REJECTED or record.abandoned_at is not None:
+            raise InvalidDecisionError("只有尚未放弃的拒绝记录可以继续重试")
+        if any(item.previous_record_id == record.id for item in self._store.list_all()):
+            raise InvalidDecisionError("已经存在后续尝试，请继续任务最后一条记录")
+        if not record.instruction or not record.rejection_reason:
+            raise InvalidDecisionError("旧记录缺少修改要求或拒绝原因，请新建修订")
+        feedback_history = []
+        seen: set[str] = set()
+        cursor = record
+        while True:
+            if cursor.id in seen:
+                raise InvalidDecisionError("反馈链存在循环，不能恢复")
+            seen.add(cursor.id)
+            if cursor.status is not RevisionStatus.REJECTED or not cursor.rejection_reason:
+                raise InvalidDecisionError("反馈链不完整，无法恢复")
+            if (
+                cursor.original_text != record.original_text
+                or cursor.instruction != record.instruction
+                or cursor.document_id != record.document_id
+                or cursor.base_version_id != record.base_version_id
+            ):
+                raise InvalidDecisionError("反馈链包含不同任务的数据")
+            feedback_history.append(RevisionFeedback(cursor.candidate, cursor.rejection_reason))
+            if cursor.previous_record_id is None:
+                break
+            cursor = self._store.get(cursor.previous_record_id)
+        feedback_history.reverse()
         return RevisionRequest(
             source_text=record.original_text,
             instruction=record.instruction,
-            feedback_history=request.feedback_history + (feedback,),
+            feedback_history=tuple(feedback_history),
         )
+
+    def close_task(self, record_id: str) -> RevisionRecord:
+        return self._store.close_task(record_id.strip())
+
+    def list_unfinished(self, document_id: str | None = None) -> list[RevisionRecord]:
+        return self._store.list_unfinished(document_id)
 
     def list_history(self) -> list[RevisionRecord]:
         """返回全部修订记录，供命令行界面展示历史。"""

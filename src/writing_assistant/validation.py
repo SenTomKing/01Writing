@@ -7,9 +7,50 @@ from .models import RevisionCandidate, RevisionFeedback
 
 
 DEFAULT_MAX_INPUT_CHARS = 10_000
+DEFAULT_MAX_TITLE_CHARS = 200
 DEFAULT_MAX_INSTRUCTION_CHARS = 2_000
 DEFAULT_MAX_FEEDBACK_CHARS = 2_000
 MAX_REASON_CHARS = 2_000
+
+
+def validate_document_title(
+    title: Any,
+    *,
+    max_chars: int = DEFAULT_MAX_TITLE_CHARS,
+) -> str:
+    """校验文档标题，成功时返回去除首尾空白的标题。"""
+
+    if not isinstance(title, str):
+        raise ValidationError("文档标题必须是字符串")
+
+    normalized = title.strip()
+    if not normalized:
+        raise ValidationError("文档标题不能为空或只包含空白字符")
+    if len(normalized) > max_chars:
+        raise ValidationError(
+            f"文档标题不能超过 {max_chars} 个字符，当前为 {len(normalized)} 个字符"
+        )
+    return normalized
+
+
+def validate_document_content(
+    content: Any,
+    *,
+    max_chars: int = DEFAULT_MAX_INPUT_CHARS,
+) -> str:
+    """校验文档正文，成功时返回去除首尾空白的正文。"""
+
+    if not isinstance(content, str):
+        raise ValidationError("文档正文必须是字符串")
+
+    normalized = content.strip()
+    if not normalized:
+        raise ValidationError("文档正文不能为空或只包含空白字符")
+    if len(normalized) > max_chars:
+        raise ValidationError(
+            f"文档正文不能超过 {max_chars} 个字符，当前为 {len(normalized)} 个字符"
+        )
+    return normalized
 
 
 def validate_input(

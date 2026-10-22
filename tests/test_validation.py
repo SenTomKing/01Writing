@@ -12,11 +12,30 @@ from writing_assistant.models import RevisionCandidate, RevisionFeedback
 from writing_assistant.validation import (
     validate_candidate,
     validate_candidate_payload,
+    validate_document_content,
+    validate_document_title,
     validate_feedback,
     validate_input,
     validate_instruction,
     validate_rejection_reason,
 )
+
+
+class ValidateDocumentTests(unittest.TestCase):
+    def test_title_and_content_are_trimmed(self) -> None:
+        self.assertEqual(validate_document_title("  项目介绍  "), "项目介绍")
+        self.assertEqual(
+            validate_document_content("  第一版正文  "),
+            "第一版正文",
+        )
+
+    def test_blank_title_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "文档标题不能为空"):
+            validate_document_title("   ")
+
+    def test_overlong_content_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "文档正文不能超过"):
+            validate_document_content("四个字符", max_chars=3)
 
 
 class ValidateInputTests(unittest.TestCase):
