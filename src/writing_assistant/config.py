@@ -13,7 +13,7 @@ DEFAULT_MODEL = "deepseek-flash"
 
 @dataclass(frozen=True, slots=True)
 class AppConfig:
-    api_key: str
+    api_key: str | None
     base_url: str
     model: str
     data_file: Path
@@ -38,11 +38,8 @@ def load_config(*, project_root: Path | None = None) -> AppConfig:
 
     load_dotenv(root / ".env")
 
-    api_key = os.getenv("DEEPSEEK_API_KEY", "").strip()
-    if not api_key:
-        raise ConfigurationError(
-            "没有找到 DEEPSEEK_API_KEY，请复制 .env.example 为 .env 并填写密钥"
-        )
+    api_key_value = os.getenv("DEEPSEEK_API_KEY", "").strip()
+    api_key = api_key_value or None
 
     base_url = os.getenv("DEEPSEEK_BASE_URL", DEFAULT_BASE_URL).strip()
     model = os.getenv("DEEPSEEK_MODEL", DEFAULT_MODEL).strip()

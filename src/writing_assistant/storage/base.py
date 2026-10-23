@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from ..models import RevisionRecord
+from ..models import Document, RevisionRecord, TextVersion
 
 
 class RevisionStore(Protocol):
@@ -13,3 +13,39 @@ class RevisionStore(Protocol):
     def update(self, record: RevisionRecord) -> None: ...
 
     def list_all(self) -> list[RevisionRecord]: ...
+
+    def save_decision(self, record: RevisionRecord) -> None: ...
+
+    def close_task(self, record_id: str) -> RevisionRecord: ...
+
+    def list_unfinished(self, document_id: str | None = None) -> list[RevisionRecord]: ...
+
+
+class DocumentStore(Protocol):
+    """文档工作流依赖的最小存储接口。"""
+
+    def add_document(
+        self,
+        document: Document,
+        initial_version: TextVersion,
+    ) -> None: ...
+
+    def get_document(self, document_id: str) -> Document: ...
+
+    def list_documents(self) -> list[Document]: ...
+
+    def get_text_version(self, version_id: str) -> TextVersion: ...
+
+    def list_text_versions(self, document_id: str) -> list[TextVersion]: ...
+
+    def restore_version(
+        self,
+        document_id: str,
+        version_id: str,
+        *,
+        expected_current_version_id: str,
+    ) -> TextVersion: ...
+
+
+class ProjectStore(RevisionStore, DocumentStore, Protocol):
+    """完整修订工作流所需的文档与修订存储能力。"""
