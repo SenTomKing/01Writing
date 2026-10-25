@@ -153,9 +153,8 @@ def create_app(settings: Settings | None = None):
     @app.get("/api/v1/auth/me", response_model=dto.UserOut)
     def me(request: Request, session: SessionDep):
         user = auth(request, session)
-        # 双重校验确保客户端得到的 csrf 值仍与服务器会话一致。
+        # 返回同源页面可读取的 CSRF 值；真正的写请求会与会话中保存的哈希核对。
         csrf = request.cookies.get(CSRF_COOKIE, "")
-        identity(request, session)
         return {"id": user.id, "username": user.username, "csrf_token": csrf}
 
     @app.post("/api/v1/auth/logout", response_model=dto.MessageOut)

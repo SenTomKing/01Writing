@@ -234,7 +234,7 @@ def test_app_credentials_cannot_create_tables(settings):
     db.close()
 
 
-def test_stream_contains_saved_events_after_restart(client, app, settings, doc):
+def test_stream_contains_persisted_events(client, app, settings, doc):
     task = enqueue(client, doc)
     complete(app, settings, task)
     response = client.get(f"/api/v1/tasks/{task['id']}/events")

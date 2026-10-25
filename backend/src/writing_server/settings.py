@@ -45,8 +45,9 @@ class Settings:
     @classmethod
     def load(cls) -> "Settings":
         root = project_root()
-        load_dotenv(root / ".env", override=False)
+        # 数据库专用文件先读，避免通用示例中的空密码遮住本机有效配置；进程环境始终优先。
         load_dotenv(root / ".env.postgres.local", override=False)
+        load_dotenv(root / ".env", override=False)
 
         def url(migration=False):
             explicit = os.getenv("WRITING_MIGRATION_URL" if migration else "WRITING_DATABASE_URL")
