@@ -1,4 +1,4 @@
-"""备份与隔离恢复校验；恢复只在新建的随机模式，不覆盖正式表。"""
+"""备份项目 PostgreSQL 数据库；恢复操作须另在隔离目标验证。"""
 import argparse
 from datetime import datetime
 import os
