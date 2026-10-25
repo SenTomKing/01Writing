@@ -86,6 +86,16 @@ cd ..
 node scripts/browser-smoke.mjs
 ```
 
+Windows 已安装 Edge 时，可复用它运行浏览器验收，省去单独下载 Chromium（前端项目依赖仍需安装）：
+
+```powershell
+$env:WRITING_BROWSER_CHANNEL = "msedge"
+$env:WRITING_WEB_URL = "http://127.0.0.1:8000"
+node scripts/browser-smoke.mjs
+```
+
+验收会实际检查历史恢复后的正文、Markdown／TXT 下载内容，以及退出后重新登录能否重新读取同一文档。脚本创建独立随机测试账户，不使用你的个人账户。
+
 数据库测试需要本机 PostgreSQL 和项目角色，只在随机新建的测试模式中运行与清理，不清空 public。浏览器验证需要已启动的服务和任务执行器，默认地址5173；设置 `WRITING_WEB_URL` 可改地址。它会创建独立测试账户和示例文档。
 
 CI 在 Linux 上运行 PostgreSQL 测试、前端构建、真实 Redis／Celery 与浏览器链路，并构建部署镜像；查看具体提交的工作流结果，不能把配置存在等同于运行通过。
