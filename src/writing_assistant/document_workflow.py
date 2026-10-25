@@ -2,17 +2,17 @@
 
 from .errors import StorageError
 from .models import Document, TextVersion
-from .storage.base import DocumentStore
+from .storage.base import DocumentCatalogStore, DocumentStore
 from .validation import validate_document_content, validate_document_title
 
 
-class DocumentWorkflow:
-    """让命令行界面不需要直接操作存储细节。"""
+class DocumentCatalogWorkflow:
+    """让命令行和 HTTP 入口共用文档创建与读取规则。"""
 
     def __init__(
         self,
         *,
-        store: DocumentStore,
+        store: DocumentCatalogStore,
         max_content_chars: int,
     ) -> None:
         self._store = store
@@ -53,6 +53,15 @@ class DocumentWorkflow:
         if current_version.document_id != document.id:
             raise StorageError("文档与当前正文版本的所属关系不一致")
         return document, current_version
+
+
+class DocumentWorkflow(DocumentCatalogWorkflow):
+    """完整文档工作流，继续支持已有的版本查看与恢复。"""
+
+    _store: DocumentStore
+
+    def __init__(self, *, store: DocumentStore, max_content_chars: int) -> None:
+        super().__init__(store=store, max_content_chars=max_content_chars)
 
     def list_versions(self, document_id: str) -> list[TextVersion]:
         return self._store.list_text_versions(document_id.strip())

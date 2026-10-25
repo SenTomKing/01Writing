@@ -1,0 +1,15 @@
+.git
+.venv
+.env
+.env.*
+private
+data
+学习课题
+**/node_modules
+**/dist
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.ruff_cache
+outputs
+logs

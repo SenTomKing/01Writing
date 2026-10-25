@@ -1,0 +1,104 @@
+"""A／B 可复跑评测：程序检查与待人工语义复核分别报告。"""
+
+import argparse
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+import time
+
+from writing_server.generation import generate
+from writing_server.settings import Settings
+
+
+def checks(task, output):
+    return {
+        **{f"包含:{term}": term in output for term in task.get("required", [])},
+        **{f"不包含:{term}": term not in output for term in task.get("forbidden", [])},
+        **({"长度": len(output) <= task["max_chars"]} if "max_chars" in task else {}),
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description="修订 A／B 评测；默认离线演示，不作为真实模型效果")
+    parser.add_argument("--live", action="store_true")
+    parser.add_argument("--limit", type=int, default=20)
+    parser.add_argument("--max-calls", type=int, default=60)
+    parser.add_argument("--output", type=Path, default=Path("outputs/eval-report.json"))
+    args = parser.parse_args()
+    if not 1 <= args.limit <= 20 or not 1 <= args.max_calls <= 60:
+        parser.error("limit 为1—20，max-calls 为1—60")
+    settings = Settings.load()
+    tasks = json.loads(Path(__file__).with_name("tasks.json").read_text(encoding="utf-8"))[: args.limit]
+    if args.live and not settings.api_key:
+        parser.error("真实评测需要服务端模型密钥")
+    call_count = 0
+
+    def budget():
+        nonlocal call_count
+        if call_count >= args.max_calls:
+            raise RuntimeError("达到预设调用次数上限")
+        call_count += 1
+
+    rows = []
+    for task in tasks:
+        for strategy in ("direct", "workflow"):
+            started = time.monotonic()
+            row = {"task_id": task["id"], "group": task["group"], "strategy": strategy}
+            try:
+                result = generate(
+                    settings,
+                    source=task["source"],
+                    instruction=task["instruction"],
+                    feedback=task.get("feedback", []),
+                    provider="deepseek" if args.live else "demo",
+                    model=settings.model,
+                    strategy=strategy,
+                    on_call=budget,
+                )
+                row.update(
+                    text=result.candidate.text,
+                    reason=result.candidate.reason,
+                    usage=result.usage,
+                    checks=checks(task, result.candidate.text),
+                    semantic_review="pending",
+                )
+                row["program_checks_passed"] = all(row["checks"].values())
+            except Exception as exc:
+                row.update(
+                    error=getattr(exc, "code", "evaluation_failed"),
+                    program_checks_passed=False,
+                    usage=getattr(exc, "usage", None),
+                    semantic_review="not_applicable",
+                )
+            row["duration_ms"] = int((time.monotonic() - started) * 1000)
+            rows.append(row)
+    report = {
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "mode": "live" if args.live else "demo",
+        "model": settings.model if args.live else "demo-v1",
+        "prompt_version": "revision-v1",
+        "task_count": len(tasks),
+        "model_calls": call_count,
+        "semantic_task_success_rate": None,
+        "human_acceptance_rate": None,
+        "cost": None,
+        "cost_note": "未配置价格或缺少用量时费用为未知；程序检查通过率不等于人工接受率或语义成功率。",
+        "summary": {
+            name: {
+                "trials": sum(r["strategy"] == name for r in rows),
+                "program_passed": sum(r["strategy"] == name and r["program_checks_passed"] for r in rows),
+            }
+            for name in ("direct", "workflow")
+        },
+        "results": rows,
+    }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(
+        json.dumps({key: report[key] for key in ("mode", "task_count", "model_calls", "summary")}, ensure_ascii=False)
+    )
+    print("报告已保存；请逐题复核数字对应关系、原意与修改完成度，真实费用与语义结果尚需核验。")
+
+
+if __name__ == "__main__":
+    main()

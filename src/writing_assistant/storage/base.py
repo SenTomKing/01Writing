@@ -21,8 +21,8 @@ class RevisionStore(Protocol):
     def list_unfinished(self, document_id: str | None = None) -> list[RevisionRecord]: ...
 
 
-class DocumentStore(Protocol):
-    """文档工作流依赖的最小存储接口。"""
+class DocumentCatalogStore(Protocol):
+    """创建、列出和打开文档所需的存储能力。"""
 
     def add_document(
         self,
@@ -35,6 +35,10 @@ class DocumentStore(Protocol):
     def list_documents(self) -> list[Document]: ...
 
     def get_text_version(self, version_id: str) -> TextVersion: ...
+
+
+class DocumentStore(DocumentCatalogStore, Protocol):
+    """在基础文档存储之上，提供完整的版本操作。"""
 
     def list_text_versions(self, document_id: str) -> list[TextVersion]: ...
 
