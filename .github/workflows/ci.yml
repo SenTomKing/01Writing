@@ -62,17 +62,38 @@ jobs:
       - name: 真实队列与浏览器联调
         run: |
           uv run writing-web migrate
-          uv run writing-web serve > /tmp/api.log 2>&1 &
-          uv run celery -A writing_server.worker:celery worker --loglevel=warning --concurrency=2 > /tmp/worker.log 2>&1 &
-          uv run writing-web dispatch > /tmp/dispatch.log 2>&1 &
-          (cd frontend && npx --yes pnpm@10.20.0 dev) > /tmp/web.log 2>&1 &
+          pids=()
+          cleanup() {
+            for pid in "${pids[@]}"; do kill -- -"$pid" 2>/dev/null || true; done
+            mkdir -p outputs
+            cp /tmp/api.log /tmp/worker.log /tmp/dispatch.log /tmp/web.log outputs/ 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          setsid .venv/bin/writing-web serve > /tmp/api.log 2>&1 &
+          pids+=($!)
+          setsid .venv/bin/celery -A writing_server.worker:celery worker --loglevel=warning --concurrency=2 > /tmp/worker.log 2>&1 &
+          pids+=($!)
+          setsid .venv/bin/writing-web dispatch > /tmp/dispatch.log 2>&1 &
+          pids+=($!)
+          setsid bash -c 'cd frontend && npx --yes pnpm@10.20.0 dev' > /tmp/web.log 2>&1 &
+          pids+=($!)
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && curl -fsS http://127.0.0.1:5173 >/dev/null && break || sleep 2; done
           node scripts/browser-smoke.mjs
-      - name: 构建部署镜像
+      - name: 构建并启动完整容器栈
         run: |
           uv run python deploy/prepare_env.py
+          export WRITING_ORIGINS=http://127.0.0.1:8080
+          cleanup() {
+            mkdir -p outputs
+            docker compose --env-file .env.deploy logs --no-color > outputs/compose.log 2>&1 || true
+            docker compose --env-file .env.deploy down || true
+          }
+          trap cleanup EXIT
           docker compose --env-file .env.deploy config --quiet
           docker compose --env-file .env.deploy build
+          docker compose --env-file .env.deploy up -d --wait --wait-timeout 120
+          curl -fsS http://127.0.0.1:8080/health
+          WRITING_WEB_URL=http://127.0.0.1:8080 node scripts/browser-smoke.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
