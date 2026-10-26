@@ -1,4 +1,4 @@
-"""A／B 可复跑评测：程序检查与待人工语义复核分别报告。"""
+"""A／B／C 可复跑评测：程序检查与待人工语义复核分别报告。"""
 
 import argparse
 from datetime import datetime, timezone
@@ -19,16 +19,23 @@ def checks(task, output):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="修订 A／B 评测；默认离线演示，不作为真实模型效果")
+    parser = argparse.ArgumentParser(description="修订 A／B／C 评测；默认离线演示，不作为真实模型效果")
     parser.add_argument("--live", action="store_true")
-    parser.add_argument("--limit", type=int, default=20)
-    parser.add_argument("--max-calls", type=int, default=60)
+    parser.add_argument("--limit", type=int, default=50)
+    parser.add_argument("--max-calls", type=int, default=300)
     parser.add_argument("--output", type=Path, default=Path("outputs/eval-report.json"))
     args = parser.parse_args()
-    if not 1 <= args.limit <= 20 or not 1 <= args.max_calls <= 60:
-        parser.error("limit 为1—20，max-calls 为1—60")
+    if not 1 <= args.limit <= 50 or not 1 <= args.max_calls <= 450:
+        parser.error("limit 为1—50，max-calls 为1—450")
     settings = Settings.load()
-    tasks = json.loads(Path(__file__).with_name("tasks.json").read_text(encoding="utf-8"))[: args.limit]
+    tasks = json.loads(Path(__file__).with_name("tasks.json").read_text(encoding="utf-8"))
+    additions = json.loads(Path(__file__).with_name("agent_tasks.json").read_text(encoding="utf-8"))
+    for task in additions:
+        task["context"] = {"sources": [], "memories": []}
+        for field, target in (("evidence", "sources"), ("memory", "memories")):
+            if field in task:
+                task["context"][target].append({"id": task["id"] + field, "title": task["group"], "content": task[field]})
+    tasks = (tasks + additions)[:args.limit]
     if args.live and not settings.api_key:
         parser.error("真实评测需要服务端模型密钥")
     call_count = 0
@@ -37,11 +44,14 @@ def main():
         nonlocal call_count
         if call_count >= args.max_calls:
             raise RuntimeError("达到预设调用次数上限")
-        call_count += 1
+        if args.live:
+            call_count += 1
 
     rows = []
     for task in tasks:
-        for strategy in ("direct", "workflow"):
+        for strategy in ("direct", "workflow", "agent"):
+            if args.live and call_count >= args.max_calls:
+                break
             started = time.monotonic()
             row = {"task_id": task["id"], "group": task["group"], "strategy": strategy}
             try:
@@ -54,6 +64,7 @@ def main():
                     model=settings.model,
                     strategy=strategy,
                     on_call=budget,
+                    context=task.get("context"),
                 )
                 row.update(
                     text=result.candidate.text,
@@ -61,6 +72,8 @@ def main():
                     usage=result.usage,
                     checks=checks(task, result.candidate.text),
                     semantic_review="pending",
+                    citations=(result.usage or {}).get("citations", []),
+                    evidence_support_review="pending" if task.get("evidence") else "not_applicable",
                 )
                 row["program_checks_passed"] = all(row["checks"].values())
             except Exception as exc:
@@ -76,8 +89,10 @@ def main():
         "created_at": datetime.now(timezone.utc).isoformat(),
         "mode": "live" if args.live else "demo",
         "model": settings.model if args.live else "demo-v1",
-        "prompt_version": "revision-v1",
+        "prompt_version": "comparison-v2.0",
         "task_count": len(tasks),
+        "dataset_version": "writing-eval-50-v2",
+        "budget_exhausted": args.live and call_count >= args.max_calls,
         "model_calls": call_count,
         "semantic_task_success_rate": None,
         "human_acceptance_rate": None,
@@ -88,7 +103,7 @@ def main():
                 "trials": sum(r["strategy"] == name for r in rows),
                 "program_passed": sum(r["strategy"] == name and r["program_checks_passed"] for r in rows),
             }
-            for name in ("direct", "workflow")
+            for name in ("direct", "workflow", "agent")
         },
         "results": rows,
     }

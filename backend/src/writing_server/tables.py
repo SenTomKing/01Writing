@@ -137,6 +137,9 @@ class Task(Base):
     provider: Mapped[str] = mapped_column(String(32), default="demo")
     model: Mapped[str] = mapped_column(String(100), default="demo-v1")
     prompt_version: Mapped[str] = mapped_column(String(40), default="revision-v1")
+    strategy: Mapped[str] = mapped_column(String(20), default="workflow")
+    context: Mapped[dict] = mapped_column(JSON, default=dict)
+    checkpoint: Mapped[dict] = mapped_column(JSON, default=dict)
     previous_task_id: Mapped[str | None] = mapped_column(String(36))
     feedback: Mapped[list] = mapped_column(JSON, default=list)
     status: Mapped[str] = mapped_column(String(16), default="queued")
@@ -196,3 +199,16 @@ class ImportBatch(Base):
     source_hash: Mapped[str] = mapped_column(String(64))
     mapping: Mapped[dict] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class Knowledge(Base):
+    __tablename__ = "wa_knowledge"
+    __table_args__ = (CheckConstraint("kind IN ('source','memory')", name="wa_knowledge_kind"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("wa_users.id"), index=True)
+    kind: Mapped[str] = mapped_column(String(16))
+    title: Mapped[str] = mapped_column(String(200))
+    content: Mapped[str] = mapped_column(Text)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)

@@ -1,4 +1,4 @@
-name: v1 验证
+name: 全栈与Agent验证
 on: [push, pull_request]
 permissions:
   contents: read

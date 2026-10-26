@@ -16,11 +16,11 @@ from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from . import __version__, schemas as dto, services
+from . import __version__, schemas as dto, services, knowledge
 from .database import Database
 from .security import COOKIE, CSRF_COOKIE, PASSWORDS, digest, identity, issue_session, rate_limit, verify_password
 from .settings import Settings
-from .tables import Document, LoginSession, Task, TaskEvent, User, Version
+from .tables import Document, Knowledge, LoginSession, Task, TaskEvent, User, Version
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +53,7 @@ def create_app(settings: Settings | None = None):
         CORSMiddleware,
         allow_origins=list(settings.origins),
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
+        allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key", "Last-Event-ID"],
     )
 
@@ -119,7 +119,7 @@ def create_app(settings: Settings | None = None):
         try:
             with db.sessions() as session:
                 revision = session.scalar(text("SELECT version_num FROM alembic_version"))
-            if revision != "v1_sources":
+            if revision != "v2_agent":
                 raise ValueError("schema")
         except (SQLAlchemyError, ValueError):
             return JSONResponse({"status": "unavailable", "detail": "请检查数据库并先执行迁移"}, 503)
@@ -164,6 +164,30 @@ def create_app(settings: Settings | None = None):
         response.delete_cookie(COOKIE, path="/")
         response.delete_cookie(CSRF_COOKIE, path="/")
         return {"message": "已退出登录"}
+
+    @app.get("/api/v1/knowledge", response_model=list[dto.KnowledgeOut])
+    def list_knowledge(request: Request, session: SessionDep):
+        user = auth(request, session)
+        return [knowledge.data(row) for row in knowledge.entries(session, user.id)]
+
+    @app.post("/api/v1/knowledge", response_model=dto.KnowledgeOut, status_code=201)
+    def add_knowledge(data: dto.KnowledgeInput, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        return knowledge.data(knowledge.save(session, user.id, data))
+
+    @app.patch("/api/v1/knowledge/{entry_id}", response_model=dto.KnowledgeOut)
+    def edit_knowledge(entry_id: UUID, data: dto.KnowledgeInput, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        return knowledge.data(knowledge.save(session, user.id, data, str(entry_id)))
+
+    @app.delete("/api/v1/knowledge/{entry_id}", response_model=dto.MessageOut)
+    def delete_knowledge(entry_id: UUID, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        row = session.scalar(select(Knowledge).where(Knowledge.id == str(entry_id), Knowledge.user_id == user.id))
+        if not row:
+            raise HTTPException(404, "找不到资料或记忆")
+        session.delete(row)
+        return {"message": "已删除，未来任务不再使用；已有任务保留当时的依据快照"}
 
     @app.get("/api/v1/documents", response_model=dto.DocumentsOut)
     def documents(
@@ -271,7 +295,8 @@ def create_app(settings: Settings | None = None):
     def create_task(document_id: UUID, data: dto.CreateTask, request: Request, session: SessionDep, key: Key):
         user = auth(request, session, True)
         task = services.create_task(
-            session, user.id, str(document_id), data.instruction, data.base_version_id, key, settings
+            session, user.id, str(document_id), data.instruction, data.base_version_id, key, settings,
+            strategy=data.strategy, source_ids=data.source_ids, memory_ids=data.memory_ids
         )
         return services.task_data(session, task)
 
@@ -324,6 +349,9 @@ def create_app(settings: Settings | None = None):
             key,
             settings,
             previous_task_id=previous,
+            strategy=old.strategy,
+            source_ids=[item["id"] for item in (old.context or {}).get("sources", [])],
+            memory_ids=[item["id"] for item in (old.context or {}).get("memories", [])],
         )
         return services.task_data(session, task)
 

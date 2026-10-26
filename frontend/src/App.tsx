@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { diffChars } from 'diff';
+import { KnowledgePanel } from './KnowledgePanel';
 import { client, docPath, freshKey, setCsrf, taskPath, unwrap, type Doc, type Me, type Task } from './api';
 
 const labels: Record<Task['status'], string> = {queued:'等待执行', running:'正在生成', review:'等待确认', accepted:'已接受', rejected:'已拒绝', failed:'生成失败', cancelled:'已取消'};
@@ -11,30 +12,40 @@ const message = (error: unknown) => error instanceof Error ? error.message : '�
 
 export default function App() {
   const queries = useQueryClient();
-  const me = useQuery<Me | null>({queryKey:['me'], queryFn: async () => {
-    const result = await client.GET('/api/v1/auth/me');
+  const navigate = useNavigate();
+  const me = useQuery<Me | null>({queryKey:['me'], queryFn: async ({signal}) => {
+    const result = await client.GET('/api/v1/auth/me', {signal});
     if (result.response.status === 401) return null;
     if (!result.response.ok || !result.data) throw new Error('服务暂时不可用，请检查后端是否启动');
     setCsrf(result.data.csrf_token); return result.data;
   }});
   const meta = useQuery({queryKey:['meta'], queryFn:()=>unwrap(client.GET('/api/v1/meta'))});
   const [exitError, setExitError] = useState('');
-  const logout = useMutation({mutationFn:()=>unwrap(client.POST('/api/v1/auth/logout')), onSuccess:()=>{
-    setCsrf(''); queries.clear(); queries.setQueryData(['me'], null);
-  }, onError: error=>setExitError(message(error))});
+  const updateSession = async (user: Me | null) => {
+    // 先取消旧请求，防止旧会话结果覆盖刚完成的登录或退出。
+    await queries.cancelQueries({predicate: query => query.queryKey[0] !== 'meta'});
+    // 保留页面正在监听的身份查询，只移除上一账户的业务数据。
+    queries.removeQueries({predicate: query => !['me', 'meta'].includes(String(query.queryKey[0]))});
+    setCsrf(user?.csrf_token ?? '');
+    queries.setQueryData<Me | null>(['me'], user);
+    setExitError('');
+    navigate('/', {replace: true});
+  };
+  const logout = useMutation({mutationFn:()=>unwrap(client.POST('/api/v1/auth/logout')),
+    onSuccess:()=>updateSession(null), onError: error=>setExitError(message(error))});
   if (me.isPending) return <div className="loading">正在打开工作台…</div>;
   if (me.error) return <main className="login-card"><h1>连接暂时中断</h1><p>{message(me.error)}</p><button onClick={()=>me.refetch()}>重新连接</button></main>;
-  if (!me.data) return <Login onLogin={user=>{setCsrf(user.csrf_token);queries.clear();queries.setQueryData(['me'],user);}}/>;
+  if (!me.data) return <Login onLogin={updateSession}/>;
   return <div className="app-shell">
     <header className="topbar"><Link to="/" className="brand"><span className="brand-symbol">W</span>01Writing<span className="brand-note">写作工作台</span></Link>
       <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
     <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing 1.0 <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    <footer className="footer">01Writing 2.0 开发版 <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 
-function Login({onLogin}:{onLogin:(user:Me)=>void}) {
+function Login({onLogin}:{onLogin:(user:Me)=>Promise<void>}) {
   const [register,setRegister] = useState(false);
   const mutation = useMutation({mutationFn:({username,password}:{username:string;password:string})=>
     register ? unwrap(client.POST('/api/v1/auth/register',{body:{username,password}})) : unwrap(client.POST('/api/v1/auth/login',{body:{username,password}})), onSuccess:onLogin});
@@ -77,6 +88,9 @@ function Editor({doc}:{doc:Doc}) {
   const [draft,setDraft]=useState(doc.current_version.content),[base,setBase]=useState(doc.current_version_id),[saved,setSaved]=useState(doc.current_version.content);
   const [title,setTitle]=useState(doc.title),[instruction,setInstruction]=useState('保持原意，让表达更简洁自然'),[feedback,setFeedback]=useState('');
   const [selected,setSelected]=useState(''),[historyPage,setHistoryPage]=useState(1),[taskPage,setTaskPage]=useState(1),[notice,setNotice]=useState('');
+  const [strategy,setStrategy]=useState<'direct'|'workflow'|'agent'>('agent');
+  const [selectedKnowledge,setSelectedKnowledge]=useState<string[]>([]);
+  const knowledge=useQuery({queryKey:['knowledge'],queryFn:()=>unwrap(client.GET('/api/v1/knowledge'))});
   const dirty=draft!==saved;
   const versions=useQuery({queryKey:['versions',doc.id,historyPage],queryFn:()=>unwrap(client.GET('/api/v1/documents/{document_id}/versions',{params:{path:{document_id:doc.id},query:{page:historyPage,limit:30}}}))});
   const tasks=useQuery({queryKey:['tasks',doc.id,taskPage],queryFn:()=>unwrap(client.GET('/api/v1/documents/{document_id}/tasks',{params:{path:{document_id:doc.id},query:{page:taskPage}}})),refetchInterval:query=>query.state.data?.some(t=>['queued','running'].includes(t.status))?1500:false});
@@ -96,7 +110,7 @@ function Editor({doc}:{doc:Doc}) {
     await Promise.all(['document','documents','versions','tasks','task'].map(key=>queries.invalidateQueries({queryKey:key==='documents'?[key]:key==='task'?[key]:[key,doc.id]})));
   }});
   const perform=(work:()=>Promise<unknown>)=>{setNotice('');action.mutate(work);};
-  const submitTask=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/tasks',{params:{...docPath(doc.id),header:freshKey()},body:{instruction,base_version_id:base}}));setSelected(result.id);});
+  const submitTask=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/tasks',{params:{...docPath(doc.id),header:freshKey()},body:{instruction,base_version_id:base,strategy,source_ids:(knowledge.data??[]).filter(e=>e.kind==='source'&&selectedKnowledge.includes(e.id)).map(e=>e.id),memory_ids:(knowledge.data??[]).filter(e=>e.kind==='memory'&&selectedKnowledge.includes(e.id)).map(e=>e.id)}}));setSelected(result.id);});
   const retry=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/tasks/{task_id}/retry',{params:{...taskPath(taskId),header:freshKey()}}));setSelected(result.id);setFeedback('');});
   const restore=(versionId:string)=>perform(async()=>{
     const result=await unwrap(client.POST('/api/v1/documents/{document_id}/versions/{version_id}/restore',{params:{path:{document_id:doc.id,version_id:versionId}},body:{base_version_id:doc.current_version_id}}));
@@ -110,6 +124,7 @@ function Editor({doc}:{doc:Doc}) {
       <div className="editor-bottom"><span>{draft.length.toLocaleString()} / 20,000 字符</span><button className="primary" disabled={!dirty||!draft.trim()||action.isPending} onClick={()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/versions',{params:docPath(doc.id),body:{content:draft,base_version_id:base}}));setSaved(result.current_version.content);setBase(result.current_version_id);})}>保存正文</button></div>
       <div className="export-links"><a href={`/api/v1/documents/${doc.id}/export?format=md`} download>导出 Markdown ↗</a><a href={`/api/v1/documents/${doc.id}/export?format=txt`} download>导出纯文本 ↗</a></div>
     </section><section className="panel assistant"><div className="panel-heading"><h2>修改助手</h2><span className="muted">由你决定最终版本</span></div>
+      <label>修改方式<select aria-label="修改方式" value={strategy} onChange={e=>setStrategy(e.target.value as typeof strategy)}><option value="agent">Agent：按需查资料、检查引用</option><option value="workflow">固定流程：生成与检查</option><option value="direct">直接生成：对照基线</option></select></label>
       <label>这次想怎样修改？<textarea aria-label="修改要求" rows={3} value={instruction} onChange={e=>setInstruction(e.target.value)} maxLength={2000}/></label>
       <button className="primary full" disabled={dirty||action.isPending||!instruction.trim()||tasks.data?.some(t=>['queued','running'].includes(t.status))} onClick={submitTask}>生成修改建议</button>
       {dirty&&<p className="hint">先保存正文，再基于保存的版本生成建议。</p>}
@@ -120,9 +135,13 @@ function Editor({doc}:{doc:Doc}) {
         {active.status==='review'&&<><div className="actions"><button className="primary" disabled={dirty||action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/accept',{params:taskPath(taskId)})))}>接受并更新正文</button><button disabled={action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/cancel',{params:taskPath(taskId)})))}>放弃候选</button></div><label>哪里还需要改？<textarea aria-label="拒绝原因" rows={2} value={feedback} onChange={e=>setFeedback(e.target.value)} maxLength={2000} placeholder="写下拒绝原因，让下一次修改更准确"/></label><button disabled={!feedback.trim()||action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/reject',{params:taskPath(taskId),body:{reason:feedback}})))}>拒绝并保存原因</button></>}
         {active.status==='rejected'&&<><p className="feedback">你的反馈：{active.rejection_reason}</p><button className="primary" disabled={action.isPending||dirty} onClick={retry}>根据反馈重新生成</button></>}
         {active.status==='failed'&&<button disabled={action.isPending||dirty} onClick={retry}>重新尝试</button>}
+        {!!active.context_items?.length&&<details><summary>本次使用的资料与记忆</summary>{active.context_items.map((item,index)=><p key={index}>{String(item.title)}</p>)}</details>}
+        {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
+        {!!active.citations?.length&&<section className="citations"><h3>引用依据</h3><p className="muted">摘录与来源已核对；摘录是否支持结论仍请你判断。</p>{active.citations.map((item,index)=><blockquote key={index}><strong>[{String(item.ref)}] {String(item.title)}</strong><p>{String(item.quote)}</p></blockquote>)}</section>}
         {!!active.runs.length&&<details className="run-details"><summary>运行记录 · {active.runs.length} 次尝试</summary>{active.runs.map(run=><div key={run.number}><strong>第 {run.number} 次 · {run.model}</strong><p>结果：{run.outcome} · 耗时：{run.duration_ms??'未知'} 毫秒</p><p>提示词版本：{run.prompt_version}</p><pre>{run.usage?JSON.stringify(run.usage,null,2):'演示模式或供应商未提供用量'}</pre></div>)}</details>}
       </div>:<div className="assistant-empty"><span>✦</span><p>你的原稿是起点。<br/>建议产生后，可在这里比较并选择。</p></div>}
     </section></div>
+    <KnowledgePanel selected={selectedKnowledge} onChange={setSelectedKnowledge}/>
     <div className="history-grid"><section className="panel"><div className="panel-heading"><h2>正文历史</h2><span className="muted">恢复会创建新版本</span></div>{versions.data?.items.map(version=><details className="history-row" key={version.id}><summary><strong>版本 {version.number}</strong><span>{kinds[version.kind]??version.kind} · {stamp(version.created_at)}</span></summary><pre>{version.content}</pre>{version.id!==doc.current_version_id&&<button disabled={dirty||action.isPending} onClick={()=>restore(version.id)}>将此内容恢复为新版本</button>}</details>)}<div className="pagination"><button disabled={historyPage===1} onClick={()=>setHistoryPage(historyPage-1)}>上一页</button><span>{historyPage}</span><button disabled={!versions.data||historyPage*30>=versions.data.total} onClick={()=>setHistoryPage(historyPage+1)}>下一页</button></div></section>
     <section className="panel"><div className="panel-heading"><h2>修订任务</h2><span className="muted">候选与决定都被保留</span></div>{tasks.data?.map(item=><button className={`task-row ${taskId===item.id?'selected':''}`} key={item.id} onClick={()=>setSelected(item.id)}><span>{item.instruction.slice(0,60)}</span><span className={`status ${item.status}`}>{labels[item.status]}</span></button>)}{!tasks.data?.length&&<p className="muted">还没有修订任务。</p>}<div className="pagination"><button disabled={taskPage===1} onClick={()=>setTaskPage(taskPage-1)}>上一页</button><span>{taskPage}</span><button disabled={(tasks.data?.length??0)<30} onClick={()=>setTaskPage(taskPage+1)}>下一页</button></div></section></div>
     {(versions.error||tasks.error||task.error)&&<p className="error" role="alert">{message(versions.error||tasks.error||task.error)}</p>}

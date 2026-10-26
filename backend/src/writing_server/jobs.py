@@ -106,10 +106,27 @@ def process_task(db, settings, task_id, generator=generate):
             provider=task.provider,
             model=task.model,
         )
+        strategy, context, checkpoint = task.strategy, task.context, task.checkpoint
     started = time.monotonic()
     result, failure = None, None
     try:
-        result = generator(settings, **arguments)
+        if strategy == "agent" and generator is generate:
+            from .agent import run_agent
+
+            def save_checkpoint(state, message):
+                with db.sessions.begin() as saved:
+                    row = saved.scalar(select(Task).where(Task.id == task_id).with_for_update())
+                    if row.status != "running" or row.claim_token != token or row.lease_until <= now():
+                        raise ModelFailure("claim_lost", "任务已取消或执行权已过期")
+                    row.checkpoint = state
+                    event(saved, row, "agent_step", message=message,
+                          calls=state["reserved_calls"], tools=len(state["trace"]))
+
+            result = run_agent(settings, **arguments, context=context, checkpoint=checkpoint, save=save_checkpoint)
+        elif generator is generate:
+            result = generator(settings, **arguments, strategy=strategy, context=context)
+        else:
+            result = generator(settings, **arguments)
         from writing_assistant.validation import validate_candidate
 
         validate_candidate(result.candidate, max_text_chars=20_000)
