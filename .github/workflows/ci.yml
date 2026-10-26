@@ -1,0 +1,102 @@
+name: v1 验证
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      WRITING_DB_HOST: localhost
+      WRITING_DB_NAME: writing
+      WRITING_DB_USER: writing_app
+      WRITING_DB_PASSWORD: ci-app-password
+      WRITING_DB_MIGRATION_USER: writing_owner
+      WRITING_DB_MIGRATION_PASSWORD: ci-owner-password
+      WRITING_ORIGINS: http://127.0.0.1:5173
+      WRITING_PROVIDER: demo
+      WRITING_REDIS_URL: redis://localhost:6379/0
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: writing_owner
+          POSTGRES_PASSWORD: ci-owner-password
+          POSTGRES_DB: writing
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U writing_owner -d writing" --health-interval 5s --health-retries 20
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.9.17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: uv sync --locked --extra test --python 3.13
+      - name: 初始化 CI 应用角色
+        run: |
+          uv run python - <<'PY'
+          import psycopg
+          with psycopg.connect('postgresql://writing_owner:ci-owner-password@localhost/writing') as connection:
+              connection.execute("CREATE ROLE writing_app LOGIN PASSWORD 'ci-app-password' NOSUPERUSER NOCREATEDB NOCREATEROLE")
+              connection.execute('GRANT USAGE ON SCHEMA public TO writing_app')
+              connection.execute('ALTER DEFAULT PRIVILEGES FOR ROLE writing_owner IN SCHEMA public GRANT SELECT,INSERT,UPDATE,DELETE ON TABLES TO writing_app')
+              connection.execute('ALTER DEFAULT PRIVILEGES FOR ROLE writing_owner IN SCHEMA public GRANT USAGE,SELECT ON SEQUENCES TO writing_app')
+          PY
+      - run: uv run pytest -q
+      - run: uv run ruff check backend/src backend/tests --select E9,F
+      - run: uv run python evals/run.py
+      - run: uv run python scripts/export_openapi.py
+      - run: npx --yes pnpm@10.20.0 install --frozen-lockfile
+        working-directory: frontend
+      - run: npx --yes pnpm@10.20.0 generate-api && git -C .. diff --exit-code -- docs/openapi.json frontend/src/generated/api.d.ts
+        working-directory: frontend
+      - run: npx --yes pnpm@10.20.0 build
+        working-directory: frontend
+      - run: npx --yes pnpm@10.20.0 exec playwright install --with-deps chromium
+        working-directory: frontend
+      - name: 真实队列与浏览器联调
+        run: |
+          uv run writing-web migrate
+          pids=()
+          cleanup() {
+            for pid in "${pids[@]}"; do kill -- -"$pid" 2>/dev/null || true; done
+            mkdir -p outputs
+            cp /tmp/api.log /tmp/worker.log /tmp/dispatch.log /tmp/web.log outputs/ 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          setsid .venv/bin/writing-web serve > /tmp/api.log 2>&1 &
+          pids+=($!)
+          setsid .venv/bin/celery -A writing_server.worker:celery worker --loglevel=warning --concurrency=2 > /tmp/worker.log 2>&1 &
+          pids+=($!)
+          setsid .venv/bin/writing-web dispatch > /tmp/dispatch.log 2>&1 &
+          pids+=($!)
+          setsid bash -c 'cd frontend && npx --yes pnpm@10.20.0 dev' > /tmp/web.log 2>&1 &
+          pids+=($!)
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && curl -fsS http://127.0.0.1:5173 >/dev/null && break || sleep 2; done
+          node scripts/browser-smoke.mjs
+      - name: 构建并启动完整容器栈
+        run: |
+          uv run python deploy/prepare_env.py
+          export WRITING_ORIGINS=http://127.0.0.1:8080
+          cleanup() {
+            mkdir -p outputs
+            docker compose --env-file .env.deploy logs --no-color > outputs/compose.log 2>&1 || true
+            docker compose --env-file .env.deploy down || true
+          }
+          trap cleanup EXIT
+          docker compose --env-file .env.deploy config --quiet
+          docker compose --env-file .env.deploy build
+          docker compose --env-file .env.deploy up -d --wait --wait-timeout 120
+          docker compose --env-file .env.deploy exec -T postgres psql -U postgres -d writing -v ON_ERROR_STOP=1 < deploy/check-db.sql
+          curl -fsS http://127.0.0.1:8080/health
+          WRITING_WEB_URL=http://127.0.0.1:8080 node scripts/browser-smoke.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-output
+          path: outputs/

@@ -1,0 +1,22 @@
+[
+  {"id":"number-01","group":"数字与单位","source":"实验组的提升是12.4%，这个结果很好啊。","instruction":"删除口语，保留数字和原意。","required":["12.4%"],"forbidden":["啊"]},
+  {"id":"number-02","group":"数字与单位","source":"样本量为128例啊，其中32例退出。","instruction":"改为书面语，保留数字和对应关系。","required":["128","32"],"forbidden":["啊"]},
+  {"id":"number-03","group":"数字与单位","source":"温度保持在37摄氏度啊，实验持续24小时。","instruction":"保留数字、单位及原意，删除口语。","required":["37","24"],"forbidden":["啊"]},
+  {"id":"number-04","group":"数字与单位","source":"2024年收入为150万元，2025年为180万元啊。","instruction":"保留数字与年份关系，去掉啊。","required":["2024","150","2025","180"],"forbidden":["啊"]},
+  {"id":"hedge-01","group":"限定语","source":"这些结果可能提示两者有关啊。","instruction":"删掉啊，必须保留“可能”，不能写成因果。","required":["可能"],"forbidden":["啊","导致"]},
+  {"id":"hedge-02","group":"限定语","source":"在本研究条件下，结果具有一定参考价值啊。","instruction":"简化口语，保留“在本研究条件下”。","required":["在本研究条件下"],"forbidden":["啊"]},
+  {"id":"hedge-03","group":"限定语","source":"这个关联尚不能证明因果关系啊。","instruction":"保留“不能证明因果关系”，删除口语。","required":["不能证明因果关系"],"forbidden":["啊"]},
+  {"id":"hedge-04","group":"限定语","source":"小样本结果需要进一步验证啊。","instruction":"保留“小样本”和“进一步验证”，删除啊。","required":["小样本","进一步验证"],"forbidden":["啊"]},
+  {"id":"style-01","group":"表达修订","source":"这个项目相当的好啊。","instruction":"只去掉“啊”，不改变语气。","required":["项目"],"forbidden":["啊","卓越"]},
+  {"id":"style-02","group":"表达修订","source":"我们需要的的流程已经完成。","instruction":"删除重复的的。","required":["流程","完成"],"forbidden":["的的"]},
+  {"id":"style-03","group":"表达修订","source":"这项工作  已经完成啊。","instruction":"清理多余空格和啊。","required":["工作","完成"],"forbidden":["  ","啊"]},
+  {"id":"style-04","group":"表达修订","source":"这个方法可以帮助我们啊。","instruction":"只删除啊。","required":["方法","帮助"],"forbidden":["啊"]},
+  {"id":"constraint-01","group":"多重约束","source":"项目共有3个模块啊，分别是输入、生成、确认。","instruction":"保留数字和模块名，删除啊，不超过35个字符。","required":["3","输入","生成","确认"],"forbidden":["啊"],"max_chars":35},
+  {"id":"constraint-02","group":"多重约束","source":"我们得到了8.1%的改善啊，不过结果仍需验证。","instruction":"保留数字和“仍需验证”，删除啊，不超过30个字符。","required":["8.1%","仍需验证"],"forbidden":["啊"],"max_chars":30},
+  {"id":"constraint-03","group":"多重约束","source":"API响应为200毫秒啊，后台任务耗时5秒。","instruction":"保留数字和API，删除啊，不超过35个字符。","required":["API","200","5"],"forbidden":["啊"],"max_chars":35},
+  {"id":"constraint-04","group":"多重约束","source":"方案A成功12次，方案B成功10次啊。","instruction":"保留数字、A与B的关系，仅删除啊。","required":["A","12","B","10"],"forbidden":["啊"]},
+  {"id":"feedback-01","group":"拒绝反馈","source":"这个项目太好了啊。","instruction":"仅删除啊，不加强语气。","required":["项目"],"forbidden":["啊","出色","卓越"],"feedback":[{"text":"这个项目非常出色。","reason":"提升表达","feedback":"出色加强了语气，只删除啊。"}]},
+  {"id":"feedback-02","group":"拒绝反馈","source":"实验可能有效啊。","instruction":"删除啊，必须保留可能。","required":["可能"],"forbidden":["啊","确定"],"feedback":[{"text":"实验确定有效。","reason":"简化","feedback":"不能把可能改成确定。"}]},
+  {"id":"feedback-03","group":"拒绝反馈","source":"提升为2.5%啊。","instruction":"保留数字并删除啊。","required":["2.5%"],"forbidden":["啊"],"feedback":[{"text":"提升为25%。","reason":"整理","feedback":"你改错了数字，请保留2.5%。"}]},
+  {"id":"feedback-04","group":"拒绝反馈","source":"该方法的的效果尚需验证啊。","instruction":"去重复和啊，保留尚需验证。","required":["尚需验证"],"forbidden":["的的","啊"],"feedback":[{"text":"该方法效果显著。","reason":"精简","feedback":"不要凭空写效果显著，仍需验证。"}]}
+]

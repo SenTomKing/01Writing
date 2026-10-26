@@ -1,0 +1,93 @@
+name: 01writing
+x-backend: &backend
+  build: .
+  environment: &environment
+    WRITING_DB_HOST: postgres
+    WRITING_DB_PORT: "5432"
+    WRITING_DB_NAME: writing
+    WRITING_DB_USER: writing_app
+    WRITING_DB_PASSWORD: ${WRITING_DB_PASSWORD:?请先生成 .env.deploy}
+    WRITING_DB_MIGRATION_USER: writing_owner
+    WRITING_DB_MIGRATION_PASSWORD: ${WRITING_DB_MIGRATION_PASSWORD:?请先生成 .env.deploy}
+    WRITING_REDIS_URL: redis://redis:6379/0
+    WRITING_ORIGINS: ${WRITING_ORIGINS:-http://localhost:8080}
+    WRITING_SECURE_COOKIE: ${WRITING_SECURE_COOKIE:-false}
+    WRITING_PROVIDER: ${WRITING_PROVIDER:-demo}
+    DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-flash}
+    DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+  restart: unless-stopped
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${WRITING_DB_ADMIN_PASSWORD:?请先生成 .env.deploy}
+      POSTGRES_DB: writing
+      WRITING_APP_PASSWORD: ${WRITING_DB_PASSWORD:?请先生成 .env.deploy}
+      WRITING_OWNER_PASSWORD: ${WRITING_DB_MIGRATION_PASSWORD:?请先生成 .env.deploy}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./deploy/init-db.sh:/docker-entrypoint-initdb.d/01-writing.sh:ro
+    healthcheck:
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, postgres, -d, writing]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --appendonly, "yes", --maxmemory, 128mb, --maxmemory-policy, noeviction]
+    volumes: [redis_data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  migrate:
+    <<: *backend
+    command: [writing-web, migrate]
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+  api:
+    <<: *backend
+    command: [writing-web, serve, --host, 0.0.0.0]
+    environment:
+      <<: *environment
+      # API 不携带迁移密码；空值由 Settings 保留到显式迁移时才报错。
+      WRITING_DB_MIGRATION_PASSWORD: ""
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      retries: 12
+  worker:
+    <<: *backend
+    command: [celery, -A, writing_server.worker:celery, worker, --loglevel=warning, --concurrency=2]
+    environment:
+      <<: *environment
+      WRITING_DB_MIGRATION_PASSWORD: ""
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+  dispatcher:
+    <<: *backend
+    command: [writing-web, dispatch]
+    environment:
+      <<: *environment
+      WRITING_DB_MIGRATION_PASSWORD: ""
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+  web:
+    build:
+      context: .
+      dockerfile: deploy/web.Dockerfile
+    ports: ["127.0.0.1:${WRITING_WEB_PORT:-8080}:80"]
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:

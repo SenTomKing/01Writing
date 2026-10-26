@@ -1,119 +1,120 @@
 # 01Writing
 
-01Writing 是一个带人工反馈和正文版本管理的 AI 辅助写作工具。为文档提出修改要求，DeepSeek 生成一个候选；接受后保存新正文版本，拒绝后带着反馈重新生成。全部候选、决定和正文版本保存在本地，可以重启后继续未完成任务，也可以恢复旧正文。
+一个带人工确认、版本历史和后台任务的 AI 写作工作台。用户在网页中保存正文、提出修改要求、比较候选，接受后形成新版本；拒绝原因会进入下一轮修改。历史恢复追加快照，不覆盖旧稿。
 
-## 版本状态
+## v1.0 功能
 
-当前代码对应 **v0.2.0**，版本标签与正式发布记录以 [GitHub Releases](https://github.com/SenTomKing/01Writing/releases) 为准。
+- 账户注册、登录、退出，文档、历史、任务、进度与导出按账户隔离。
+- 文档创建、改标题、正文编辑保存、Markdown／TXT 导出。
+- 后台生成、差异展示、人工接受、拒绝反馈与重新生成、取消和失败重试。
+- 版本冲突检测、重复生成请求去重、重复接受不追加第二份版本。
+- PostgreSQL 事务、关系约束、Alembic 迁移，执行租约、事件记录、有限恢复。
+- React／TypeScript 网页，OpenAPI 生成的接口类型，SSE 与查询展示进度。
+- 显式导入旧 JSON，保留源文件；基础 A／B 评测与数据库备份入口。
 
-- 持续主菜单：一次启动可完成多个操作，选择 `0` 退出。
-- 文档管理：创建、列出、打开文档，查看完整正文版本。
-- 按要求修订：当前正文、修改要求和历次拒绝反馈共同组成模型上下文。
-- 人工决定：接受、拒绝并重试、稍后处理或放弃任务。
-- 任务恢复：重启后确认已有候选，无须再次调用模型；重试时重建完整反馈链。
-- 版本恢复：复制旧正文成为新的版本，保留已有历史。
-- 冲突保护：当前正文已经变化时，旧候选不能覆盖新正文。
-- 独立修订及历史查看：兼容旧版数据，不自动把旧记录归入新文档。
-- 离线演示：不读取 `.env`，不调用真实模型，使用单独的数据文件。
+技术栈：Python、FastAPI、Pydantic、SQLAlchemy、PostgreSQL、Celery、Redis、React、TypeScript、Vite、Docker Compose。架构与边界见 [架构说明](docs/architecture.md)，评测方法见 [evals](evals/README.md)。本版是有界修订工作流，资料检索、引用核验和动态 Agent 工具循环留待后续版本。
 
-## 安装与启动
+## 用 Docker 启动完整系统
 
-需要 Python 3.11 或更高版本。在项目根目录的 PowerShell 中执行：
+需要 Docker Desktop／Linux Docker 与 Compose。Windows 使用 Linux 容器和可运行的 WSL2。
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e .
-.\.venv\Scripts\python.exe main.py --demo
+git clone https://github.com/SenTomKing/01Writing.git
+cd 01Writing
+python deploy/prepare_env.py
+docker compose --env-file .env.deploy up --build -d
+docker compose --env-file .env.deploy ps
 ```
 
-已有合适环境时，可直接执行 `python -m pip install -e .` 和 `python main.py --demo`。安装后也可通过 `writing-assistant` 或 `python -m writing_assistant` 启动。
+打开 **http://localhost:8080**，创建自己的账户。密码至少12字符；用户名使用3—40位小写字母、数字或下划线。默认 `demo` 离线演示不调用模型，仅做简单字符清理，页面会明确标注。
 
-离线演示候选只添加演示标记，用于验证流程，**不代表真实改写质量**。演示数据保存在 `data/demo-project.json`，正式模式默认使用 `data/revisions.json`。
-
-## 配置真实模型
-
-首次配置时复制 `.env.example` 为 `.env`；已有 `.env` 时保留现有文件。将其中的密钥占位值替换为自己的 DeepSeek API key，然后运行：
+启用 DeepSeek：在本机 `.env.deploy` 填写 `DEEPSEEK_API_KEY` 并将 `WRITING_PROVIDER` 改为 `deepseek`，重新运行启动命令。密钥只进入服务端，不放到前端变量或仓库。PostgreSQL 与 Redis 不映射公网端口；网页默认只监听本机。
 
 ```powershell
-python main.py
+docker compose --env-file .env.deploy logs --tail=100 api worker dispatcher
+docker compose --env-file .env.deploy down
 ```
 
-| 配置项 | 含义 | 默认值 |
-| --- | --- | --- |
-| `DEEPSEEK_API_KEY` | 模型密钥；生成新候选时需要 | 无 |
-| `DEEPSEEK_BASE_URL` | 兼容 API 地址 | `https://api.deepseek.com` |
-| `DEEPSEEK_MODEL` | 模型名称，应使用账户可用名称 | `deepseek-flash` |
-| `WRITING_DATA_FILE` | 本地数据文件，相对路径以项目根目录为起点 | `data/revisions.json` |
-| `WRITING_MAX_INPUT_CHARS` | 原文和初始正文字符上限 | `10000` |
-| `DEEPSEEK_TIMEOUT_SECONDS` | 请求超时秒数 | `60` |
+`down` 保留数据库卷；不要使用 `down -v` 作为日常停止方式。容器初始化使用独立的 postgres 管理员；迁移使用 writing_owner，日常 API／任务使用 writing_app，两者均无超级用户权限。管理员密码只提供给数据库容器。已有数据卷不会再次运行初始化脚本，改环境变量不会自动重设旧库密码。升级前备份，更新代码后重新构建，迁移服务成功以后 API 才启动。
 
-文档管理、历史查看、版本恢复和确认已有候选不需要密钥。当前模型调用使用 JSON 输出与关闭思考的兼容参数；服务支持情况由所配置模型决定。输入文字及反馈会发送给配置的模型服务。
+## 本机开发：复用已安装的 PostgreSQL
 
-## 使用
-
-先选 `3` 创建文档，选 `4` 复制文档编号，再选 `6` 输入编号及修改要求。
-
-候选出现后：`y` 接受并结束本轮，`n` 输入拒绝原因并继续生成，`p` 保存后稍后处理，`x` 放弃任务。接受后返回主菜单；如需新的修改目标，再次选择 `6`。
-
-| 菜单 | 操作 |
-| --- | --- |
-| 1 / 2 | 新建独立修订 / 查看全部修订历史 |
-| 3 / 4 / 5 | 创建文档 / 查看文档列表 / 打开当前正文 |
-| 6 / 7 / 8 | 修改文档 / 查看正文版本 / 恢复旧正文 |
-| 9 / 10 / 11 | 查看未完成任务 / 继续任务 / 查看修订详情 |
-| 12 / 0 | 查看一篇文档的修订历史 / 退出 |
-
-恢复任务时，输入菜单 `9` 显示的最后一条记录编号。等待决定的候选直接显示；已拒绝记录可选择继续生成或停止重试。生成失败后，已经保存的拒绝反馈仍可恢复。每篇文档同时允许一个未完成任务，先继续或放弃后再新建。
-
-## 工作流程与存储
-
-```mermaid
-flowchart TD
-    A[打开当前正文并输入要求] --> B[生成并校验候选]
-    B --> C[保存待确认记录]
-    C --> D{人工决定}
-    D -- 接受 --> E[一次保存决定与新正文版本]
-    D -- 拒绝 --> F[保存原因并重建反馈上下文]
-    F --> B
-    D -- 稍后 --> G[返回菜单并保留未完成任务]
-    D -- 放弃 --> H[结束任务并保留历史]
-    E --> I[返回主菜单]
-    G --> I
-    H --> I
-```
-
-UTF-8 JSON 文件保存文档、不可变正文版本和修订记录三个集合。文档保存当前采用的版本编号；接受文档修订时追加正文版本并更新该编号；拒绝不改变正式正文。恢复第 1 版时会追加一个内容相同的新版本，旧版本和修订记录继续保留。
-
-第一版 JSON 数据继续可读；首次写入前创建 `*.schema1.backup.json` 备份，然后以同目录临时文件替换原文件。损坏 JSON、重复编号、断裂关联、反馈链成环或分叉会阻止写入。此前第二版数据缺少的新可选字段按空值读取。
-
-当前是单人、单进程命令行程序，初始正文通过单行输入。实例锁和原子替换不提供跨进程事务或多用户并发保证。不包含网页、联网研究、资料检索、自动事实核验或 Word 导入导出。模型候选最长允许原文上限的两倍；若接受后超过原文输入上限，继续修订前需合理提高配置上限。
-
-## 测试
+建议 Python 3.13、Node.js 24、pnpm 10.20。先准备 `writing` 数据库，迁移账户能建表，应用账户能读写；给迁移账户创建的新表和序列设置默认授权。连接参数放在 `.env.postgres.local`，模型参数可放在 `.env`，格式参考 `.env.example`。
 
 ```powershell
-python -m unittest discover -s tests -p "test_*.py" -v
+uv sync --locked --extra test
+uv run writing-web migrate
+uv run writing-web serve
 ```
 
-测试使用临时目录及模拟生成器，不访问真实 API，不读写正式运行数据。覆盖输入校验、模型响应解析、数据迁移、反馈重试、任务恢复、正文追加、版本恢复、冲突保护和写入失败。
+另开终端执行本机开发运行器：
 
-## 项目结构
-
-```text
-main.py                         便捷入口
-src/writing_assistant/
-  cli.py                        命令行交互及菜单
-  config.py                     环境配置
-  errors.py                     统一异常
-  models.py                     文档、版本、请求与修订记录
-  validation.py                 输入及候选校验
-  workflow.py                   生成、决定及反馈恢复
-  document_workflow.py          文档与版本操作
-  llm/                          生成器协议、DeepSeek、离线演示
-  storage/                      存储协议、JSON 实现与旧数据兼容
-tests/                          离线测试
-.env.example                    无真实密钥的配置模板
-pyproject.toml                  安装配置与依赖
-CHANGELOG.md                    版本变更
+```powershell
+uv run writing-web dispatch --local
 ```
 
-真实 `.env`、本地数据、虚拟环境及个人编辑器配置应保留在 `.gitignore` 中；仓库只提交不含真实凭据的 `.env.example`。
+再开终端启动网页：
+
+```powershell
+cd frontend
+npx --yes pnpm@10.20.0 install --frozen-lockfile
+npx --yes pnpm@10.20.0 dev
+```
+
+打开 **http://127.0.0.1:5173**。开发网页把 `/api` 请求代理到8000端口。也可以构建网页后，由 API 提供静态页面：
+
+```powershell
+cd frontend
+npx --yes pnpm@10.20.0 build
+cd ..
+uv run writing-web serve
+```
+
+此时访问 **http://127.0.0.1:8000**。`dispatch --local` 是便于本机开发的单进程执行方式，不等同于 Linux 的 Celery／Redis 验证。正式运行采用 Compose 中的 API、worker、dispatcher 和 Redis。
+
+## 验证
+
+```powershell
+uv run pytest -q
+uv run ruff check backend/src backend/tests --select E9,F
+uv run python scripts/export_openapi.py
+cd frontend
+npx --yes pnpm@10.20.0 generate-api
+npx --yes pnpm@10.20.0 build
+npx --yes pnpm@10.20.0 exec playwright install chromium
+cd ..
+node scripts/browser-smoke.mjs
+```
+
+Windows 已安装 Edge 时，可复用它运行浏览器验收，省去单独下载 Chromium（前端项目依赖仍需安装）：
+
+```powershell
+$env:WRITING_BROWSER_CHANNEL = "msedge"
+$env:WRITING_WEB_URL = "http://127.0.0.1:8000"
+node scripts/browser-smoke.mjs
+```
+
+验收会实际检查历史恢复后的正文、Markdown／TXT 下载内容，以及退出后重新登录能否重新读取同一文档。脚本创建独立随机测试账户，不使用你的个人账户。
+
+数据库测试需要本机 PostgreSQL 和项目角色，只在随机新建的测试模式中运行与清理，不清空 public。浏览器验证需要已启动的服务和任务执行器，默认地址5173；设置 `WRITING_WEB_URL` 可改地址。它会创建独立测试账户和示例文档。
+
+CI 在 Linux 上运行 PostgreSQL 测试、前端构建、真实 Redis／Celery 与浏览器链路，并构建部署镜像；查看具体提交的工作流结果，不能把配置存在等同于运行通过。
+
+## 效果评测、备份与旧数据
+
+```powershell
+uv run python evals/run.py
+uv run python evals/run.py --live --limit 20 --max-calls 60
+uv run python scripts/backup_db.py
+uv run writing-web import-json data/revisions.json --username your_username
+```
+
+默认评测只跑演示生成器。`--live` 使用真实模型并计费；程序断言与人工语义判定分开，未评审的成功率不填数字。备份默认进入 `private/backups`。导入需先注册接收账户，保留原文件并去重，不会自动导入私人数据。
+
+## 部署边界
+
+Compose 面向单机部署。公网使用时，为本机8080入口配置域名与 HTTPS 反向代理，将 `WRITING_ORIGINS` 设置为实际 HTTPS 地址，并启用 `WRITING_SECURE_COOKIE=true`。持久卷不等于备份；恢复先在隔离数据库验收，定期演练。
+
+正文上限20,000字符，候选输出最多4096 token，长正文可能因模型输出上限失败；失败会明确显示，不静默截断。最多保留最近4轮拒绝反馈，按64,000字符的上下文预算移除最旧反馈；这是明确的长度预算，不声称实现精确 token 分配。每任务最多3次执行，每次固定流程最多2次模型调用。供应商已经处理但连接超时的情况可能产生重复计费，不能保证外部调用恰好一次。
+
+版本历史与变更见 [CHANGELOG](CHANGELOG.md)。旧命令行入口 `python main.py` 保留兼容，使用本地 JSON，不与网页数据库双向同步。
