@@ -21,15 +21,16 @@ services:
   postgres:
     image: postgres:17
     environment:
-      POSTGRES_USER: writing_owner
-      POSTGRES_PASSWORD: ${WRITING_DB_MIGRATION_PASSWORD:?请先生成 .env.deploy}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${WRITING_DB_ADMIN_PASSWORD:?请先生成 .env.deploy}
       POSTGRES_DB: writing
       WRITING_APP_PASSWORD: ${WRITING_DB_PASSWORD:?请先生成 .env.deploy}
+      WRITING_OWNER_PASSWORD: ${WRITING_DB_MIGRATION_PASSWORD:?请先生成 .env.deploy}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./deploy/init-db.sh:/docker-entrypoint-initdb.d/01-writing.sh:ro
     healthcheck:
-      test: [CMD-SHELL, "pg_isready -U writing_owner -d writing"]
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, postgres, -d, writing]
       interval: 5s
       retries: 20
     restart: unless-stopped

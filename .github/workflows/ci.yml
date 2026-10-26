@@ -92,6 +92,7 @@ jobs:
           docker compose --env-file .env.deploy config --quiet
           docker compose --env-file .env.deploy build
           docker compose --env-file .env.deploy up -d --wait --wait-timeout 120
+          docker compose --env-file .env.deploy exec -T postgres psql -U postgres -d writing -v ON_ERROR_STOP=1 < deploy/check-db.sql
           curl -fsS http://127.0.0.1:8080/health
           WRITING_WEB_URL=http://127.0.0.1:8080 node scripts/browser-smoke.mjs
       - uses: actions/upload-artifact@v4

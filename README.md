@@ -35,7 +35,7 @@ docker compose --env-file .env.deploy logs --tail=100 api worker dispatcher
 docker compose --env-file .env.deploy down
 ```
 
-`down` 保留数据库卷；不要使用 `down -v` 作为日常停止方式。已有数据卷不会再次运行初始化脚本，改环境变量不会自动重设旧库密码。升级前备份，更新代码后重新构建，迁移服务成功以后 API 才启动。
+`down` 保留数据库卷；不要使用 `down -v` 作为日常停止方式。容器初始化使用独立的 postgres 管理员；迁移使用 writing_owner，日常 API／任务使用 writing_app，两者均无超级用户权限。管理员密码只提供给数据库容器。已有数据卷不会再次运行初始化脚本，改环境变量不会自动重设旧库密码。升级前备份，更新代码后重新构建，迁移服务成功以后 API 才启动。
 
 ## 本机开发：复用已安装的 PostgreSQL
 

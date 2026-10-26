@@ -4,7 +4,8 @@ import secrets
 
 root = Path(__file__).resolve().parents[1]
 path = root / '.env.deploy'
-content = f'''WRITING_DB_PASSWORD={secrets.token_urlsafe(32)}
+content = f'''WRITING_DB_ADMIN_PASSWORD={secrets.token_urlsafe(32)}
+WRITING_DB_PASSWORD={secrets.token_urlsafe(32)}
 WRITING_DB_MIGRATION_PASSWORD={secrets.token_urlsafe(32)}
 WRITING_PROVIDER=demo
 WRITING_ORIGINS=http://localhost:8080
