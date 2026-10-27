@@ -44,6 +44,9 @@ class Restore(Input):
 
 
 class CreateTask(Input):
+    strategy: Literal["direct", "workflow", "agent"] = "workflow"
+    source_ids: list[str] = Field(default_factory=list, max_length=8)
+    memory_ids: list[str] = Field(default_factory=list, max_length=8)
     instruction: Instruction
     base_version_id: str = Field(pattern=r"^[0-9a-f-]{36}$")
 
@@ -99,6 +102,10 @@ class RunOut(BaseModel):
 
 
 class TaskOut(BaseModel):
+    strategy: str
+    trace: list[dict]
+    citations: list[dict]
+    context_items: list[dict]
     id: str
     document_id: str
     base_version_id: str
@@ -130,3 +137,20 @@ class ErrorOut(BaseModel):
 
 class MessageOut(BaseModel):
     message: str
+
+
+class KnowledgeInput(Input):
+    kind: Literal["source", "memory"]
+    title: Title
+    content: Content
+    expires_at: datetime | None = Field(default=None, strict=False)
+
+
+class KnowledgeOut(BaseModel):
+    id: str
+    kind: str
+    title: str
+    content: str
+    expires_at: datetime | None
+    created_at: datetime
+    updated_at: datetime

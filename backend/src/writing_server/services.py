@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from sqlalchemy import func, insert, select
 
 from .security import digest
+from .knowledge import snapshot
 from .tables import Attempt, Candidate, Document, Task, TaskEvent, User, Version, now, uid
 
 ACTIVE = ("queued", "running")
@@ -69,6 +70,11 @@ def task_data(session, task):
         "document_id": task.document_id,
         "base_version_id": task.base_version_id,
         "source_text": session.get(Version, task.base_version_id).content,
+        "strategy": task.strategy,
+        "trace": (task.checkpoint or {}).get("trace", []),
+        "citations": ((task.checkpoint or {}).get("result") or {}).get("citations", []),
+        "context_items": [{"id": item["id"], "title": item["title"], "kind": kind}
+                          for kind, items in (task.context or {}).items() for item in items],
         "instruction": task.instruction,
         "status": task.status,
         "attempts": task.attempts,
@@ -138,10 +144,11 @@ def append_version(
     return version
 
 
-def create_task(session, user_id, document_id, instruction, base_version_id, key, settings, *, previous_task_id=None):
+def create_task(session, user_id, document_id, instruction, base_version_id, key, settings, *, previous_task_id=None,
+                strategy="workflow", source_ids=(), memory_ids=()):
     # 统一锁顺序：用户 → 文档 → 任务；并发幂等请求在用户行串行。
     session.scalar(select(User).where(User.id == user_id).with_for_update())
-    fingerprint = digest(json.dumps([document_id, instruction, base_version_id, previous_task_id], ensure_ascii=False))
+    fingerprint = digest(json.dumps([document_id, instruction, base_version_id, previous_task_id, strategy, list(source_ids), list(memory_ids)], ensure_ascii=False))
     existing = session.scalar(select(Task).where(Task.user_id == user_id, Task.idempotency_key == key))
     if existing:
         if existing.request_hash != fingerprint:
@@ -162,6 +169,8 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
     )
     if day_count >= settings.daily_tasks:
         raise HTTPException(429, "已达到每日任务上限")
+    if strategy not in {"direct", "workflow", "agent"}:
+        raise HTTPException(422, "未知生成模式")
     feedback = []
     if previous_task_id:
         previous = owned_task(session, user_id, previous_task_id, lock=True)
@@ -175,10 +184,16 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         if not candidate:
             raise HTTPException(409, "旧任务没有可用候选")
         instruction = previous.instruction
+        strategy = previous.strategy
+        context = previous.context
         feedback = [
             *previous.feedback,
             {"text": candidate.text, "reason": candidate.reason, "feedback": previous.rejection_reason},
         ][-4:]
+    else:
+        context = snapshot(session, user_id, source_ids, memory_ids)
+        if sum(len(item["content"]) for item in context["memories"]) > 4000:
+            raise HTTPException(422, "本次记忆总长度不能超过 4000 字符")
     task = Task(
         id=uid(),
         user_id=user_id,
@@ -191,7 +206,9 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         feedback=feedback,
         provider=settings.provider,
         model=settings.model if settings.provider == "deepseek" else "demo-v1",
-        prompt_version="revision-v1",
+        prompt_version="agent-v2.0.1" if strategy == "agent" else "revision-v2.0.1",
+        strategy=strategy,
+        context=context,
     )
     session.add(task)
     session.flush()
