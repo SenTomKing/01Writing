@@ -157,6 +157,9 @@ def process_task(db, settings, task_id, generator=generate):
         else:
             # 在边界再次校验，测试／其他供应商也不能绕过输出约束。
             candidate = validate_candidate(result.candidate, max_text_chars=20_000)
+            web_sources = (result.usage or {}).get("web_sources", [])
+            if web_sources:
+                task.context = {**task.context, "sources": [*task.context.get("sources", []), *web_sources]}
             session.add(Candidate(task_id=task.id, text=candidate.text, reason=candidate.reason))
             task.status, task.finished_at, task.error_code, task.error_message = "review", now(), None, None
             attempt.outcome = "succeeded"

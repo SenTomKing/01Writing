@@ -16,11 +16,11 @@ from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from . import __version__, schemas as dto, services, knowledge
+from . import __version__, schemas as dto, services, knowledge, research
 from .database import Database
 from .security import COOKIE, CSRF_COOKIE, PASSWORDS, digest, identity, issue_session, rate_limit, verify_password
 from .settings import Settings
-from .tables import Document, Knowledge, LoginSession, Task, TaskEvent, User, Version
+from .tables import ResearchJob, Document, Knowledge, LoginSession, Task, TaskEvent, User, Version
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +68,8 @@ def create_app(settings: Settings | None = None):
             chunks = []
             async for chunk in request.stream():
                 size += len(chunk)
-                if size > 128_000:
+                limit = 2_800_000 if request.url.path == "/api/v1/research/imports" else 650_000 if request.url.path.startswith("/api/v1/knowledge") else 128_000
+                if size > limit:
                     return JSONResponse({"detail": "请求内容过大"}, 413)
                 chunks.append(chunk)
             request._body = b"".join(chunks)
@@ -108,6 +109,8 @@ def create_app(settings: Settings | None = None):
     @app.get("/api/v1/meta", response_model=dto.MetaOut)
     def meta():
         return {
+            "web_search_available": bool(settings.search_key),
+            "semantic_search_available": bool(settings.embedding_key and settings.embedding_url and settings.embedding_model),
             "version": __version__,
             "provider": settings.provider,
             "model": settings.model if settings.provider == "deepseek" else "demo-v1",
@@ -119,7 +122,7 @@ def create_app(settings: Settings | None = None):
         try:
             with db.sessions() as session:
                 revision = session.scalar(text("SELECT version_num FROM alembic_version"))
-            if revision != "v2_agent":
+            if revision != "v3_research":
                 raise ValueError("schema")
         except (SQLAlchemyError, ValueError):
             return JSONResponse({"status": "unavailable", "detail": "请检查数据库并先执行迁移"}, 503)
@@ -164,6 +167,22 @@ def create_app(settings: Settings | None = None):
         response.delete_cookie(COOKIE, path="/")
         response.delete_cookie(CSRF_COOKIE, path="/")
         return {"message": "已退出登录"}
+
+    @app.post("/api/v1/research/imports", response_model=dto.ResearchOut, status_code=202)
+    def import_source(data: dto.ResearchInput, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        return research.job_data(research.enqueue(session, user.id, data))
+
+    @app.get("/api/v1/research/imports", response_model=list[dto.ResearchOut])
+    def import_status(request: Request, session: SessionDep):
+        user = auth(request, session)
+        rows = session.scalars(select(ResearchJob).where(ResearchJob.user_id == user.id).order_by(ResearchJob.created_at.desc()).limit(30)).all()
+        return [research.job_data(row) for row in rows]
+
+    @app.post("/api/v1/research/imports/{job_id}/cancel", response_model=dto.ResearchOut)
+    def cancel_import(job_id: UUID, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        return research.job_data(research.cancel(session, user.id, str(job_id)))
 
     @app.get("/api/v1/knowledge", response_model=list[dto.KnowledgeOut])
     def list_knowledge(request: Request, session: SessionDep):
@@ -296,7 +315,7 @@ def create_app(settings: Settings | None = None):
         user = auth(request, session, True)
         task = services.create_task(
             session, user.id, str(document_id), data.instruction, data.base_version_id, key, settings,
-            strategy=data.strategy, source_ids=data.source_ids, memory_ids=data.memory_ids
+            strategy=data.strategy, source_ids=data.source_ids, memory_ids=data.memory_ids, allow_web=data.allow_web
         )
         return services.task_data(session, task)
 
@@ -350,6 +369,7 @@ def create_app(settings: Settings | None = None):
             settings,
             previous_task_id=previous,
             strategy=old.strategy,
+            allow_web=bool((old.context or {}).get("allow_web")),
             source_ids=[item["id"] for item in (old.context or {}).get("sources", [])],
             memory_ids=[item["id"] for item in (old.context or {}).get("memories", [])],
         )

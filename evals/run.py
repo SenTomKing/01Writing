@@ -58,7 +58,7 @@ def main():
             "created_at": datetime.now(timezone.utc).isoformat(),
             "mode": "live" if args.live else "demo",
             "model": settings.model if args.live else "demo-v1",
-            "prompt_version": "comparison-v2.0.1",
+            "prompt_version": "comparison-v3.0",
             "completed": completed,
             "completed_trials": len(rows),
             "planned_trials": len(tasks) * 3,
@@ -110,6 +110,7 @@ def main():
                     checks=checks(task, result.candidate.text),
                     semantic_review="pending",
                     citations=(result.usage or {}).get("citations", []),
+                    evidence_audit=(result.usage or {}).get("evidence_audit", {}),
                     evidence_support_review="pending" if task.get("evidence") else "not_applicable",
                 )
                 row["program_checks_passed"] = all(row["checks"].values())

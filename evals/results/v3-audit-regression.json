@@ -1,0 +1,266 @@
+[
+  {
+    "task_id": "r01",
+    "strategy": "direct",
+    "text": "调查仅邀请本校学生参与，认可比例尚未统计。",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "调查仅邀请本校学生参与，认可比例尚未统计。",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "调查仅邀请本校学生参与，认可比例尚未统计。",
+          "explanation": "候选与资料S1:0逐字相同，构成直接支持。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 67,
+      "prompt_tokens": 337,
+      "total_tokens": 404,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 337
+    }
+  },
+  {
+    "task_id": "r01",
+    "strategy": "workflow",
+    "text": "调查仅邀请本校学生参与，认可比例尚未统计。",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "调查仅邀请本校学生参与，认可比例尚未统计。",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "调查仅邀请本校学生参与，认可比例尚未统计。",
+          "explanation": "候选与证据文本完全一致，构成直接支持。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 63,
+      "prompt_tokens": 337,
+      "total_tokens": 400,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 209
+    }
+  },
+  {
+    "task_id": "r01",
+    "strategy": "agent",
+    "text": "调查仅邀请本校学生参与，认可比例尚未统计，目前无法判断全校学生对该产品的认可情况[S1:0]。",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "调查仅邀请本校学生参与",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "调查仅邀请本校学生参与",
+          "explanation": "候选与资料逐字一致。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "认可比例尚未统计",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "认可比例尚未统计",
+          "explanation": "候选与资料逐字一致。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "目前无法判断全校学生对该产品的认可情况",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "调查仅邀请本校学生参与，认可比例尚未统计。",
+          "explanation": "资料表明调查范围仅限本校学生且认可比例未统计，可必然推出尚不能判断全校学生的认可情况。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 152,
+      "prompt_tokens": 351,
+      "total_tokens": 503,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 223
+    }
+  },
+  {
+    "task_id": "r05",
+    "strategy": "direct",
+    "text": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息，因此无法确定这次生成的具体费用。",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "候选陈述与资料原文一致，仅存在空格差异。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "因此无法确定这次生成的具体费用",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "资料表明缺少供应商价格及缓存计费信息，可必然推出无法确定具体费用。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 143,
+      "prompt_tokens": 358,
+      "total_tokens": 501,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 230
+    }
+  },
+  {
+    "task_id": "r05",
+    "strategy": "workflow",
+    "text": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息，因此无法确定这次生成的具体费用。",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "候选陈述与证据原文一致，直接得到支持。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "因此无法确定这次生成的具体费用",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "缺少供应商价格及缓存计费信息，可必然推出无法确定具体费用，属于谨慎推论。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 144,
+      "prompt_tokens": 358,
+      "total_tokens": 502,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 230
+    }
+  },
+  {
+    "task_id": "r05",
+    "strategy": "agent",
+    "text": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息，因此本次生成的具体费用无法确定，不能确认是否为 3 元。[S1:0]",
+    "audit": {
+      "status": "reviewed",
+      "review_version": "evidence-v3.0.1",
+      "findings": [
+        {
+          "claim": "日志仅记录 total_tokens 为 820，没有供应商价格及缓存计费信息",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "候选陈述与资料逐字一致，直接得到支持。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "因此本次生成的具体费用无法确定",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "缺少供应商价格及缓存计费信息，可必然推出无法确定具体费用。",
+          "page": null,
+          "url": null
+        },
+        {
+          "claim": "不能确认是否为 3 元",
+          "verdict": "supported",
+          "ref": "S1:0",
+          "quote": "日志仅记录total_tokens为820，没有供应商价格及缓存计费信息。",
+          "explanation": "资料未提供任何价格信息，因此无法确认费用是否为3元。",
+          "page": null,
+          "url": null
+        }
+      ],
+      "human_review_required": true,
+      "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+    },
+    "usage": {
+      "completion_tokens": 203,
+      "prompt_tokens": 370,
+      "total_tokens": 573,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 242
+    }
+  }
+]

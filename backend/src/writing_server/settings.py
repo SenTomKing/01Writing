@@ -41,6 +41,10 @@ class Settings:
     max_active_tasks: int = 2
     daily_tasks: int = 100
     static_dir: Path | None = None
+    search_key: str = field(default="", repr=False)
+    embedding_key: str = field(default="", repr=False)
+    embedding_url: str = ""
+    embedding_model: str = ""
 
     @classmethod
     def load(cls) -> "Settings":
@@ -75,6 +79,10 @@ class Settings:
         if provider not in {"demo", "deepseek"}:
             raise ValueError("WRITING_PROVIDER 必须为 demo 或 deepseek")
         return cls(
+            search_key=os.getenv("TAVILY_API_KEY", ""),
+            embedding_key=os.getenv("EMBEDDING_API_KEY", ""),
+            embedding_url=os.getenv("EMBEDDING_BASE_URL", ""),
+            embedding_model=os.getenv("EMBEDDING_MODEL", ""),
             database_url=url(),
             migration_url=url(True),
             redis_url=os.getenv("WRITING_REDIS_URL", "redis://localhost:6379/0"),

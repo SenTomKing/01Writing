@@ -9,3 +9,5 @@
 .knowledge-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow-y: auto; }
 select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; background: white; font: inherit; }
 .citations blockquote { border-left: 3px solid #547363; margin: 12px 0; padding-left: 12px; }
+
+.research-import{border-block:1px solid #d8ded8;padding:1rem 0;margin:1rem 0}.import-row{border-bottom:1px solid #e4e8e4;padding:.7rem 0}.import-row span{margin-left:1rem}.web-permission{display:flex;gap:.5rem;align-items:start}.web-permission input{width:auto}.finding{border-left:3px solid #9ba9a0;padding:.7rem;margin:1rem 0;background:#f6f8f6}.finding.contradicted,.finding.insufficient{border-color:#b77b38}.evidence-audit{margin:1rem 0}.finding blockquote{white-space:pre-wrap}.finding small{display:block}

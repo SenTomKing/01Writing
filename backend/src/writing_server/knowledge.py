@@ -10,9 +10,8 @@ from .tables import Knowledge, User, now
 
 
 def data(row):
-    return {
-        key: getattr(row, key) for key in ("id", "kind", "title", "content", "expires_at", "created_at", "updated_at")
-    }
+    return {**{key: getattr(row, key) for key in ("id", "kind", "title", "content", "expires_at", "created_at", "updated_at")},
+            "provenance": row.provenance or {}, "index_mode": "hybrid" if (row.chunk_index or {}).get("embedding_id") else "keyword"}
 
 
 def entries(session, user_id, kind=None):
@@ -37,6 +36,9 @@ def save(session, user_id, values, entry_id=None):
             raise HTTPException(429, "每个账户最多保存 100 项资料与记忆")
         row = Knowledge(user_id=user_id)
         session.add(row)
+    if entry_id and row.content != values.content:
+        row.provenance = {"kind": "edited", "original_url": (row.provenance or {}).get("url") or (row.provenance or {}).get("original_url")}
+        row.chunk_index = {}
     for name in ("kind", "title", "content", "expires_at"):
         setattr(row, name, getattr(values, name))
     row.updated_at = now()
@@ -57,7 +59,8 @@ def snapshot(session, user_id, source_ids, memory_ids):
             if expiry and expiry.replace(tzinfo=expiry.tzinfo or timezone.utc) <= now():
                 raise HTTPException(409, "所选记忆已过期，请更新或取消选择")
             result[key].append(
-                {"id": row.id, "title": row.title, "content": row.content, "updated_at": row.updated_at.isoformat()}
+                {"id": row.id, "title": row.title, "content": row.content, "updated_at": row.updated_at.isoformat(),
+                 "provenance": row.provenance or {}, "chunk_index": row.chunk_index or {}}
             )
     return result
 
@@ -71,15 +74,16 @@ def terms(text):
 
 
 def chunks(sources):
-    # 固定位置引用可追溯到任务创建时的不可变快照。
+    from .retrieval import split_content
     for index, source in enumerate(sources, 1):
-        for offset in range(0, len(source["content"]), 700):
-            yield {
-                "ref": f"S{index}:{offset}",
-                "title": source["title"],
-                "offset": offset,
-                "text": source["content"][offset : offset + 900],
-            }
+        provenance = source.get("provenance") or {}
+        pieces = (source.get("chunk_index") or {}).get("chunks")
+        if not pieces:
+            pieces = split_content(source["content"], provenance.get("pages", []))
+        for piece in pieces:
+            yield {"ref": f"S{index}:{piece['offset']}", "title": source["title"],
+                   "offset": piece["offset"], "text": piece["text"], "page": piece.get("page"),
+                   "url": provenance.get("url"), "fetched_at": provenance.get("fetched_at")}
 
 
 def search(sources, query):

@@ -1,3 +1,4 @@
+import {EvidenceAudit} from './ResearchPanel';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom';
@@ -41,7 +42,7 @@ export default function App() {
       <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
     <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing 2.0 <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    <footer className="footer">01Writing 3.0 <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 
@@ -90,6 +91,8 @@ function Editor({doc}:{doc:Doc}) {
   const [selected,setSelected]=useState(''),[historyPage,setHistoryPage]=useState(1),[taskPage,setTaskPage]=useState(1),[notice,setNotice]=useState('');
   const [strategy,setStrategy]=useState<'direct'|'workflow'|'agent'>('agent');
   const [selectedKnowledge,setSelectedKnowledge]=useState<string[]>([]);
+  const [allowWeb,setAllowWeb]=useState(false);
+  const capabilities=useQuery({queryKey:['meta'],queryFn:()=>unwrap(client.GET('/api/v1/meta'))});
   const knowledge=useQuery({queryKey:['knowledge'],queryFn:()=>unwrap(client.GET('/api/v1/knowledge'))});
   const dirty=draft!==saved;
   const versions=useQuery({queryKey:['versions',doc.id,historyPage],queryFn:()=>unwrap(client.GET('/api/v1/documents/{document_id}/versions',{params:{path:{document_id:doc.id},query:{page:historyPage,limit:30}}}))});
@@ -110,7 +113,7 @@ function Editor({doc}:{doc:Doc}) {
     await Promise.all(['document','documents','versions','tasks','task'].map(key=>queries.invalidateQueries({queryKey:key==='documents'?[key]:key==='task'?[key]:[key,doc.id]})));
   }});
   const perform=(work:()=>Promise<unknown>)=>{setNotice('');action.mutate(work);};
-  const submitTask=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/tasks',{params:{...docPath(doc.id),header:freshKey()},body:{instruction,base_version_id:base,strategy,source_ids:(knowledge.data??[]).filter(e=>e.kind==='source'&&selectedKnowledge.includes(e.id)).map(e=>e.id),memory_ids:(knowledge.data??[]).filter(e=>e.kind==='memory'&&selectedKnowledge.includes(e.id)).map(e=>e.id)}}));setSelected(result.id);});
+  const submitTask=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/tasks',{params:{...docPath(doc.id),header:freshKey()},body:{instruction,base_version_id:base,strategy,allow_web:strategy==='agent'&&allowWeb,source_ids:(knowledge.data??[]).filter(e=>e.kind==='source'&&selectedKnowledge.includes(e.id)).map(e=>e.id),memory_ids:(knowledge.data??[]).filter(e=>e.kind==='memory'&&selectedKnowledge.includes(e.id)).map(e=>e.id)}}));setSelected(result.id);});
   const retry=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/tasks/{task_id}/retry',{params:{...taskPath(taskId),header:freshKey()}}));setSelected(result.id);setFeedback('');});
   const restore=(versionId:string)=>perform(async()=>{
     const result=await unwrap(client.POST('/api/v1/documents/{document_id}/versions/{version_id}/restore',{params:{path:{document_id:doc.id,version_id:versionId}},body:{base_version_id:doc.current_version_id}}));
@@ -128,6 +131,7 @@ function Editor({doc}:{doc:Doc}) {
       <label>这次想怎样修改？<textarea aria-label="修改要求" rows={3} value={instruction} onChange={e=>setInstruction(e.target.value)} maxLength={2000}/></label>
       <button className="primary full" disabled={dirty||action.isPending||!instruction.trim()||tasks.data?.some(t=>['queued','running'].includes(t.status))} onClick={submitTask}>生成修改建议</button>
       {dirty&&<p className="hint">先保存正文，再基于保存的版本生成建议。</p>}
+      {strategy==='agent'&&<label className="web-permission"><input type="checkbox" checked={allowWeb} disabled={!capabilities.data?.web_search_available} onChange={e=>setAllowWeb(e.target.checked)}/>允许本次联网研究（最多2次搜索、3个网页；查询词会发送给搜索服务）</label>}
       {active?<div className="candidate-area"><div className="task-meta"><span className={`status ${active.status}`}>{labels[active.status]}</span><span>{stamp(active.created_at)}</span></div>
         {['queued','running'].includes(active.status)&&<div className="progress"><span className="spinner"/>任务在后台执行，刷新页面后仍可查看。<button className="quiet" disabled={action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/cancel',{params:taskPath(taskId)})))}>取消任务</button></div>}
         {active.error_message&&<p className="error">{active.error_message}</p>}
@@ -136,7 +140,8 @@ function Editor({doc}:{doc:Doc}) {
         {active.status==='rejected'&&<><p className="feedback">你的反馈：{active.rejection_reason}</p><button className="primary" disabled={action.isPending||dirty} onClick={retry}>根据反馈重新生成</button></>}
         {active.status==='failed'&&<button disabled={action.isPending||dirty} onClick={retry}>重新尝试</button>}
         {!!active.context_items?.length&&<details><summary>本次使用的资料与记忆</summary>{active.context_items.map((item,index)=><p key={index}>{String(item.title)}</p>)}</details>}
-        {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
+        {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({search_web:'搜索公开资料',read_web:'读取网页',request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
+        <EvidenceAudit report={active.evidence_audit??{}}/>
         {!!active.citations?.length&&<section className="citations"><h3>引用依据</h3><p className="muted">摘录与来源已核对；摘录是否支持结论仍请你判断。</p>{active.citations.map((item,index)=><blockquote key={index}><strong>[{String(item.ref)}] {String(item.title)}</strong><p>{String(item.quote)}</p></blockquote>)}</section>}
         {!!active.runs.length&&<details className="run-details"><summary>运行记录 · {active.runs.length} 次尝试</summary>{active.runs.map(run=><div key={run.number}><strong>第 {run.number} 次 · {run.model}</strong><p>结果：{run.outcome} · 耗时：{run.duration_ms??'未知'} 毫秒</p><p>提示词版本：{run.prompt_version}</p><pre>{run.usage?JSON.stringify(run.usage,null,2):'演示模式或供应商未提供用量'}</pre></div>)}</details>}
       </div>:<div className="assistant-empty"><span>✦</span><p>你的原稿是起点。<br/>建议产生后，可在这里比较并选择。</p></div>}

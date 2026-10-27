@@ -8,7 +8,8 @@ from sqlalchemy import select
 from .database import Database
 from .jobs import dispatch, process_task, recover
 from .settings import Settings
-from .tables import Task, now
+from .tables import Task, ResearchJob, now
+from . import research
 
 settings = Settings.load()
 celery = Celery("writing", broker=settings.redis_url)
@@ -40,11 +41,21 @@ def generate_task(task_id):
         db.close()
 
 
+@celery.task(name="writing.import")
+def import_task(job_id):
+    db = Database(settings)
+    try:
+        return research.process(db, settings, job_id)
+    finally:
+        db.close()
+
+
 def dispatch_loop(*, local=False, once=False):
     db = Database(settings)
     try:
         while True:
             recover(db, settings)
+            research.dispatch(db, lambda job_id: None if local else import_task.apply_async(args=[job_id], retry=False))
             if local:
                 with db.sessions() as session:
                     ids = list(
@@ -52,6 +63,10 @@ def dispatch_loop(*, local=False, once=False):
                             select(Task.id).where(Task.status == "queued", Task.dispatch_after <= now()).limit(10)
                         )
                     )
+                with db.sessions() as session:
+                    import_ids = list(session.scalars(select(ResearchJob.id).where(ResearchJob.status == "queued").limit(10)))
+                for job_id in import_ids:
+                    research.process(db, settings, job_id)
                 for task_id in ids:
                     process_task(db, settings, task_id)
             else:

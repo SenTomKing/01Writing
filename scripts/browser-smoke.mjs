@@ -52,6 +52,18 @@ try {
     const content=await readFile(await download.path(),'utf8');
     if(!content.includes(restored))throw new Error(label+'未包含当前正文');
   }
+  // v3：走真实后台导入队列，再以导入的资料生成带引用的候选。
+  await page.getByLabel('导入文件',{exact:true}).setInputFiles({name:'验证资料.md',mimeType:'text/markdown',buffer:Buffer.from('实验结果为12.4%，该结果只适用于本次实验。','utf8')});
+  const sourceChoice=page.getByRole('checkbox',{name:'资料 · 验证资料.md'});
+  await sourceChoice.waitFor({timeout:120000});await sourceChoice.check();
+  await page.getByRole('button',{name:'生成修改建议'}).click();
+  await page.getByRole('button',{name:'接受并更新正文'}).waitFor({timeout:120000});
+  await page.getByRole('heading',{name:'引用依据'}).waitFor();
+  await page.getByRole('heading',{name:'证据核对',exact:true}).waitFor();
+  // 不接受这条演示候选，保证前面恢复的正式正文保持不变。
+  await page.getByLabel('拒绝原因').fill('仅验证资料链路，保持现有正文');
+  await page.getByRole('button',{name:'拒绝并保存原因'}).click();
+  await page.getByRole('button',{name:'根据反馈重新生成'}).waitFor();
   const screenshot=process.env.WRITING_SCREENSHOT||fileURLToPath(new URL('../outputs/workbench.png',import.meta.url));
   await mkdir(fileURLToPath(new URL('../outputs/',import.meta.url)),{recursive:true});
   await page.screenshot({path:screenshot,fullPage:true});
