@@ -47,8 +47,8 @@ def test_agent_end_to_end_and_immutable_snapshot(client, app, settings, doc):
     assert process_task(app.state.database, settings, task["id"])
     result = client.get("/api/v1/tasks/" + task["id"]).json()
     assert result["status"] == "review" and len(result["trace"]) == 3
-    assert result["runs"][0]["prompt_version"] == "agent-v2.0.1"
-    assert result["runs"][0]["usage"]["prompt_version"] == "agent-v2.0.1"
+    assert result["runs"][0]["prompt_version"] == "agent-v3.0"
+    assert result["runs"][0]["usage"]["prompt_version"] == "agent-v3.0"
     assert result["citations"][0]["quote"] == source["content"]
     assert client.get(f"/api/v1/documents/{doc['id']}").json()["current_version"]["number"] == 1
     assert client.post(f"/api/v1/tasks/{task['id']}/accept").status_code == 200

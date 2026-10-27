@@ -70,11 +70,13 @@ def task_data(session, task):
         "document_id": task.document_id,
         "base_version_id": task.base_version_id,
         "source_text": session.get(Version, task.base_version_id).content,
+        "allow_web": bool((task.context or {}).get("allow_web")),
+        "evidence_audit": (attempts[-1].usage or {}).get("evidence_audit", {}) if attempts else {},
         "strategy": task.strategy,
         "trace": (task.checkpoint or {}).get("trace", []),
         "citations": ((task.checkpoint or {}).get("result") or {}).get("citations", []),
-        "context_items": [{"id": item["id"], "title": item["title"], "kind": kind}
-                          for kind, items in (task.context or {}).items() for item in items],
+        "context_items": [{"id": item["id"], "title": item["title"], "kind": kind, "url": (item.get("provenance") or {}).get("url"), "fetched_at": (item.get("provenance") or {}).get("fetched_at")}
+                          for kind in ("sources", "memories") for item in (task.context or {}).get(kind, [])],
         "instruction": task.instruction,
         "status": task.status,
         "attempts": task.attempts,
@@ -145,10 +147,10 @@ def append_version(
 
 
 def create_task(session, user_id, document_id, instruction, base_version_id, key, settings, *, previous_task_id=None,
-                strategy="workflow", source_ids=(), memory_ids=()):
+                strategy="workflow", source_ids=(), memory_ids=(), allow_web=False):
     # 统一锁顺序：用户 → 文档 → 任务；并发幂等请求在用户行串行。
     session.scalar(select(User).where(User.id == user_id).with_for_update())
-    fingerprint = digest(json.dumps([document_id, instruction, base_version_id, previous_task_id, strategy, list(source_ids), list(memory_ids)], ensure_ascii=False))
+    fingerprint = digest(json.dumps([document_id, instruction, base_version_id, previous_task_id, strategy, list(source_ids), list(memory_ids), allow_web], ensure_ascii=False))
     existing = session.scalar(select(Task).where(Task.user_id == user_id, Task.idempotency_key == key))
     if existing:
         if existing.request_hash != fingerprint:
@@ -171,6 +173,8 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         raise HTTPException(429, "已达到每日任务上限")
     if strategy not in {"direct", "workflow", "agent"}:
         raise HTTPException(422, "未知生成模式")
+    if allow_web and (strategy != "agent" or not settings.search_key):
+        raise HTTPException(422, "联网研究需要Agent模式及服务端搜索配置")
     feedback = []
     if previous_task_id:
         previous = owned_task(session, user_id, previous_task_id, lock=True)
@@ -192,6 +196,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         ][-4:]
     else:
         context = snapshot(session, user_id, source_ids, memory_ids)
+        context["allow_web"] = allow_web
         if sum(len(item["content"]) for item in context["memories"]) > 4000:
             raise HTTPException(422, "本次记忆总长度不能超过 4000 字符")
     task = Task(
@@ -206,7 +211,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         feedback=feedback,
         provider=settings.provider,
         model=settings.model if settings.provider == "deepseek" else "demo-v1",
-        prompt_version="agent-v2.0.1" if strategy == "agent" else "revision-v2.0.1",
+        prompt_version="agent-v3.0" if strategy == "agent" else "revision-v3.0",
         strategy=strategy,
         context=context,
     )

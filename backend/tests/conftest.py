@@ -34,6 +34,7 @@ def database_settings():
         database_url=url(base.database_url),
         migration_url=url(base.migration_url),
         provider="demo",
+        search_key="", embedding_key="", embedding_url="", embedding_model="",
         origins=("http://testserver",),
         static_dir=None,
     )

@@ -45,6 +45,7 @@ class Restore(Input):
 
 class CreateTask(Input):
     strategy: Literal["direct", "workflow", "agent"] = "workflow"
+    allow_web: bool = False
     source_ids: list[str] = Field(default_factory=list, max_length=8)
     memory_ids: list[str] = Field(default_factory=list, max_length=8)
     instruction: Instruction
@@ -102,6 +103,8 @@ class RunOut(BaseModel):
 
 
 class TaskOut(BaseModel):
+    evidence_audit: dict = Field(default_factory=dict)
+    allow_web: bool = False
     strategy: str
     trace: list[dict]
     citations: list[dict]
@@ -125,6 +128,8 @@ class TaskOut(BaseModel):
 
 
 class MetaOut(BaseModel):
+    web_search_available: bool = False
+    semantic_search_available: bool = False
     version: str
     provider: str
     model: str
@@ -142,11 +147,13 @@ class MessageOut(BaseModel):
 class KnowledgeInput(Input):
     kind: Literal["source", "memory"]
     title: Title
-    content: Content
+    content: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100_000)]
     expires_at: datetime | None = Field(default=None, strict=False)
 
 
 class KnowledgeOut(BaseModel):
+    provenance: dict
+    index_mode: str
     id: str
     kind: str
     title: str
@@ -154,3 +161,25 @@ class KnowledgeOut(BaseModel):
     expires_at: datetime | None
     created_at: datetime
     updated_at: datetime
+
+
+class ResearchInput(Input):
+    kind: Literal["file", "url", "reindex"]
+    title: Title
+    url: str = Field(default="", max_length=2000)
+    filename: str = Field(default="", max_length=200)
+    content_base64: str = Field(default="", max_length=2_666_668)
+    knowledge_id: str = Field(default="", max_length=36)
+
+
+class ResearchOut(BaseModel):
+    id: str
+    kind: str
+    title: str
+    status: str
+    progress: str
+    error: str | None
+    knowledge_id: str | None
+    attempts: int
+    created_at: datetime
+    finished_at: datetime | None

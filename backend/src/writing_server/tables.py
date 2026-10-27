@@ -209,6 +209,31 @@ class Knowledge(Base):
     kind: Mapped[str] = mapped_column(String(16))
     title: Mapped[str] = mapped_column(String(200))
     content: Mapped[str] = mapped_column(Text)
+    provenance: Mapped[dict] = mapped_column(JSON, default=dict)
+    chunk_index: Mapped[dict] = mapped_column(JSON, default=dict)
     expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class ResearchJob(Base):
+    __tablename__ = "wa_research_jobs"
+    __table_args__ = (
+        CheckConstraint("status IN ('queued','running','succeeded','failed','cancelled')", name="wa_research_status"),
+        Index("wa_research_dispatch", "status", "dispatch_after"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("wa_users.id"), index=True)
+    kind: Mapped[str] = mapped_column(String(16))
+    title: Mapped[str] = mapped_column(String(200))
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String(16), default="queued")
+    progress: Mapped[str] = mapped_column(String(200), default="等待导入")
+    error: Mapped[str | None] = mapped_column(String(300))
+    knowledge_id: Mapped[str | None] = mapped_column(String(36))
+    claim_token: Mapped[str | None] = mapped_column(String(36))
+    lease_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    dispatch_after: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

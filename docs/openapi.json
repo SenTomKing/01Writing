@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "01Writing",
-    "version": "2.0.0"
+    "version": "3.0.0"
   },
   "paths": {
     "/api/v1/meta": {
@@ -444,6 +444,254 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/research/imports": {
+      "get": {
+        "summary": "Import Status",
+        "operationId": "import_status_api_v1_research_imports_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ResearchOut"
+                  },
+                  "type": "array",
+                  "title": "Response Import Status Api V1 Research Imports Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Import Source",
+        "operationId": "import_source_api_v1_research_imports_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResearchInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/research/imports/{job_id}/cancel": {
+      "post": {
+        "summary": "Cancel Import",
+        "operationId": "cancel_import_api_v1_research_imports__job_id__cancel_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResearchOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -2439,6 +2687,11 @@
             "title": "Strategy",
             "default": "workflow"
           },
+          "allow_web": {
+            "type": "boolean",
+            "title": "Allow Web",
+            "default": false
+          },
           "source_ids": {
             "items": {
               "type": "string"
@@ -2623,7 +2876,7 @@
           },
           "content": {
             "type": "string",
-            "maxLength": 20000,
+            "maxLength": 100000,
             "minLength": 1,
             "title": "Content"
           },
@@ -2651,6 +2904,15 @@
       },
       "KnowledgeOut": {
         "properties": {
+          "provenance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance"
+          },
+          "index_mode": {
+            "type": "string",
+            "title": "Index Mode"
+          },
           "id": {
             "type": "string",
             "title": "Id"
@@ -2692,6 +2954,8 @@
         },
         "type": "object",
         "required": [
+          "provenance",
+          "index_mode",
           "id",
           "kind",
           "title",
@@ -2717,6 +2981,16 @@
       },
       "MetaOut": {
         "properties": {
+          "web_search_available": {
+            "type": "boolean",
+            "title": "Web Search Available",
+            "default": false
+          },
+          "semantic_search_available": {
+            "type": "boolean",
+            "title": "Semantic Search Available",
+            "default": false
+          },
           "version": {
             "type": "string",
             "title": "Version"
@@ -2774,6 +3048,137 @@
           "title"
         ],
         "title": "Rename"
+      },
+      "ResearchInput": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "file",
+              "url",
+              "reindex"
+            ],
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Url",
+            "default": ""
+          },
+          "filename": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Filename",
+            "default": ""
+          },
+          "content_base64": {
+            "type": "string",
+            "maxLength": 2666668,
+            "title": "Content Base64",
+            "default": ""
+          },
+          "knowledge_id": {
+            "type": "string",
+            "maxLength": 36,
+            "title": "Knowledge Id",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "title"
+        ],
+        "title": "ResearchInput"
+      },
+      "ResearchOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "progress": {
+            "type": "string",
+            "title": "Progress"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "knowledge_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knowledge Id"
+          },
+          "attempts": {
+            "type": "integer",
+            "title": "Attempts"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "status",
+          "progress",
+          "error",
+          "knowledge_id",
+          "attempts",
+          "created_at",
+          "finished_at"
+        ],
+        "title": "ResearchOut"
       },
       "Restore": {
         "properties": {
@@ -2862,6 +3267,16 @@
       },
       "TaskOut": {
         "properties": {
+          "evidence_audit": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence Audit"
+          },
+          "allow_web": {
+            "type": "boolean",
+            "title": "Allow Web",
+            "default": false
+          },
           "strategy": {
             "type": "string",
             "title": "Strategy"
