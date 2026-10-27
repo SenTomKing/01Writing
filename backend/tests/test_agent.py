@@ -135,3 +135,26 @@ def test_insufficient_evidence_stops_and_requests_human_input():
     assert caught.value.usage["reserved_calls"] == 1
     assert snapshots[-1]["next"] == "done"
     assert snapshots[-1]["result"] is None
+
+
+@pytest.mark.parametrize("recorded", ["agent-v2.0", None])
+def test_resumed_checkpoint_keeps_prompt_provenance(recorded):
+    snapshots = []
+
+    def save(state, message):
+        snapshots.append(deepcopy(state))
+        if state["next"] == "tools":
+            raise InterruptedError()
+
+    with pytest.raises(InterruptedError):
+        run(context=CONTEXT, save=save)
+    checkpoint = snapshots[-1]
+    # 恢复旧请求时，不能因为代码升级就把原有提示词冒记为新版本。
+    checkpoint["messages"][0]["content"] = "旧版本系统提示词"
+    if recorded is None:
+        checkpoint.pop("prompt_version")
+    else:
+        checkpoint["prompt_version"] = recorded
+    result = run(context=CONTEXT, checkpoint=checkpoint)
+    assert result.usage["prompt_version"] == "agent-v2.0"
+    assert result.usage["reserved_calls"] == 3

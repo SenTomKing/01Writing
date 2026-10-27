@@ -41,7 +41,7 @@ export default function App() {
       <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
     <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing 2.0 开发版 <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    <footer className="footer">01Writing 2.0 <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 

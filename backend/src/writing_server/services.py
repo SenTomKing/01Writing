@@ -206,7 +206,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         feedback=feedback,
         provider=settings.provider,
         model=settings.model if settings.provider == "deepseek" else "demo-v1",
-        prompt_version="agent-v2.0" if strategy == "agent" else "revision-v1",
+        prompt_version="agent-v2.0.1" if strategy == "agent" else "revision-v2.0.1",
         strategy=strategy,
         context=context,
     )
