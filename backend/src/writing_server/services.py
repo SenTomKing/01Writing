@@ -1,5 +1,6 @@
 """短事务中的业务规则；调用方在 session.begin 内提交。"""
 
+from copy import deepcopy
 from datetime import timedelta
 import json
 
@@ -65,7 +66,10 @@ def document_data(session, document):
 def task_data(session, task):
     candidate = session.get(Candidate, task.id)
     attempts = session.scalars(select(Attempt).where(Attempt.task_id == task.id).order_by(Attempt.number)).all()
+    from .telemetry import task_summary
     return {
+        "clarification": (task.context or {}).get("clarification", {}),
+        "telemetry": task_summary(task, attempts),
         "id": task.id,
         "document_id": task.document_id,
         "base_version_id": task.base_version_id,
@@ -149,10 +153,15 @@ def append_version(
 
 
 def create_task(session, user_id, document_id, instruction, base_version_id, key, settings, *, previous_task_id=None,
-                strategy="workflow", source_ids=(), memory_ids=(), allow_web=False):
+                strategy="workflow", source_ids=(), memory_ids=(), allow_web=False,
+                clarification_of=None, clarification=None, retry_task_id=None, request_id=None):
     # 统一锁顺序：用户 → 文档 → 任务；并发幂等请求在用户行串行。
     session.scalar(select(User).where(User.id == user_id).with_for_update())
     fingerprint = digest(json.dumps([document_id, instruction, base_version_id, previous_task_id, strategy, list(source_ids), list(memory_ids), allow_web], ensure_ascii=False))
+    if clarification_of or retry_task_id:
+        fingerprint = digest(json.dumps([fingerprint, clarification_of, clarification, retry_task_id], ensure_ascii=False))
+    if sum(bool(value) for value in (previous_task_id, clarification_of, retry_task_id)) > 1:
+        raise HTTPException(422, "任务只能有一种继续方式")
     existing = session.scalar(select(Task).where(Task.user_id == user_id, Task.idempotency_key == key))
     if existing:
         if existing.request_hash != fingerprint:
@@ -178,7 +187,32 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
     if allow_web and (strategy != "agent" or not settings.search_available):
         raise HTTPException(422, "联网研究需要Agent模式及服务端搜索配置")
     feedback = []
-    if previous_task_id:
+    if clarification_of:
+        parent = owned_task(session, user_id, clarification_of, lock=True)
+        if parent.document_id != document_id or parent.base_version_id != base_version_id:
+            raise HTTPException(409, "正文已变化，请基于当前正文新建修订")
+        if parent.status != "failed" or parent.error_code != "evidence_needed":
+            raise HTTPException(409, "只有等待补充信息的任务可以继续")
+        if not clarification or not clarification.strip() or len(clarification) > 2000:
+            raise HTTPException(422, "请提供 1—2000 字符的补充说明")
+        history = list((parent.context or {}).get("clarifications", []))
+        if len(history) >= 4:
+            raise HTTPException(409, "已达到四轮补充上限，请整理要求后新建修订")
+        context = snapshot(session, user_id, source_ids, memory_ids)
+        context["allow_web"] = allow_web
+        context["clarification"] = {"parent_task_id": parent.id, "text": clarification.strip(), "question": (parent.error_message or "")[:2000]}
+        context["clarifications"] = [*history, context["clarification"]]
+        instruction, strategy, previous_task_id = parent.instruction, parent.strategy, parent.id
+        feedback = deepcopy(parent.feedback)
+    elif retry_task_id:
+        parent = owned_task(session, user_id, retry_task_id, lock=True)
+        if parent.status != "failed" or parent.error_code == "evidence_needed":
+            raise HTTPException(409, "信息不足请先补充说明；其他失败才可原样重试")
+        if parent.document_id != document_id or parent.base_version_id != base_version_id:
+            raise HTTPException(409, "只能重试同一正文版本的任务")
+        instruction, strategy, previous_task_id = parent.instruction, parent.strategy, parent.id
+        context, feedback = deepcopy(parent.context), deepcopy(parent.feedback)
+    elif previous_task_id:
         previous = owned_task(session, user_id, previous_task_id, lock=True)
         if (
             previous.document_id != document_id
@@ -199,8 +233,9 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
     else:
         context = snapshot(session, user_id, source_ids, memory_ids)
         context["allow_web"] = allow_web
-        if sum(len(item["content"]) for item in context["memories"]) > 4000:
-            raise HTTPException(422, "本次记忆总长度不能超过 4000 字符")
+    if sum(len(item["content"]) for item in context.get("memories", [])) > 4000:
+        raise HTTPException(422, "本次记忆总长度不能超过 4000 字符")
+    context = {**context, "request_id": request_id}
     task = Task(
         id=uid(),
         user_id=user_id,
@@ -219,7 +254,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
     )
     session.add(task)
     session.flush()
-    event(session, task, "queued", message="任务已保存，等待执行")
+    event(session, task, "queued", message="任务已保存，等待执行", request_id=request_id, parent_task_id=previous_task_id)
     return task
 
 

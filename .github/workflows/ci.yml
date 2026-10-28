@@ -80,6 +80,8 @@ jobs:
           pids+=($!)
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && curl -fsS http://127.0.0.1:5173 >/dev/null && break || sleep 2; done
           node scripts/browser-smoke.mjs
+          uv run python scripts/seed_v5_browser.py
+          WRITING_BROWSER_FIXTURE=private/v5-qa/browser.json node scripts/browser-v5.mjs
       - name: 构建并启动完整容器栈
         run: |
           uv run python deploy/prepare_env.py

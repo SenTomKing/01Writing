@@ -1,0 +1,259 @@
+{
+  "method": "同一开发助手逐题审读；非独立盲评、非真实用户接受率，结果可争议且原文全部公开。",
+  "rows": [
+    {
+      "id": "w01",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "w01",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "w01",
+      "strategy": "agent",
+      "passed": false,
+      "reason": "要求只去掉口语词，却把“挺好”替换成“不错”，超出了仅删除的编辑范围；词项断言未发现。"
+    },
+    {
+      "id": "w02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "w02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "w02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "f01",
+      "strategy": "direct",
+      "passed": false,
+      "reason": "遗漏用户明确要求的2MB文件上限和80页PDF上限；只说明OCR及操作系统。"
+    },
+    {
+      "id": "f01",
+      "strategy": "workflow",
+      "passed": false,
+      "reason": "遗漏用户明确要求的2MB文件上限和80页PDF上限；只说明OCR及操作系统。"
+    },
+    {
+      "id": "f01",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "f02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "f02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "f02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c01",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c01",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c01",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "c02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "已逐项核对原文、要求与冻结资料；关键内容和限制一致。"
+    },
+    {
+      "id": "m01",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "m01",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "m01",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "m02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "m02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "m02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x01",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x01",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x01",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "x02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "未编造缺失数值或擅自裁定冲突；Agent停下请求补充，基线在候选中明确说明不确定性并要求补充。"
+    },
+    {
+      "id": "h01",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    },
+    {
+      "id": "h01",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    },
+    {
+      "id": "h01",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    },
+    {
+      "id": "h02",
+      "strategy": "direct",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    },
+    {
+      "id": "h02",
+      "strategy": "workflow",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    },
+    {
+      "id": "h02",
+      "strategy": "agent",
+      "passed": true,
+      "reason": "根据用户裁定和这次重新选择的资料完成修订，没有复用已排除的冲突数值。"
+    }
+  ],
+  "summary": {
+    "direct": {
+      "trials": 12,
+      "program_passed_non_pause": 7,
+      "non_pause_trials": 8,
+      "assistant_review_passed": 11,
+      "calls": 22,
+      "tokens": 11523,
+      "mean_seconds": 3.712,
+      "median_seconds": 3.76,
+      "p95_seconds": 5.066,
+      "pause_count": 0
+    },
+    "workflow": {
+      "trials": 12,
+      "program_passed_non_pause": 7,
+      "non_pause_trials": 8,
+      "assistant_review_passed": 11,
+      "calls": 22,
+      "tokens": 11635,
+      "mean_seconds": 3.532,
+      "median_seconds": 3.607,
+      "p95_seconds": 5.198,
+      "pause_count": 0
+    },
+    "agent": {
+      "trials": 12,
+      "program_passed_non_pause": 8,
+      "non_pause_trials": 8,
+      "assistant_review_passed": 11,
+      "calls": 44,
+      "tokens": 110396,
+      "mean_seconds": 5.177,
+      "median_seconds": 5.205,
+      "p95_seconds": 8.127,
+      "pause_count": 4
+    }
+  }
+}

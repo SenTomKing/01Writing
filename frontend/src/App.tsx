@@ -1,3 +1,4 @@
+import {AccountStatistics, TaskTelemetry, EvidenceRequirements} from './Operations';
 import {EvidenceAudit} from './ResearchPanel';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -42,7 +43,7 @@ export default function App() {
       <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
     <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing {meta.data?.version??'4.0.0'} <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    <footer className="footer">01Writing {meta.data?.version??'5.0.0'} <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 
@@ -66,6 +67,7 @@ function Library() {
   const docs=useQuery({queryKey:['documents',page],queryFn:()=>unwrap(client.GET('/api/v1/documents',{params:{query:{page,limit:30}}}))});
   const create=useMutation({mutationFn:(body:{title:string;content:string})=>unwrap(client.POST('/api/v1/documents',{body})),onSuccess:doc=>{queries.invalidateQueries({queryKey:['documents']});navigate(`/documents/${doc.id}`);}});
   return <main className="library"><div className="page-heading"><div><div className="eyebrow">WORKSPACE</div><h1>我的文档</h1><p className="muted">从一段文字开始，保留每一次重要修改。</p></div><button className="primary" onClick={()=>setShow(true)}>＋ 新建文档</button></div>
+    <AccountStatistics/>
     {docs.error && <p role="alert" className="error">{message(docs.error)}</p>}
     {docs.isPending?<p>正在读取文档…</p>:docs.data?.items.length===0?<div className="empty"><div className="paper-icon">≡</div><h2>这里是下一稿的起点</h2><p>新建文档，写下正文，再让 AI 给出修改建议。</p><button className="primary" onClick={()=>setShow(true)}>开始第一篇文档</button></div>:
     <div className="document-grid">{docs.data?.items.map(doc=><Link className="document-card" to={`/documents/${doc.id}`} key={doc.id}><span className="doc-mark">文档 / {String(doc.current_version.number).padStart(2,'0')}</span><h2>{doc.title}</h2><p>{doc.current_version.content.slice(0,150)}</p><div><span>{stamp(doc.updated_at)}</span><span>打开文档 ↗</span></div></Link>)}</div>}
@@ -92,6 +94,7 @@ function Editor({doc}:{doc:Doc}) {
   const [strategy,setStrategy]=useState<'direct'|'workflow'|'agent'>('agent');
   const [selectedKnowledge,setSelectedKnowledge]=useState<string[]>([]);
   const [allowWeb,setAllowWeb]=useState(false);
+  const [clarification,setClarification]=useState('');
   const capabilities=useQuery({queryKey:['meta'],queryFn:()=>unwrap(client.GET('/api/v1/meta'))});
   const knowledge=useQuery({queryKey:['knowledge'],queryFn:()=>unwrap(client.GET('/api/v1/knowledge'))});
   const dirty=draft!==saved;
@@ -115,6 +118,13 @@ function Editor({doc}:{doc:Doc}) {
   const perform=(work:()=>Promise<unknown>)=>{setNotice('');action.mutate(work);};
   const submitTask=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/documents/{document_id}/tasks',{params:{...docPath(doc.id),header:freshKey()},body:{instruction,base_version_id:base,strategy,allow_web:strategy==='agent'&&allowWeb,source_ids:(knowledge.data??[]).filter(e=>e.kind==='source'&&selectedKnowledge.includes(e.id)).map(e=>e.id),memory_ids:(knowledge.data??[]).filter(e=>e.kind==='memory'&&selectedKnowledge.includes(e.id)).map(e=>e.id)}}));setSelected(result.id);});
   const retry=()=>perform(async()=>{const result=await unwrap(client.POST('/api/v1/tasks/{task_id}/retry',{params:{...taskPath(taskId),header:freshKey()}}));setSelected(result.id);setFeedback('');});
+  const clarify=()=>perform(async()=>{
+    const result=await unwrap(client.POST('/api/v1/tasks/{task_id}/clarify',{params:{...taskPath(taskId),header:freshKey()},body:{
+      clarification,base_version_id:base,allow_web:allowWeb,
+      source_ids:(knowledge.data??[]).filter(e=>e.kind==='source'&&selectedKnowledge.includes(e.id)).map(e=>e.id),
+      memory_ids:(knowledge.data??[]).filter(e=>e.kind==='memory'&&selectedKnowledge.includes(e.id)).map(e=>e.id)}}));
+    setSelected(result.id);setClarification('');
+  });
   const restore=(versionId:string)=>perform(async()=>{
     const result=await unwrap(client.POST('/api/v1/documents/{document_id}/versions/{version_id}/restore',{params:{path:{document_id:doc.id,version_id:versionId}},body:{base_version_id:doc.current_version_id}}));
     setDraft(result.current_version.content);setSaved(result.current_version.content);setBase(result.current_version_id);
@@ -132,13 +142,23 @@ function Editor({doc}:{doc:Doc}) {
       <button className="primary full" disabled={dirty||action.isPending||!instruction.trim()||tasks.data?.some(t=>['queued','running'].includes(t.status))} onClick={submitTask}>生成修改建议</button>
       {dirty&&<p className="hint">先保存正文，再基于保存的版本生成建议。</p>}
       {strategy==='agent'&&<label className="web-permission"><input type="checkbox" checked={allowWeb} disabled={!capabilities.data?.web_search_available} onChange={e=>setAllowWeb(e.target.checked)}/>允许本次联网研究（最多2次搜索、3个网页；查询词会发送给搜索服务）</label>}
-      {active?<div className="candidate-area"><div className="task-meta"><span className={`status ${active.status}`}>{labels[active.status]}</span><span>{stamp(active.created_at)}</span></div>
+      {active?<div className="candidate-area"><div className="task-meta"><span className={`status ${active.status}`}>{active.error_code==='evidence_needed'?'等待补充信息':labels[active.status]}</span><span>{stamp(active.created_at)}</span></div>
         {['queued','running'].includes(active.status)&&<div className="progress"><span className="spinner"/>任务在后台执行，刷新页面后仍可查看。<button className="quiet" disabled={action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/cancel',{params:taskPath(taskId)})))}>取消任务</button></div>}
         {active.error_message&&<p className="error">{active.error_message}</p>}
         {active.candidate&&<><p className="candidate-instruction">本轮要求：{active.instruction}</p><h3>修改对照</h3><Diff source={active.source_text} candidate={active.candidate.text}/><details><summary>查看完整候选</summary><pre>{active.candidate.text}</pre></details><p className="reason">{active.candidate.reason}</p></>}
         {active.status==='review'&&<><div className="actions"><button className="primary" disabled={dirty||action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/accept',{params:taskPath(taskId)})))}>接受并更新正文</button><button disabled={action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/cancel',{params:taskPath(taskId)})))}>放弃候选</button></div><label>哪里还需要改？<textarea aria-label="拒绝原因" rows={2} value={feedback} onChange={e=>setFeedback(e.target.value)} maxLength={2000} placeholder="写下拒绝原因，让下一次修改更准确"/></label><button disabled={!feedback.trim()||action.isPending} onClick={()=>perform(()=>unwrap(client.POST('/api/v1/tasks/{task_id}/reject',{params:taskPath(taskId),body:{reason:feedback}})))}>拒绝并保存原因</button></>}
         {active.status==='rejected'&&<><p className="feedback">你的反馈：{active.rejection_reason}</p><button className="primary" disabled={action.isPending||dirty} onClick={retry}>根据反馈重新生成</button></>}
-        {active.status==='failed'&&<button disabled={action.isPending||dirty} onClick={retry}>重新尝试</button>}
+        {active.status==='failed'&&active.error_code!=='evidence_needed'&&<button disabled={action.isPending||dirty} onClick={retry}>按原依据重新尝试</button>}
+        {active.error_code==='evidence_needed'&&<section className="clarification"><h3>补充信息后继续</h3>
+          <p>在下方资料区勾选这次要使用的资料，可先导入新资料。这里会重新读取所选资料，旧任务的依据仍保留。未勾选的旧资料不会自动沿用。</p>
+          <label>补充说明<textarea aria-label="补充说明" value={clarification} onChange={e=>setClarification(e.target.value)} maxLength={2000} rows={3} placeholder="补充缺少的条件，或说明冲突资料应以哪一份为准"/></label>
+          <p>本次选择 {selectedKnowledge.length} 项资料／记忆。</p>
+          <button className="primary" disabled={dirty||action.isPending||!clarification.trim()} onClick={clarify}>使用补充信息继续</button>
+        </section>}
+        {active.previous_task_id&&<p><button className="link" onClick={()=>setSelected(active.previous_task_id!)}>查看上一任务及原始依据</button></p>}
+        {!!active.clarification?.text&&<p className="feedback">本次补充：{String(active.clarification.text)}</p>}
+        <TaskTelemetry task={active}/>
+        <EvidenceRequirements assessment={active.evidence_assessment??{}}/>
         {!!active.context_items?.length&&<details><summary>本次使用的资料与记忆</summary>{active.context_items.map((item,index)=><p key={index}>{String(item.title)}</p>)}</details>}
         {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({assess_evidence:'判断证据是否充分',search_web:'搜索公开资料',read_web:'读取网页',request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
         {!!active.evidence_assessment?.status&&<section><h3>证据是否充分</h3><p>{({sufficient:'已有依据，可形成候选',missing:'仍有信息缺口',conflict:'资料存在冲突'} as Record<string,string>)[String(active.evidence_assessment.status)]}</p><p>{String(active.evidence_assessment.explanation??'')}</p><p className="muted">这是模型的判断，摘录已做程序校验；接受前仍请核对关键事实。</p></section>}
@@ -150,7 +170,7 @@ function Editor({doc}:{doc:Doc}) {
     </section></div>
     <KnowledgePanel selected={selectedKnowledge} onChange={setSelectedKnowledge}/>
     <div className="history-grid"><section className="panel"><div className="panel-heading"><h2>正文历史</h2><span className="muted">恢复会创建新版本</span></div>{versions.data?.items.map(version=><details className="history-row" key={version.id}><summary><strong>版本 {version.number}</strong><span>{kinds[version.kind]??version.kind} · {stamp(version.created_at)}</span></summary><pre>{version.content}</pre>{version.id!==doc.current_version_id&&<button disabled={dirty||action.isPending} onClick={()=>restore(version.id)}>将此内容恢复为新版本</button>}</details>)}<div className="pagination"><button disabled={historyPage===1} onClick={()=>setHistoryPage(historyPage-1)}>上一页</button><span>{historyPage}</span><button disabled={!versions.data||historyPage*30>=versions.data.total} onClick={()=>setHistoryPage(historyPage+1)}>下一页</button></div></section>
-    <section className="panel"><div className="panel-heading"><h2>修订任务</h2><span className="muted">候选与决定都被保留</span></div>{tasks.data?.map(item=><button className={`task-row ${taskId===item.id?'selected':''}`} key={item.id} onClick={()=>setSelected(item.id)}><span>{item.instruction.slice(0,60)}</span><span className={`status ${item.status}`}>{labels[item.status]}</span></button>)}{!tasks.data?.length&&<p className="muted">还没有修订任务。</p>}<div className="pagination"><button disabled={taskPage===1} onClick={()=>setTaskPage(taskPage-1)}>上一页</button><span>{taskPage}</span><button disabled={(tasks.data?.length??0)<30} onClick={()=>setTaskPage(taskPage+1)}>下一页</button></div></section></div>
+    <section className="panel"><div className="panel-heading"><h2>修订任务</h2><span className="muted">候选与决定都被保留</span></div>{tasks.data?.map(item=><button className={`task-row ${taskId===item.id?'selected':''}`} key={item.id} onClick={()=>setSelected(item.id)}><span>{item.instruction.slice(0,60)}</span><span className={`status ${item.status}`}>{item.error_code==='evidence_needed'?'等待补充信息':labels[item.status]}</span></button>)}{!tasks.data?.length&&<p className="muted">还没有修订任务。</p>}<div className="pagination"><button disabled={taskPage===1} onClick={()=>setTaskPage(taskPage-1)}>上一页</button><span>{taskPage}</span><button disabled={(tasks.data?.length??0)<30} onClick={()=>setTaskPage(taskPage+1)}>下一页</button></div></section></div>
     {(versions.error||tasks.error||task.error)&&<p className="error" role="alert">{message(versions.error||tasks.error||task.error)}</p>}
   </main>;
 }

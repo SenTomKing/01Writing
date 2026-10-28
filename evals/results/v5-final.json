@@ -1,0 +1,4303 @@
+{
+  "dataset_sha256": "53984096d137878f26b4574105379756d4d12e3de99a43fab5d247ece527433d",
+  "created_at": "2026-10-28T06:59:40.686245+00:00",
+  "mode": "live",
+  "model": "deepseek-flash",
+  "calls": 86,
+  "reported_tokens": 133554,
+  "planned": 36,
+  "completed": 36,
+  "amount": null,
+  "human_acceptance_rate": null,
+  "results": [
+    {
+      "id": "w01",
+      "group": "语言润色",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "我觉得这个工具用着还挺好。",
+      "reason": "仅去掉句末口语语气词“啊”，保留原评价强度，未增强评价或添加事实。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 40,
+              "prompt_tokens": 307,
+              "total_tokens": 347,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 179
+            },
+            "duration_ms": 3074
+          }
+        ],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence": []
+      },
+      "checks": {
+        "包含:工具": true,
+        "不包含:显著": true,
+        "不包含:大幅": true
+      },
+      "program_passed": true,
+      "duration_ms": 5066
+    },
+    {
+      "id": "w01",
+      "group": "语言润色",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "我觉得这个工具用着挺好。",
+      "reason": "去掉口语词“还挺好的啊”，改为“挺好”，保留原评价强度，不增强评价，不添加事实。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 42,
+              "prompt_tokens": 307,
+              "total_tokens": 349,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 179
+            },
+            "duration_ms": 843
+          }
+        ],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence": []
+      },
+      "checks": {
+        "包含:工具": true,
+        "不包含:显著": true,
+        "不包含:大幅": true
+      },
+      "program_passed": true,
+      "duration_ms": 1594
+    },
+    {
+      "id": "w01",
+      "group": "语言润色",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "我觉得这个工具用着还不错。",
+      "reason": "仅去除口语化表达（“还挺好的啊”→“还不错”），保留原有的主观评价强度，不增强评价，不添加任何事实信息。本任务无参考资料，属纯语言润色，无需外部取证。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 114,
+              "prompt_tokens": 2327,
+              "total_tokens": 2441,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 279
+            },
+            "budget_slot": 0,
+            "duration_ms": 1969
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": null,
+            "purpose": "evidence_audit",
+            "budget_slot": 1,
+            "duration_ms": 0
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence_assessment": {},
+        "retrieval_history": [],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": []
+      },
+      "checks": {
+        "包含:工具": true,
+        "不包含:显著": true,
+        "不包含:大幅": true
+      },
+      "program_passed": true,
+      "duration_ms": 3407
+    },
+    {
+      "id": "w02",
+      "group": "数字约束",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "实验组12.4%，对照组8.1%，这个结果不错。",
+      "reason": "仅删除句末语气词“啊”，保留数字与对应关系。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 40,
+              "prompt_tokens": 316,
+              "total_tokens": 356,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 188
+            },
+            "duration_ms": 876
+          }
+        ],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence": []
+      },
+      "checks": {
+        "包含:12.4%": true,
+        "包含:8.1%": true,
+        "不包含:啊": true,
+        "不包含:显著": true
+      },
+      "program_passed": true,
+      "duration_ms": 1583
+    },
+    {
+      "id": "w02",
+      "group": "数字约束",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "实验组12.4%，对照组8.1%，这个结果不错。",
+      "reason": "仅删除句末语气词“啊”，保留数字与对应关系。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 40,
+              "prompt_tokens": 316,
+              "total_tokens": 356,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 188
+            },
+            "duration_ms": 766
+          }
+        ],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence": []
+      },
+      "checks": {
+        "包含:12.4%": true,
+        "包含:8.1%": true,
+        "不包含:啊": true,
+        "不包含:显著": true
+      },
+      "program_passed": true,
+      "duration_ms": 1624
+    },
+    {
+      "id": "w02",
+      "group": "数字约束",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "实验组12.4%，对照组8.1%，这个结果不错。",
+      "reason": "仅删除句末语气词“啊”，保留原有数字及其与实验组、对照组的对应关系，未作解释。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 103,
+              "prompt_tokens": 2336,
+              "total_tokens": 2439,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 288
+            },
+            "budget_slot": 0,
+            "duration_ms": 1711
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": null,
+            "purpose": "evidence_audit",
+            "budget_slot": 1,
+            "duration_ms": 0
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "没有参考证据，未进行事实核验",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence_assessment": {},
+        "retrieval_history": [],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": []
+      },
+      "checks": {
+        "包含:12.4%": true,
+        "包含:8.1%": true,
+        "不包含:啊": true,
+        "不包含:显著": true
+      },
+      "program_passed": true,
+      "duration_ms": 1730
+    },
+    {
+      "id": "f01",
+      "group": "据实纠错",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "扫描件不支持OCR；PDF提取在Linux容器的受限子进程中运行，Windows原生开发模式不运行PDF提取。",
+      "reason": "根据资料删除原文中无依据的10MB文件与200页扫描PDF限制，并纠正为扫描件不支持OCR，同时补充PDF提取的运行条件。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 68,
+              "prompt_tokens": 512,
+              "total_tokens": 580,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 256
+            },
+            "duration_ms": 952
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 142,
+              "prompt_tokens": 441,
+              "total_tokens": 583,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 313
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2058
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "扫描件不支持OCR",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "扫描件没有OCR",
+              "explanation": "资料明确说明扫描件没有OCR，与候选一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "PDF提取在Linux容器的受限子进程中运行",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "PDF提取在Linux容器的受限子进程中运行",
+              "explanation": "资料逐字包含该陈述。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "Windows原生开发模式不运行PDF提取",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "Windows原生开发模式不运行PDF提取",
+              "explanation": "资料逐字包含该陈述。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:96",
+            "title": "limits",
+            "offset": 96,
+            "text": "PDF提取在Linux容器的受限子进程中运行；扫描件没有OCR，Windows原生开发模式不运行PDF提取。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:584",
+            "title": "limits",
+            "offset": 584,
+            "text": "- 独立证据核对最多检查12条陈述，核验摘录确实存在；它评估给定资料是否支持候选，不能保证资料本身真实，也不能替代人工审稿。失败明确显示未完成，不伪装为通过。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": false,
+        "包含:80": false,
+        "不包含:200页": true,
+        "不包含:10MB": true,
+        "不包含:自动OCR": true
+      },
+      "program_passed": false,
+      "duration_ms": 3762
+    },
+    {
+      "id": "f01",
+      "group": "据实纠错",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "PDF提取在Linux容器的受限子进程中运行；扫描件不支持OCR，Windows原生开发模式不运行PDF提取。",
+      "reason": "依据资料删除原文中无依据的10MB文件与200页扫描PDF限制，并纠正为扫描件不支持OCR，同时补充PDF提取的运行条件。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 68,
+              "prompt_tokens": 512,
+              "total_tokens": 580,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 256
+            },
+            "duration_ms": 1020
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 157,
+              "prompt_tokens": 441,
+              "total_tokens": 598,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 313
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2025
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "PDF提取在Linux容器的受限子进程中运行",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "PDF提取在Linux容器的受限子进程中运行；扫描件没有OCR，Windows原生开发模式不运行PDF提取。",
+              "explanation": "资料逐字包含该陈述。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "扫描件不支持OCR",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "扫描件没有OCR",
+              "explanation": "资料明确说明扫描件没有OCR，与候选一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "Windows原生开发模式不运行PDF提取",
+              "verdict": "supported",
+              "ref": "S1:96",
+              "quote": "Windows原生开发模式不运行PDF提取",
+              "explanation": "资料逐字包含该陈述。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:96",
+            "title": "limits",
+            "offset": 96,
+            "text": "PDF提取在Linux容器的受限子进程中运行；扫描件没有OCR，Windows原生开发模式不运行PDF提取。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:584",
+            "title": "limits",
+            "offset": 584,
+            "text": "- 独立证据核对最多检查12条陈述，核验摘录确实存在；它评估给定资料是否支持候选，不能保证资料本身真实，也不能替代人工审稿。失败明确显示未完成，不伪装为通过。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": false,
+        "包含:80": false,
+        "不包含:200页": true,
+        "不包含:10MB": true,
+        "不包含:自动OCR": true
+      },
+      "program_passed": false,
+      "duration_ms": 3851
+    },
+    {
+      "id": "f01",
+      "group": "据实纠错",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "系统支持最大2MB的文件和最多80页的PDF[S1:61]，扫描件不支持OCR[S1:96]。",
+      "reason": "按产品说明纠正原稿：文件上限由10MB改为2MB，PDF页数上限由200页改为80页，并说明扫描件不支持OCR（原稿“自动OCR”与资料不符）。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 42,
+              "prompt_tokens": 2350,
+              "total_tokens": 2392,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 302
+            },
+            "budget_slot": 0,
+            "duration_ms": 2161
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 35,
+              "prompt_tokens": 2586,
+              "total_tokens": 2621,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 282
+            },
+            "budget_slot": 1,
+            "duration_ms": 887
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 43,
+              "prompt_tokens": 2730,
+              "total_tokens": 2773,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2560
+              },
+              "prompt_cache_hit_tokens": 2560,
+              "prompt_cache_miss_tokens": 170
+            },
+            "budget_slot": 2,
+            "duration_ms": 833
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 237,
+              "prompt_tokens": 3071,
+              "total_tokens": 3308,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2688
+              },
+              "prompt_cache_hit_tokens": 2688,
+              "prompt_cache_miss_tokens": 383
+            },
+            "budget_slot": 3,
+            "duration_ms": 1291
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 176,
+              "prompt_tokens": 3519,
+              "total_tokens": 3695,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3200
+              },
+              "prompt_cache_hit_tokens": 3200,
+              "prompt_cache_miss_tokens": 319
+            },
+            "budget_slot": 4,
+            "duration_ms": 1083
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 185,
+              "prompt_tokens": 3729,
+              "total_tokens": 3914,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3584
+              },
+              "prompt_cache_hit_tokens": 3584,
+              "prompt_cache_miss_tokens": 145
+            },
+            "budget_slot": 5,
+            "duration_ms": 1418
+          }
+        ],
+        "reserved_calls": 6,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 2,
+            "refs": [
+              "S1:61"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:61"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 1,
+            "refs": [
+              "S1:584",
+              "S1:61",
+              "S1:96"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:584",
+              "S1:61",
+              "S1:96"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:584",
+              "S1:61",
+              "S1:96"
+            ],
+            "message": "正文引用标记与 citations 必须一一对应且不重复"
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:584",
+              "S1:61",
+              "S1:96"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "剩余调用或时间预算不足，未进行证据核对",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "文件大小上限",
+              "evidence": [
+                {
+                  "ref": "S1:61",
+                  "quote": "文件／网页最多2MB、正文100,000字符、PDF最多80页。"
+                }
+              ]
+            },
+            {
+              "requirement": "PDF页数上限",
+              "evidence": [
+                {
+                  "ref": "S1:61",
+                  "quote": "PDF最多80页。"
+                }
+              ]
+            },
+            {
+              "requirement": "是否支持OCR",
+              "evidence": [
+                {
+                  "ref": "S1:96",
+                  "quote": "扫描件没有OCR"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "产品说明明确：文件/网页最多2MB、PDF最多80页，且扫描件没有OCR。原稿的10MB、200页和自动OCR均与资料不符，按资料改正。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 58,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "文件大小限制 PDF 页数 OCR 支持",
+            "refs": [
+              "S1:61"
+            ]
+          },
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 134,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "OCR 扫描件 图片文字识别 是否支持",
+            "refs": [
+              "S1:96",
+              "S1:584"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:61",
+            "quote": "文件／网页最多2MB、正文100,000字符、PDF最多80页。",
+            "title": "limits",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          },
+          {
+            "ref": "S1:96",
+            "quote": "扫描件没有OCR",
+            "title": "limits",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": true,
+        "包含:80": true,
+        "不包含:200页": true,
+        "不包含:10MB": true,
+        "不包含:自动OCR": true
+      },
+      "program_passed": true,
+      "duration_ms": 7710
+    },
+    {
+      "id": "f02",
+      "group": "据实纠错",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "每个账户最多支持2个活跃导入，每天30次。",
+      "reason": "依据参考数据将活跃导入数量由10个改为2个，每日次数由100次改为30次。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 46,
+              "prompt_tokens": 516,
+              "total_tokens": 562,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 260
+            },
+            "duration_ms": 777
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 73,
+              "prompt_tokens": 439,
+              "total_tokens": 512,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 311
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1725
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "每个账户最多支持2个活跃导入，每天30次。",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入、每天30次",
+              "explanation": "证据逐字给出每账户最多2个活跃导入、每天30次，与候选陈述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:151",
+            "title": "queue",
+            "offset": 151,
+            "text": "- 导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建；每账户最多2个活跃导入、每天30次、资料与记忆合计100项。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:0",
+            "title": "queue",
+            "offset": 0,
+            "text": "- 无额外服务密钥也能导入文件、抓取给定网页，使用关键词和中文双字匹配检索。网页不执行脚本，不绕过登录、付费墙或访问限制。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:10个": true,
+        "不包含:100次": true
+      },
+      "program_passed": true,
+      "duration_ms": 3317
+    },
+    {
+      "id": "f02",
+      "group": "据实纠错",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "每个账户最多支持2个活跃导入，每天30次。",
+      "reason": "依据参考数据将活跃导入数量由10个改为2个，每日次数由100次改为30次。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 46,
+              "prompt_tokens": 516,
+              "total_tokens": 562,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 382
+              },
+              "prompt_cache_hit_tokens": 382,
+              "prompt_cache_miss_tokens": 134
+            },
+            "duration_ms": 741
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 73,
+              "prompt_tokens": 439,
+              "total_tokens": 512,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 183
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1631
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "每个账户最多支持2个活跃导入，每天30次。",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入、每天30次",
+              "explanation": "证据逐字给出每账户最多2个活跃导入、每天30次，与候选陈述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:151",
+            "title": "queue",
+            "offset": 151,
+            "text": "- 导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建；每账户最多2个活跃导入、每天30次、资料与记忆合计100项。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:0",
+            "title": "queue",
+            "offset": 0,
+            "text": "- 无额外服务密钥也能导入文件、抓取给定网页，使用关键词和中文双字匹配检索。网页不执行脚本，不绕过登录、付费墙或访问限制。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:10个": true,
+        "不包含:100次": true
+      },
+      "program_passed": true,
+      "duration_ms": 3088
+    },
+    {
+      "id": "f02",
+      "group": "据实纠错",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "每个账户最多可同时进行2个活跃导入，每天最多30次。[S1:151]",
+      "reason": "依据资料将原稿的“同时导入10个文件”改为“最多2个活跃导入”，将“每天100次”改为“每天最多30次”，其余表述保持原意。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 41,
+              "prompt_tokens": 2344,
+              "total_tokens": 2385,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 296
+            },
+            "budget_slot": 0,
+            "duration_ms": 1895
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 188,
+              "prompt_tokens": 2693,
+              "total_tokens": 2881,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 389
+            },
+            "budget_slot": 1,
+            "duration_ms": 1167
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 150,
+              "prompt_tokens": 3043,
+              "total_tokens": 3193,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2816
+              },
+              "prompt_cache_hit_tokens": 2816,
+              "prompt_cache_miss_tokens": 227
+            },
+            "budget_slot": 2,
+            "duration_ms": 895
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 76,
+              "prompt_tokens": 446,
+              "total_tokens": 522,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 318
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 3,
+            "duration_ms": 1576
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 2,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "每个账户最多可同时进行2个活跃导入，每天最多30次。",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入、每天30次",
+              "explanation": "证据逐字给出每账户最多2个活跃导入、每天30次，与候选陈述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "每账户活跃导入数量上限",
+              "evidence": [
+                {
+                  "ref": "S1:151",
+                  "quote": "每账户最多2个活跃导入"
+                }
+              ]
+            },
+            {
+              "requirement": "每账户每日导入次数上限",
+              "evidence": [
+                {
+                  "ref": "S1:151",
+                  "quote": "每天30次"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出每账户最多2个活跃导入、每天30次，原稿的10个文件与100次与资料不符，按资料改正。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 141,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "活跃导入数量 每日导入次数 限制",
+            "refs": [
+              "S1:151",
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:151",
+            "quote": "每账户最多2个活跃导入、每天30次",
+            "title": "queue",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:10个": true,
+        "不包含:100次": true
+      },
+      "program_passed": true,
+      "duration_ms": 5562
+    },
+    {
+      "id": "c01",
+      "group": "复合约束",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "用户创建账户时，密码至少需12个字符，用户名须为3—40位小写字母、数字或下划线。",
+      "reason": "依据参考数据补充密码最低长度、用户名长度及允许字符，并改写为一句中文。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 58,
+              "prompt_tokens": 431,
+              "total_tokens": 489,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 175
+            },
+            "duration_ms": 1302
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 120,
+              "prompt_tokens": 395,
+              "total_tokens": 515,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 267
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1807
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "用户创建账户时，密码至少需12个字符",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "创建自己的账户。密码至少12字符",
+              "explanation": "资料明确说明创建账户时密码至少12字符。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "用户名须为3—40位小写字母、数字或下划线",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "用户名使用3—40位小写字母、数字或下划线",
+              "explanation": "资料逐字给出用户名规则，与候选一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "auth",
+            "offset": 0,
+            "text": "打开 **http://localhost:8080**，创建自己的账户。密码至少12字符；用户名使用3—40位小写字母、数字或下划线。默认 `demo` 离线演示不调用模型，仅做简单字符清理，页面会明确标注。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:12": true,
+        "包含:40": true,
+        "包含:数字": true,
+        "不包含:随便": true
+      },
+      "program_passed": true,
+      "duration_ms": 3823
+    },
+    {
+      "id": "c01",
+      "group": "复合约束",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "用户创建账户时，密码至少12字符，用户名须为3—40位小写字母、数字或下划线。",
+      "reason": "依据资料补充密码最低长度、用户名长度及允许字符，并改写为一句中文。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 55,
+              "prompt_tokens": 431,
+              "total_tokens": 486,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 175
+            },
+            "duration_ms": 1067
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 102,
+              "prompt_tokens": 393,
+              "total_tokens": 495,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 265
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2179
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "密码至少12字符",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "密码至少12字符",
+              "explanation": "资料逐字包含该要求。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "用户名须为3—40位小写字母、数字或下划线",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "用户名使用3—40位小写字母、数字或下划线",
+              "explanation": "资料逐字包含该用户名规则。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "auth",
+            "offset": 0,
+            "text": "打开 **http://localhost:8080**，创建自己的账户。密码至少12字符；用户名使用3—40位小写字母、数字或下划线。默认 `demo` 离线演示不调用模型，仅做简单字符清理，页面会明确标注。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:12": true,
+        "包含:40": true,
+        "包含:数字": true,
+        "不包含:随便": true
+      },
+      "program_passed": true,
+      "duration_ms": 3916
+    },
+    {
+      "id": "c01",
+      "group": "复合约束",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "用户设置密码至少12字符、用户名3—40位且仅限小写字母、数字或下划线，即可创建账户并登录。[S1:0]",
+      "reason": "按资料把“随便设置名字和短密码”改为明确密码最低长度、用户名长度与允许字符的一句中文表述。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 43,
+              "prompt_tokens": 2349,
+              "total_tokens": 2392,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 301
+            },
+            "budget_slot": 0,
+            "duration_ms": 1707
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 231,
+              "prompt_tokens": 2610,
+              "total_tokens": 2841,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 306
+            },
+            "budget_slot": 1,
+            "duration_ms": 1463
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 158,
+              "prompt_tokens": 3046,
+              "total_tokens": 3204,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2816
+              },
+              "prompt_cache_hit_tokens": 2816,
+              "prompt_cache_miss_tokens": 230
+            },
+            "budget_slot": 2,
+            "duration_ms": 1349
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 167,
+              "prompt_tokens": 401,
+              "total_tokens": 568,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 273
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 3,
+            "duration_ms": 2380
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "用户设置密码至少12字符、用户名3—40位且仅限小写字母、数字或下划线，即可创建账户并登录。",
+              "verdict": "insufficient",
+              "ref": "S1:0",
+              "quote": "打开 **http://localhost:8080**，创建自己的账户。密码至少12字符；用户名使用3—40位小写字母、数字或下划线。默认 `demo` 离线演示不调用模型，仅做简单字符清理，页面会明确标注。",
+              "explanation": "资料支持密码至少12字符、用户名3—40位且仅限小写字母、数字或下划线，也提到创建账户；但未提及满足这些条件即可登录，因此“即可创建账户并登录”中的登录部分缺乏支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "密码最低长度",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "密码至少12字符"
+                }
+              ]
+            },
+            {
+              "requirement": "用户名长度",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "用户名使用3—40位小写字母、数字或下划线"
+                }
+              ]
+            },
+            {
+              "requirement": "允许字符",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "用户名使用3—40位小写字母、数字或下划线"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出密码最低12字符、用户名3—40位且仅限小写字母、数字或下划线，可据此改写为一句中文。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 105,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "密码最低长度 用户名长度 允许字符 登录",
+            "refs": [
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:0",
+            "quote": "密码至少12字符；用户名使用3—40位小写字母、数字或下划线",
+            "title": "auth",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:12": true,
+        "包含:40": true,
+        "包含:数字": true,
+        "不包含:随便": true
+      },
+      "program_passed": true,
+      "duration_ms": 6920
+    },
+    {
+      "id": "c02",
+      "group": "复合约束",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "Agent 设有三项上限：最多 6 次模型请求、48,000 token 的保守预算，以及单次执行 120 秒。",
+      "reason": "依据参考数据纠正原文“没有调用或时间限制”的错误，用一句话写明模型请求、Token 和单次时间三个上限并保留数值单位。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 75,
+              "prompt_tokens": 427,
+              "total_tokens": 502,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 171
+            },
+            "duration_ms": 984
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 91,
+              "prompt_tokens": 394,
+              "total_tokens": 485,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 266
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1785
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "Agent 设有三项上限：最多 6 次模型请求、48,000 token 的保守预算，以及单次执行 120 秒。",
+              "verdict": "supported",
+              "ref": "S1:664",
+              "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+              "explanation": "证据逐字列出三项上限，与候选陈述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:664",
+            "title": "agent",
+            "offset": 664,
+            "text": "- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、48,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:6": true,
+        "包含:48": true,
+        "包含:120": true,
+        "不包含:没有限制": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 3534
+    },
+    {
+      "id": "c02",
+      "group": "复合约束",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "Agent有上限：6次模型请求、48,000 token保守预算、单次执行120秒。",
+      "reason": "依据参考数据纠正原文“没有调用或时间限制”的错误说法，用一句话列出模型请求、Token和单次时间三个上限，并保留数值单位。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 66,
+              "prompt_tokens": 427,
+              "total_tokens": 493,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 171
+            },
+            "duration_ms": 973
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 80,
+              "prompt_tokens": 384,
+              "total_tokens": 464,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 256
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1966
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "Agent有上限：6次模型请求、48,000 token保守预算、单次执行120秒。",
+              "verdict": "supported",
+              "ref": "S1:664",
+              "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+              "explanation": "候选陈述与资料原文一致，直接得到支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:664",
+            "title": "agent",
+            "offset": 664,
+            "text": "- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、48,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:6": true,
+        "包含:48": true,
+        "包含:120": true,
+        "不包含:没有限制": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 3650
+    },
+    {
+      "id": "c02",
+      "group": "复合约束",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "Agent并非没有调用或时间限制：模型请求上限为6次，token预算上限为48,000 token，单次执行时间上限为120秒[S1:664]。",
+      "reason": "按资料纠正原稿“没有调用或时间限制”的错误说法，用一句话写明模型请求、token 与单次执行时间三项上限，并保留原数值与单位。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 43,
+              "prompt_tokens": 2350,
+              "total_tokens": 2393,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 302
+            },
+            "budget_slot": 0,
+            "duration_ms": 1673
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 268,
+              "prompt_tokens": 2692,
+              "total_tokens": 2960,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 388
+            },
+            "budget_slot": 1,
+            "duration_ms": 1224
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 167,
+              "prompt_tokens": 3202,
+              "total_tokens": 3369,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2944
+              },
+              "prompt_cache_hit_tokens": 2944,
+              "prompt_cache_miss_tokens": 258
+            },
+            "budget_slot": 2,
+            "duration_ms": 1225
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 172,
+              "prompt_tokens": 3403,
+              "total_tokens": 3575,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3200
+              },
+              "prompt_cache_hit_tokens": 3200,
+              "prompt_cache_miss_tokens": 203
+            },
+            "budget_slot": 3,
+            "duration_ms": 1144
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 192,
+              "prompt_tokens": 454,
+              "total_tokens": 646,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 198
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 4,
+            "duration_ms": 2254
+          }
+        ],
+        "reserved_calls": 5,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 1,
+            "refs": [
+              "S1:230",
+              "S1:664"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:230",
+              "S1:664"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:230",
+              "S1:664"
+            ],
+            "message": "正文引用标记与 citations 必须一一对应且不重复"
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:230",
+              "S1:664"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "模型请求上限为6次",
+              "verdict": "supported",
+              "ref": "S1:664",
+              "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+              "explanation": "证据明确写明Agent上限6次模型请求，与候选一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "token预算上限为48,000 token",
+              "verdict": "supported",
+              "ref": "S1:664",
+              "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+              "explanation": "证据明确写明48,000 token保守预算，与候选一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "单次执行时间上限为120秒",
+              "verdict": "supported",
+              "ref": "S1:664",
+              "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+              "explanation": "证据明确写明单次执行120秒，与候选一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "Agent 的模型请求次数上限",
+              "evidence": [
+                {
+                  "ref": "S1:664",
+                  "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒"
+                }
+              ]
+            },
+            {
+              "requirement": "Token 上限",
+              "evidence": [
+                {
+                  "ref": "S1:664",
+                  "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒"
+                }
+              ]
+            },
+            {
+              "requirement": "单次执行时间上限",
+              "evidence": [
+                {
+                  "ref": "S1:664",
+                  "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出三项上限：6次模型请求、48,000 token、单次执行120秒，可据此纠正原稿“没有调用或时间限制”的说法。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 135,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "Agent 模型请求 Token 单次时间 上限",
+            "refs": [
+              "S1:664",
+              "S1:230"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:664",
+            "quote": "Agent上限6次模型请求、48,000 token保守预算、单次执行120秒",
+            "title": "agent",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:6": true,
+        "包含:48": true,
+        "包含:120": true,
+        "不包含:没有限制": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 7551
+    },
+    {
+      "id": "m01",
+      "group": "资料缺口",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "服务可承受的当前实测并发上限尚无法确定；资料未提供压测报告，需补充压测报告后方可填写。",
+      "reason": "资料未给出实测并发上限，按要求不猜测，改为明确说明无法确定并请求补充压测报告。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 61,
+              "prompt_tokens": 528,
+              "total_tokens": 589,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 272
+            },
+            "duration_ms": 865
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 105,
+              "prompt_tokens": 458,
+              "total_tokens": 563,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 202
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1803
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "服务可承受的当前实测并发上限尚无法确定",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未提及并发上限或压测结果，无法据此确定或否定该上限。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "资料未提供压测报告，需补充压测报告后方可填写",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料中未出现压测报告相关内容，无法核实是否提供或是否需要补充。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:664",
+            "title": "queue",
+            "offset": 664,
+            "text": "- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、48,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:0",
+            "title": "queue",
+            "offset": 0,
+            "text": "- 无额外服务密钥也能导入文件、抓取给定网页，使用关键词和中文双字匹配检索。网页不执行脚本，不绕过登录、付费墙或访问限制。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 3418
+    },
+    {
+      "id": "m01",
+      "group": "资料缺口",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "服务可承受的当前实测并发上限尚不能确定，需补充压测报告后填写。",
+      "reason": "资料未提供实测并发上限，按要求不猜测，改为明确待核实并请求补充压测报告。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 52,
+              "prompt_tokens": 528,
+              "total_tokens": 580,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 384
+              },
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 144
+            },
+            "duration_ms": 1116
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 62,
+              "prompt_tokens": 450,
+              "total_tokens": 512,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 194
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1673
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "服务可承受的当前实测并发上限尚不能确定，需补充压测报告后填写。",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未提及并发上限或压测报告，无法支持也无法反驳该陈述。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:664",
+            "title": "queue",
+            "offset": 664,
+            "text": "- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、48,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:0",
+            "title": "queue",
+            "offset": 0,
+            "text": "- 无额外服务密钥也能导入文件、抓取给定网页，使用关键词和中文双字匹配检索。网页不执行脚本，不绕过登录、付费墙或访问限制。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 3563
+    },
+    {
+      "id": "m01",
+      "group": "资料缺口",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "error": "evidence_needed",
+      "error_message": "需要你补充信息：本轮要求必须填写“当前实测并发上限”，但授权资料（S1:0「queue」）中没有压测数据，无法确定该数值，也不宜猜测。请补充压测报告，至少包含：①实测并发上限的具体数值；②压测条件（测试场景/接口、响应时间阈值、错误率标准、测试时长等）。收到后我会据此改写原句，例如“在××条件下实测并发上限为××，原‘5000名同时在线用户’的说法需相应调整”。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 41,
+              "prompt_tokens": 2352,
+              "total_tokens": 2393,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 304
+            },
+            "budget_slot": 0,
+            "duration_ms": 1458
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 172,
+              "prompt_tokens": 2710,
+              "total_tokens": 2882,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 406
+            },
+            "budget_slot": 1,
+            "duration_ms": 1679
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 140,
+              "prompt_tokens": 3028,
+              "total_tokens": 3168,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2816
+              },
+              "prompt_cache_hit_tokens": 2816,
+              "prompt_cache_miss_tokens": 212
+            },
+            "budget_slot": 2,
+            "duration_ms": 1734
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 3,
+            "refs": [
+              "S1:288",
+              "S1:664"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:288",
+              "S1:664"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "request_clarification",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:288",
+              "S1:664"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "missing",
+          "requirements": [
+            {
+              "requirement": "当前实测并发上限（压测报告数据）",
+              "evidence": []
+            }
+          ],
+          "missing": [
+            "压测报告中的当前实测并发上限数值",
+            "压测条件（场景、响应时间阈值、错误率等）"
+          ],
+          "explanation": "授权资料（S1:0「queue」）检索仅命中与搜索/Agent 预算相关的片段，未包含任何并发压测数据或实测并发上限，无法据此填写数值，也不应猜测。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 180,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "并发上限 压测 同时在线用户",
+            "refs": [
+              "S1:288",
+              "S1:664"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2"
+      },
+      "program_passed": true,
+      "duration_ms": 4901
+    },
+    {
+      "id": "m02",
+      "group": "资料缺口",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "无法确定每月的实际API账单金额，请补充真实月账单数据。",
+      "reason": "参考资料未提供任何账单金额，按修改要求不能估算，因此删除原稿中的20元并请求用户补充真实月账单。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 54,
+              "prompt_tokens": 507,
+              "total_tokens": 561,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 251
+            },
+            "duration_ms": 909
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 99,
+              "prompt_tokens": 425,
+              "total_tokens": 524,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 169
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2053
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "无法确定每月的实际API账单金额",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "给定资料未提及API账单金额或相关费用数据，无法据此判断能否确定每月实际账单金额。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "请补充真实月账单数据",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未涉及月账单数据或补充此类数据的要求，无法支持或反驳该请求。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:259",
+            "title": "agent",
+            "offset": 259,
+            "text": "修订保存所选资料快照；后续编辑或删除资料不改变旧任务依据。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:584",
+            "title": "agent",
+            "offset": 584,
+            "text": "- 独立证据核对最多检查12条陈述，核验摘录确实存在；它评估给定资料是否支持候选，不能保证资料本身真实，也不能替代人工审稿。失败明确显示未完成，不伪装为通过。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 3759
+    },
+    {
+      "id": "m02",
+      "group": "资料缺口",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "无法确定每月的实际API账单金额，请补充真实月账单数据。",
+      "reason": "参考资料未提供账单金额，按修改要求不能估算，需请求用户补充真实月账单。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 46,
+              "prompt_tokens": 507,
+              "total_tokens": 553,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 251
+            },
+            "duration_ms": 714
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 98,
+              "prompt_tokens": 425,
+              "total_tokens": 523,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 169
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1920
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "无法确定每月的实际API账单金额",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "给定资料未提及API账单金额或相关费用数据，无法据此判断能否确定每月实际账单金额。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "请补充真实月账单数据",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未涉及月账单数据或补充数据的要求，无法支持或反驳该请求。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:259",
+            "title": "agent",
+            "offset": 259,
+            "text": "修订保存所选资料快照；后续编辑或删除资料不改变旧任务依据。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S1:584",
+            "title": "agent",
+            "offset": 584,
+            "text": "- 独立证据核对最多检查12条陈述，核验摘录确实存在；它评估给定资料是否支持候选，不能保证资料本身真实，也不能替代人工审稿。失败明确显示未完成，不伪装为通过。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 3392
+    },
+    {
+      "id": "m02",
+      "group": "资料缺口",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "error": "evidence_needed",
+      "error_message": "需要你补充信息：授权资料S1:0（标题“agent”）只说明产品功能，未包含任何API账单金额或费用数据，因此无法按依据填写真实月账单，也不能估算。请提供真实的月API账单金额（如账单截图、账单明细或具体数字），我再据此修改原文。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 38,
+              "prompt_tokens": 2352,
+              "total_tokens": 2390,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 304
+            },
+            "budget_slot": 0,
+            "duration_ms": 1578
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 35,
+              "prompt_tokens": 2490,
+              "total_tokens": 2525,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 186
+            },
+            "budget_slot": 1,
+            "duration_ms": 681
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 152,
+              "prompt_tokens": 3029,
+              "total_tokens": 3181,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2432
+              },
+              "prompt_cache_hit_tokens": 2432,
+              "prompt_cache_miss_tokens": 597
+            },
+            "budget_slot": 2,
+            "duration_ms": 1133
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 93,
+              "prompt_tokens": 3307,
+              "total_tokens": 3400,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3072
+              },
+              "prompt_cache_hit_tokens": 3072,
+              "prompt_cache_miss_tokens": 235
+            },
+            "budget_slot": 3,
+            "duration_ms": 1158
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 1,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "request_clarification",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "missing",
+          "requirements": [
+            {
+              "requirement": "真实月API账单金额",
+              "evidence": []
+            }
+          ],
+          "missing": [
+            "资料S1:0为产品功能说明，未包含任何API账单金额或费用数据"
+          ],
+          "explanation": "唯一授权资料S1:0仅描述导入、检索、密钥配置等功能，未提供月账单金额，无法据此填写真实账单，按要求需请求用户补充。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 0,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "API 月账单 费用",
+            "refs": []
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2"
+      },
+      "program_passed": true,
+      "duration_ms": 4582
+    },
+    {
+      "id": "x01",
+      "group": "冲突停止",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "评测站点上传上限待填写。现有两份同等权威记录（S1 记为 2MB，S2 记为 8MB）相互冲突，且均未标注优先级或日期，无法据此确定唯一上限，需由用户裁定采用哪一记录后再填写。",
+      "reason": "按用户要求不自行选定冲突数据，保留待填写状态，并说明两份记录冲突、缺少优先级或日期，需用户裁定。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 96,
+              "prompt_tokens": 498,
+              "total_tokens": 594,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 242
+            },
+            "duration_ms": 1178
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 254,
+              "prompt_tokens": 459,
+              "total_tokens": 713,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 203
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2632
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "现有两份同等权威记录（S1 记为 2MB，S2 记为 8MB）相互冲突",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "评测站点上传上限为2MB；此记录没有优先级或日期。",
+              "explanation": "S1记录2MB，S2记录8MB，且两条均未标注优先级或日期，构成相互冲突的同等记录。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "且均未标注优先级或日期",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "此记录没有优先级或日期。",
+              "explanation": "S1与S2均明确说明没有优先级或日期。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "无法据此确定唯一上限",
+              "verdict": "supported",
+              "ref": "S2:0",
+              "quote": "同一评测站点上传上限为8MB；此记录没有优先级或日期。",
+              "explanation": "两条记录数值不同且无优先级或日期可裁定，故无法确定唯一上限。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "需由用户裁定采用哪一记录后再填写",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料仅说明记录冲突且无优先级或日期，未提及由用户裁定或填写流程。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict1",
+            "offset": 0,
+            "text": "【受控故障注入记录A，非真实产品配置】评测站点上传上限为2MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S2:0",
+            "title": "conflict2",
+            "offset": 0,
+            "text": "【受控故障注入记录B，非真实产品配置】同一评测站点上传上限为8MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 4782
+    },
+    {
+      "id": "x01",
+      "group": "冲突停止",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "评测站点上传上限待填写。两份同等权威记录存在冲突：一份记录为2MB，另一份记录为8MB，且均无优先级或日期可供裁定，因此无法确定唯一上限，需由用户裁定。",
+      "reason": "依据两份记录如实说明2MB与8MB的冲突，未自行选择其一，并明确需用户裁定。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 81,
+              "prompt_tokens": 498,
+              "total_tokens": 579,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 242
+            },
+            "duration_ms": 1134
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 301,
+              "prompt_tokens": 449,
+              "total_tokens": 750,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 193
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2665
+          }
+        ],
+        "evidence_audit": {
+          "status": "unavailable",
+          "warning": "证据核对未完成或输出未通过校验，请人工检查",
+          "findings": [],
+          "human_review_required": true
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict1",
+            "offset": 0,
+            "text": "【受控故障注入记录A，非真实产品配置】评测站点上传上限为2MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S2:0",
+            "title": "conflict2",
+            "offset": 0,
+            "text": "【受控故障注入记录B，非真实产品配置】同一评测站点上传上限为8MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 4757
+    },
+    {
+      "id": "x01",
+      "group": "冲突停止",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "error": "evidence_needed",
+      "error_message": "需要你补充信息：资料存在冲突：两份同等权威记录对同一评测站点给出不同上限（2MB 与 8MB），且均无优先级或日期可供裁定，构成直接冲突。按本轮要求不得自行择一，需用户裁定。 请确认采用哪份资料，或补充能消除冲突的依据。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 2369,
+              "total_tokens": 2438,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 321
+            },
+            "budget_slot": 0,
+            "duration_ms": 1770
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 203,
+              "prompt_tokens": 2813,
+              "total_tokens": 3016,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2432
+              },
+              "prompt_cache_hit_tokens": 2432,
+              "prompt_cache_miss_tokens": 381
+            },
+            "budget_slot": 1,
+            "duration_ms": 1218
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "conflict",
+          "requirements": [
+            {
+              "requirement": "评测站点上传上限的唯一数值",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "评测站点上传上限为2MB；此记录没有优先级或日期。"
+                },
+                {
+                  "ref": "S2:0",
+                  "quote": "同一评测站点上传上限为8MB；此记录没有优先级或日期。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "两份同等权威记录对同一评测站点给出不同上限（2MB 与 8MB），且均无优先级或日期可供裁定，构成直接冲突。按本轮要求不得自行择一，需用户裁定。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 90,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "评测站点 上传上限",
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ]
+          },
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 0,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "upload limit evaluation site",
+            "refs": []
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2"
+      },
+      "program_passed": true,
+      "duration_ms": 3005
+    },
+    {
+      "id": "x02",
+      "group": "冲突停止",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "正式并发配额待定：两份同等权威记录相互矛盾，一份记载为2个活跃导入，另一份记载为4个活跃导入，需请用户裁定后确定唯一配额。",
+      "reason": "两份资料对配额记载矛盾，按用户要求不擅自选定，保留待定并说明冲突及需用户裁定。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 74,
+              "prompt_tokens": 474,
+              "total_tokens": 548,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 218
+            },
+            "duration_ms": 832
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 200,
+              "prompt_tokens": 424,
+              "total_tokens": 624,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 168
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2243
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "两份同等权威记录相互矛盾",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料仅显示两份记录数值不同，未说明二者权威性是否同等，无法据此判断权威性关系。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "一份记载为2个活跃导入",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "正式并发配额是2个活跃导入",
+              "explanation": "S1明确记载正式并发配额为2个活跃导入。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "另一份记载为4个活跃导入",
+              "verdict": "supported",
+              "ref": "S2:0",
+              "quote": "同一环境正式并发配额是4个活跃导入",
+              "explanation": "S2明确记载同一环境正式并发配额为4个活跃导入。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "需请用户裁定后确定唯一配额",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未提及需由用户裁定或确定唯一配额的处理方式。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict3",
+            "offset": 0,
+            "text": "【受控故障注入】正式并发配额是2个活跃导入，版本无日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S2:0",
+            "title": "conflict4",
+            "offset": 0,
+            "text": "【受控故障注入】同一环境正式并发配额是4个活跃导入，版本无日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 3815
+    },
+    {
+      "id": "x02",
+      "group": "冲突停止",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "正式并发配额待定。两份同等权威记录相互矛盾：一份记载为2个活跃导入，另一份记载为4个活跃导入，版本均无日期。请用户裁定以哪份记录为准。",
+      "reason": "两份资料对配额记载矛盾，按用户要求不擅自选定，保留待定并明确列出两种说法、请求用户裁定。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 81,
+              "prompt_tokens": 474,
+              "total_tokens": 555,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 218
+            },
+            "duration_ms": 1279
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 389,
+              "prompt_tokens": 429,
+              "total_tokens": 818,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 173
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 3183
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "正式并发配额待定。",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料仅给出两份相互矛盾的配额记录，未说明配额待定，无法支持或反驳该状态判断。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "两份同等权威记录相互矛盾",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "【受控故障注入】正式并发配额是2个活跃导入，版本无日期。",
+              "explanation": "S1与S2均为受控故障注入记录，分别给出2和4个活跃导入，构成相互矛盾的两份记录；资料未标明权威等级差异，可支持同等权威的谨慎表述。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "一份记载为2个活跃导入",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "【受控故障注入】正式并发配额是2个活跃导入，版本无日期。",
+              "explanation": "S1逐字记载正式并发配额为2个活跃导入。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "另一份记载为4个活跃导入",
+              "verdict": "supported",
+              "ref": "S2:0",
+              "quote": "【受控故障注入】同一环境正式并发配额是4个活跃导入，版本无日期。",
+              "explanation": "S2逐字记载同一环境正式并发配额为4个活跃导入。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "版本均无日期",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "【受控故障注入】正式并发配额是2个活跃导入，版本无日期。",
+              "explanation": "S1与S2均明确记载版本无日期，可支持两份记录版本均无日期。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "请用户裁定以哪份记录为准。",
+              "verdict": "insufficient",
+              "ref": "",
+              "quote": "",
+              "explanation": "资料未包含任何关于由用户裁定或处理冲突的指令，无法支持或反驳该操作建议。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict3",
+            "offset": 0,
+            "text": "【受控故障注入】正式并发配额是2个活跃导入，版本无日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          },
+          {
+            "ref": "S2:0",
+            "title": "conflict4",
+            "offset": 0,
+            "text": "【受控故障注入】同一环境正式并发配额是4个活跃导入，版本无日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {},
+      "program_passed": null,
+      "duration_ms": 5198
+    },
+    {
+      "id": "x02",
+      "group": "冲突停止",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "error": "evidence_needed",
+      "error_message": "需要你补充信息：资料存在冲突：两份同等权威记录对同一环境的正式并发配额给出不同数值（2 个活跃导入 vs 4 个活跃导入），且均无版本日期可判断先后。按本轮要求，矛盾时须先由用户裁定，故不生成候选。 请确认采用哪份资料，或补充能消除冲突的依据。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 69,
+              "prompt_tokens": 2362,
+              "total_tokens": 2431,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 314
+            },
+            "budget_slot": 0,
+            "duration_ms": 1754
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 214,
+              "prompt_tokens": 2956,
+              "total_tokens": 3170,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 652
+            },
+            "budget_slot": 1,
+            "duration_ms": 1340
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "conflict",
+          "requirements": [
+            {
+              "requirement": "正式并发配额的唯一数值（两份同等权威记录）",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "正式并发配额是2个活跃导入，版本无日期。"
+                },
+                {
+                  "ref": "S2:0",
+                  "quote": "同一环境正式并发配额是4个活跃导入，版本无日期。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "两份同等权威记录对同一环境的正式并发配额给出不同数值（2 个活跃导入 vs 4 个活跃导入），且均无版本日期可判断先后。按本轮要求，矛盾时须先由用户裁定，故不生成候选。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 60,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "正式并发配额",
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ]
+          },
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 60,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "并发配额 数量 记录",
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2"
+      },
+      "program_passed": true,
+      "duration_ms": 3116
+    },
+    {
+      "id": "h01",
+      "group": "补充后完成",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "评测站点上传上限为2MB。",
+      "reason": "按用户裁定仅采用记录A，将待填写处填入A所述上限2MB。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 37,
+              "prompt_tokens": 410,
+              "total_tokens": 447,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 154
+            },
+            "duration_ms": 1037
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 65,
+              "prompt_tokens": 349,
+              "total_tokens": 414,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 221
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1761
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "评测站点上传上限为2MB。",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "评测站点上传上限为2MB；此记录没有优先级或日期。",
+              "explanation": "候选陈述与资料中的陈述逐字一致，构成直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict1",
+            "offset": 0,
+            "text": "【受控故障注入记录A，非真实产品配置】评测站点上传上限为2MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": true,
+        "不包含:8MB": true
+      },
+      "program_passed": true,
+      "duration_ms": 3501
+    },
+    {
+      "id": "h01",
+      "group": "补充后完成",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "评测站点上传上限为2MB。",
+      "reason": "按用户裁定仅采用记录A，将待填写处填入A给出的上限2MB。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 37,
+              "prompt_tokens": 410,
+              "total_tokens": 447,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 154
+            },
+            "duration_ms": 1052
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 66,
+              "prompt_tokens": 349,
+              "total_tokens": 415,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 221
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1654
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "评测站点上传上限为2MB。",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "评测站点上传上限为2MB；此记录没有优先级或日期。",
+              "explanation": "候选陈述与证据中的对应陈述逐字一致，构成直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:0",
+            "title": "conflict1",
+            "offset": 0,
+            "text": "【受控故障注入记录A，非真实产品配置】评测站点上传上限为2MB；此记录没有优先级或日期。",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": true,
+        "不包含:8MB": true
+      },
+      "program_passed": true,
+      "duration_ms": 3465
+    },
+    {
+      "id": "h01",
+      "group": "补充后完成",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "评测站点上传上限为2MB[S1:0]（依据记录A；该记录为受控故障注入记录，非真实产品配置）。",
+      "reason": "按用户裁定仅采用记录A，将待填写的上限填为2MB，并保留资料中“受控故障注入记录、非真实产品配置”的限定，避免把测试数据误当作真实配置。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 37,
+              "prompt_tokens": 2356,
+              "total_tokens": 2393,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 308
+            },
+            "budget_slot": 0,
+            "duration_ms": 1535
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 174,
+              "prompt_tokens": 2585,
+              "total_tokens": 2759,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 281
+            },
+            "budget_slot": 1,
+            "duration_ms": 1171
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 184,
+              "prompt_tokens": 2907,
+              "total_tokens": 3091,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2688
+              },
+              "prompt_cache_hit_tokens": 2688,
+              "prompt_cache_miss_tokens": 219
+            },
+            "budget_slot": 2,
+            "duration_ms": 1380
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 194,
+              "prompt_tokens": 3125,
+              "total_tokens": 3319,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2944
+              },
+              "prompt_cache_hit_tokens": 2944,
+              "prompt_cache_miss_tokens": 181
+            },
+            "budget_slot": 3,
+            "duration_ms": 1224
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 175,
+              "prompt_tokens": 3353,
+              "total_tokens": 3528,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3200
+              },
+              "prompt_cache_hit_tokens": 3200,
+              "prompt_cache_miss_tokens": 153
+            },
+            "budget_slot": 4,
+            "duration_ms": 1072
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 132,
+              "prompt_tokens": 372,
+              "total_tokens": 504,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 244
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 5,
+            "duration_ms": 1707
+          }
+        ],
+        "reserved_calls": 6,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": "正文引用标记与 citations 必须一一对应且不重复"
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": "正文引用标记与 citations 必须一一对应且不重复"
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "评测站点上传上限为2MB[S1:0]",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "评测站点上传上限为2MB",
+              "explanation": "候选中的数值陈述与证据记录A的逐字内容一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "该记录为受控故障注入记录，非真实产品配置",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "【受控故障注入记录A，非真实产品配置】",
+              "explanation": "证据明确标注该记录为受控故障注入记录，且非真实产品配置，与候选描述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "记录A中评测站点上传上限的数值",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "评测站点上传上限为2MB"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "用户已裁定只采用记录A，资料中记录A明确给出上限为2MB。资料标注为受控故障注入记录、非真实产品配置，故在正文中保留该限定说明，避免把测试数据当作真实配置。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 44,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "记录A 上传上限",
+            "refs": [
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:0",
+            "quote": "【受控故障注入记录A，非真实产品配置】评测站点上传上限为2MB",
+            "title": "conflict1",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2MB": true,
+        "不包含:8MB": true
+      },
+      "program_passed": true,
+      "duration_ms": 8127
+    },
+    {
+      "id": "h02",
+      "group": "补充后完成",
+      "strategy": "direct",
+      "semantic_review": "pending",
+      "text": "系统支持导入，每账户最多2个活跃导入、每天30次。",
+      "reason": "按当前产品说明改正“无限并发”的不实表述，补充活跃导入配额和每日次数；保留导入功能原意。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 53,
+              "prompt_tokens": 427,
+              "total_tokens": 480,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 171
+            },
+            "duration_ms": 1512
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 161,
+              "prompt_tokens": 374,
+              "total_tokens": 535,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 246
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 1942
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "系统支持导入",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建",
+              "explanation": "证据明确说明导入功能存在并描述其实现方式，直接支持“系统支持导入”。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "每账户最多2个活跃导入",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入",
+              "explanation": "证据逐字包含该限制，直接支持。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "每天30次",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每天30次",
+              "explanation": "证据逐字包含该频次限制，直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:151",
+            "title": "queue",
+            "offset": 151,
+            "text": "- 导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建；每账户最多2个活跃导入、每天30次、资料与记忆合计100项。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 4180
+    },
+    {
+      "id": "h02",
+      "group": "补充后完成",
+      "strategy": "workflow",
+      "semantic_review": "pending",
+      "text": "系统支持导入，每账户最多2个活跃导入、每天30次。",
+      "reason": "按当前产品说明改正“无限并发”的错误表述，明确活跃导入配额和每日次数。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 46,
+              "prompt_tokens": 427,
+              "total_tokens": 473,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 171
+            },
+            "duration_ms": 1073
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 161,
+              "prompt_tokens": 374,
+              "total_tokens": 535,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 246
+            },
+            "purpose": "evidence_audit",
+            "duration_ms": 2482
+          }
+        ],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "系统支持导入",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建",
+              "explanation": "证据明确说明导入功能存在并描述其实现方式，直接支持“系统支持导入”。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "每账户最多2个活跃导入",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入",
+              "explanation": "证据逐字包含该限制，直接支持。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "每天30次",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每天30次",
+              "explanation": "证据逐字包含该频次限制，直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence": [
+          {
+            "ref": "S1:151",
+            "title": "queue",
+            "offset": 151,
+            "text": "- 导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建；每账户最多2个活跃导入、每天30次、资料与记忆合计100项。\n",
+            "page": null,
+            "url": null,
+            "fetched_at": null,
+            "source_version": null,
+            "content_hash": null,
+            "index_id": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 4281
+    },
+    {
+      "id": "h02",
+      "group": "补充后完成",
+      "strategy": "agent",
+      "semantic_review": "pending",
+      "text": "系统对每个账户最多支持2个活跃导入，每天最多30次导入。[S1:151]",
+      "reason": "原稿“无限并发导入”与当前产品说明不符，按用户裁定采用当前说明，改为每账户最多2个活跃导入、每天30次。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 41,
+              "prompt_tokens": 2354,
+              "total_tokens": 2395,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 306
+            },
+            "budget_slot": 0,
+            "duration_ms": 1328
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 278,
+              "prompt_tokens": 2703,
+              "total_tokens": 2981,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 399
+            },
+            "budget_slot": 1,
+            "duration_ms": 1403
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 151,
+              "prompt_tokens": 3233,
+              "total_tokens": 3384,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2944
+              },
+              "prompt_cache_hit_tokens": 2944,
+              "prompt_cache_miss_tokens": 289
+            },
+            "budget_slot": 2,
+            "duration_ms": 888
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 89,
+              "prompt_tokens": 447,
+              "total_tokens": 536,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 256
+              },
+              "prompt_cache_hit_tokens": 256,
+              "prompt_cache_miss_tokens": 191
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 3,
+            "duration_ms": 1856
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:151"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "系统对每个账户最多支持2个活跃导入，每天最多30次导入。[S1:151]",
+              "verdict": "supported",
+              "ref": "S1:151",
+              "quote": "每账户最多2个活跃导入、每天30次、资料与记忆合计100项。",
+              "explanation": "证据明确写明每账户最多2个活跃导入、每天30次，与候选陈述一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "活跃导入配额（每账户最多2个活跃导入）",
+              "evidence": [
+                {
+                  "ref": "S1:151",
+                  "quote": "每账户最多2个活跃导入、每天30次、资料与记忆合计100项"
+                }
+              ]
+            },
+            {
+              "requirement": "每日导入次数（每天30次）",
+              "evidence": [
+                {
+                  "ref": "S1:151",
+                  "quote": "每账户最多2个活跃导入、每天30次、资料与记忆合计100项"
+                }
+              ]
+            },
+            {
+              "requirement": "原稿“无限并发导入”与当前说明不符，应删除",
+              "evidence": [
+                {
+                  "ref": "S1:151",
+                  "quote": "每账户最多2个活跃导入"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "当前产品说明明确给出每账户最多2个活跃导入、每天30次，足以替换原稿“无限并发导入”的说法；用户已裁定采用当前说明，无需再处理冲突草案。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "keyword",
+            "note": "关键词检索；未启用匹配的语义索引",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 141,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "活跃导入配额 每日次数 并发导入",
+            "refs": [
+              "S1:151",
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.2",
+        "citations": [
+          {
+            "ref": "S1:151",
+            "quote": "每账户最多2个活跃导入、每天30次、资料与记忆合计100项",
+            "title": "queue",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "checks": {
+        "包含:2": true,
+        "包含:30": true,
+        "不包含:无限": true
+      },
+      "program_passed": true,
+      "duration_ms": 5509
+    }
+  ]
+}

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "01writing"
-version = "4.0.0"
+version = "5.0.0"
 description = "一个带人工确认和修订记录的 AI 辅助写作工具"
 readme = "README.md"
 requires-python = ">=3.11"

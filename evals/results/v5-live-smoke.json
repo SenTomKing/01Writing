@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "checks": [
+    "实际模型识别冲突并暂停",
+    "新MD导入和向量化",
+    "新选择资料及补充生成",
+    "pgvector检索",
+    "旧任务保持原样",
+    "接受导出一致",
+    "重新登录读取",
+    "账户统计"
+  ],
+  "candidate": {
+    "text": "本次活动有效签到24人，已排除重复签到[S1:0]。",
+    "reason": "按用户确认的正式口径（记录B作废）及v5正式签到补充说明，将有效签到人数由20人修正为24人，保留“排除重复签到”条件，并压缩为一句话加引用。"
+  },
+  "parent_telemetry": {
+    "queue_ms": 2129,
+    "elapsed_ms": 12563,
+    "execution_ms": 10358,
+    "model_ms": 7563,
+    "save_flush_ms": 5,
+    "tool_ms": 92,
+    "retrieval_ms": 92,
+    "returned_calls": 2,
+    "reserved_calls": 2,
+    "unconfirmed_calls": 0,
+    "reported_tokens": 5755,
+    "metered_calls": 2,
+    "unmetered_calls": 0,
+    "retries": 0,
+    "amount": null,
+    "failure_stage": "evidence",
+    "fallbacks": 0,
+    "note": "Token仅统计供应商已返回用量；中断未返回、搜索和Embedding费用不在此计数。金额未配置，耗时可能部分重叠。"
+  },
+  "child_telemetry": {
+    "queue_ms": 1209,
+    "elapsed_ms": 9897,
+    "execution_ms": 8634,
+    "model_ms": 6900,
+    "save_flush_ms": 6,
+    "tool_ms": 1066,
+    "retrieval_ms": 1066,
+    "returned_calls": 4,
+    "reserved_calls": 4,
+    "unconfirmed_calls": 0,
+    "reported_tokens": 9445,
+    "metered_calls": 4,
+    "unmetered_calls": 0,
+    "retries": 0,
+    "amount": null,
+    "failure_stage": null,
+    "fallbacks": 0,
+    "note": "Token仅统计供应商已返回用量；中断未返回、搜索和Embedding费用不在此计数。金额未配置，耗时可能部分重叠。"
+  },
+  "statistics": {
+    "days": 30,
+    "tasks": 2,
+    "truncated": false,
+    "statuses": {
+      "accepted": 1,
+      "failed": 1
+    },
+    "acceptance_rate": 1.0,
+    "acceptance_denominator": 1,
+    "median_elapsed_ms": 11230.0,
+    "p95_elapsed_ms": 12563,
+    "reported_tokens": 15200,
+    "returned_calls": 6,
+    "unconfirmed_calls": 0,
+    "unmetered_calls": 0,
+    "retries": 0,
+    "fallbacks": 0,
+    "amount": null,
+    "note": "按任务创建时间统计，最多90天9000条；接受率分母仅含明确接受或拒绝的任务，不是模型准确率。Token不含搜索/Embedding及未返回用量。"
+  }
+}

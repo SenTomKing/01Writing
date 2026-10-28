@@ -60,6 +60,7 @@ def create_app(settings: Settings | None = None):
     @app.middleware("http")
     async def boundaries(request: Request, call_next):
         request_id = secrets.token_hex(12)
+        request.state.request_id = request_id
         if request.method in {"POST", "PATCH", "DELETE", "PUT"}:
             origin = request.headers.get("origin")
             if origin and origin.rstrip("/") not in settings.origins:
@@ -202,6 +203,7 @@ def create_app(settings: Settings | None = None):
     @app.delete("/api/v1/knowledge/{entry_id}", response_model=dto.MessageOut)
     def delete_knowledge(entry_id: UUID, request: Request, session: SessionDep):
         user = auth(request, session, True)
+        session.scalar(select(User).where(User.id == user.id).with_for_update())
         row = session.scalar(select(Knowledge).where(Knowledge.id == str(entry_id), Knowledge.user_id == user.id))
         if not row:
             raise HTTPException(404, "找不到资料或记忆")
@@ -315,7 +317,8 @@ def create_app(settings: Settings | None = None):
         user = auth(request, session, True)
         task = services.create_task(
             session, user.id, str(document_id), data.instruction, data.base_version_id, key, settings,
-            strategy=data.strategy, source_ids=data.source_ids, memory_ids=data.memory_ids, allow_web=data.allow_web
+            strategy=data.strategy, source_ids=data.source_ids, memory_ids=data.memory_ids, allow_web=data.allow_web,
+            request_id=request.state.request_id
         )
         return services.task_data(session, task)
 
@@ -358,7 +361,7 @@ def create_app(settings: Settings | None = None):
         old = services.owned_task(session, user.id, str(task_id))
         if old.status not in {"failed", "rejected"}:
             raise HTTPException(409, "只有失败或拒绝的任务可以重新生成")
-        previous = old.id if old.status == "rejected" else old.previous_task_id
+        previous = old.id if old.status == "rejected" else None
         task = services.create_task(
             session,
             user.id,
@@ -368,12 +371,31 @@ def create_app(settings: Settings | None = None):
             key,
             settings,
             previous_task_id=previous,
+            retry_task_id=old.id if old.status == "failed" else None,
+            request_id=request.state.request_id,
             strategy=old.strategy,
             allow_web=bool((old.context or {}).get("allow_web")),
             source_ids=[item["id"] for item in (old.context or {}).get("sources", [])],
             memory_ids=[item["id"] for item in (old.context or {}).get("memories", [])],
         )
         return services.task_data(session, task)
+
+    @app.post("/api/v1/tasks/{task_id}/clarify", response_model=dto.TaskOut, status_code=202)
+    def clarify(task_id: UUID, data: dto.Clarify, request: Request, session: SessionDep, key: Key):
+        user = auth(request, session, True)
+        old = services.owned_task(session, user.id, str(task_id))
+        task = services.create_task(session, user.id, old.document_id, old.instruction,
+            data.base_version_id, key, settings, strategy=old.strategy,
+            clarification_of=old.id, clarification=data.clarification,
+            source_ids=data.source_ids, memory_ids=data.memory_ids, allow_web=data.allow_web,
+            request_id=request.state.request_id)
+        return services.task_data(session, task)
+
+    @app.get("/api/v1/statistics")
+    def statistics(request: Request, session: SessionDep, days: int = Query(30, ge=1, le=90)):
+        from .telemetry import account_summary
+        user = auth(request, session)
+        return account_summary(session, user.id, days)
 
     @app.get("/api/v1/tasks/{task_id}/events")
     def events(task_id: UUID, request: Request, after: int = Query(0, ge=0)):
