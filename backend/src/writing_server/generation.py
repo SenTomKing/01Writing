@@ -47,11 +47,11 @@ def prompt_for(source, instruction, feedback):
         history.pop(0)
 
 
-def generate(settings, *, source, instruction, feedback, provider, model, strategy="workflow", on_call=None, context=None):
+def generate(settings, *, source, instruction, feedback, provider, model, strategy="workflow", on_call=None, context=None, retriever=None):
     if strategy == "agent":
         from .agent import run_agent
         return run_agent(settings, source=source, instruction=instruction, feedback=feedback,
-                         provider=provider, model=model, context=context, on_call=on_call)
+                         provider=provider, model=model, context=context, on_call=on_call, retriever=retriever)
     if strategy not in {"direct", "workflow"}:
         raise ModelFailure("unknown_strategy", "未知生成模式")
     if provider == "demo":
@@ -64,8 +64,8 @@ def generate(settings, *, source, instruction, feedback, provider, model, strate
     prompt = prompt_for(source, instruction, feedback)
     selected_evidence = []
     if context:
-        from .retrieval import retrieve
-        selected_evidence = retrieve(context.get("sources", []), source + " " + instruction, settings)["chunks"]
+        from .evidence_context import retrieve_evidence
+        selected_evidence = retrieve_evidence(context.get("sources", []), source + " " + instruction, settings, ranker=retriever)["chunks"]
         # 对照组获得同样授权的资料，避免仅 Agent 可见证据造成不公平比较。
         evidence = json.dumps({"sources": selected_evidence, "memories": context.get("memories", [])}, ensure_ascii=False)
         if len((prompt + evidence).encode("utf-8")) > 64_000:

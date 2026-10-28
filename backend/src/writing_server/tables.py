@@ -237,3 +237,32 @@ class ResearchJob(Base):
     dispatch_after: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class SourceIndex(Base):
+    __tablename__ = 'wa_source_indexes'
+    __table_args__ = (UniqueConstraint('user_id','fingerprint',name='wa_source_index_fingerprint'),
+                     UniqueConstraint('id','user_id',name='wa_source_index_owner'))
+    id: Mapped[str] = mapped_column(String(36),primary_key=True,default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey('wa_users.id'))
+    source_id: Mapped[str] = mapped_column(String(36))
+    fingerprint: Mapped[str] = mapped_column(String(64))
+    content_hash: Mapped[str] = mapped_column(String(64))
+    title: Mapped[str] = mapped_column(String(200))
+    embedding_id: Mapped[str] = mapped_column(String(64))
+    config: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True),default=now)
+
+
+class SourceChunk(Base):
+    from .vector_type import Vector
+    __tablename__ = 'wa_source_chunks'
+    __table_args__ = (ForeignKeyConstraint(['index_id','user_id'],['wa_source_indexes.id','wa_source_indexes.user_id'],ondelete='CASCADE'),
+                     CheckConstraint('"offset">=0 AND length(content)>0',name='wa_chunk_content'),
+                     Index('wa_chunk_owner_index','user_id','index_id'))
+    index_id: Mapped[str] = mapped_column(String(36),primary_key=True)
+    offset: Mapped[int] = mapped_column(Integer,primary_key=True)
+    user_id: Mapped[str] = mapped_column(String(36))
+    content: Mapped[str] = mapped_column(Text)
+    page: Mapped[int | None] = mapped_column(Integer)
+    embedding: Mapped[list | None] = mapped_column(Vector())

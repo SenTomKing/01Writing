@@ -1,0 +1,31 @@
+{
+  "dataset_sha256": "eae04475c1e582bab95a707de2eb7703a8da6aa5d24e138a51a909c580930369",
+  "runner_sha256": "43c97074857f61eaa82793cfb28a41d5262ed00bf088546110ca0cfe4e982c67",
+  "assembly_sha256": "d0910e3c51dfc449171b9e6fc8dd190fcb77a0342b5cb1194c0537cd8c8d1360",
+  "splitters": {
+    "boundary900_120": {
+      "mode": "boundary",
+      "size": 900,
+      "overlap": 120
+    },
+    "boundary300_60": {
+      "mode": "boundary",
+      "size": 300,
+      "overlap": 60
+    }
+  },
+  "models": {
+    "bge-m3": "BAAI/bge-m3",
+    "qwen3": "Qwen/Qwen3-Embedding-0.6B"
+  },
+  "body_budget": 1800,
+  "max_embedding_calls": 64,
+  "max_embedding_input_bytes": 900000,
+  "comparison": "同一候选排序，旧版前5片段按1800字符截断；新版前12候选装配最多6窗口。未选择测试集最优参数。",
+  "generation_cases": [
+    "stone-condition",
+    "sail-missing",
+    "moon-conflict",
+    "pine-fact"
+  ]
+}

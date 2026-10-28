@@ -1,0 +1,2098 @@
+{
+  "protocol": {
+    "dataset": "eae04475c1e582bab95a707de2eb7703a8da6aa5d24e138a51a909c580930369",
+    "runner": "25e8635434cd9ae11bd86f784a6ef13321eded62370f2a7e9646631e4222424f",
+    "old_agent": "f4b46ec503b80e9962909992de6cdcc2b86acdafa7819234566856a4a560b7f7",
+    "new_agent": "7992aacce771612f06fb7245962f6a4e2d53fc3fd9fdfe1fa72d871fd89fee6b",
+    "case_ids": [
+      "stone-condition",
+      "sail-missing",
+      "moon-conflict",
+      "pine-fact"
+    ],
+    "max_calls": 48,
+    "model": "deepseek-flash",
+    "temperature": 0.2
+  },
+  "rows": [
+    {
+      "id": "stone-condition",
+      "strategy": "v3",
+      "expected": "answer",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 1680,
+              "total_tokens": 1710,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1408
+              },
+              "prompt_cache_hit_tokens": 1408,
+              "prompt_cache_miss_tokens": 272
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 73,
+              "prompt_tokens": 1761,
+              "total_tokens": 1834,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1536
+              },
+              "prompt_cache_hit_tokens": 1536,
+              "prompt_cache_miss_tokens": 225
+            },
+            "budget_slot": 1
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 595,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "strategy": "agent",
+        "prompt_version": "agent-v3.0"
+      },
+      "elapsed_ms": 2983,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_G6SvXpPE0kjUb7tkobyc3781",
+          "content": "[{\"title\": \"归档记录09\", \"ref\": \"S1:0\", \"characters\": 3566}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_9uCKlvDWDsCJdQOCuHib8993",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_en7cJraPz7i78QLefCv50234",
+          "content": "{\"mode\": \"hybrid\", \"note\": \"关键词与语义排名融合（RRF）\", \"chunks\": [{\"ref\": \"S1:1528\", \"title\": \"归档记录09\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}, {\"ref\": \"S1:2306\", \"title\": \"归档记录09\", \"offset\": 2306, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}, {\"ref\": \"S1:3086\", \"title\": \"归档记录09\", \"offset\": 3086, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}, {\"ref\": \"S1:748\", \"title\": \"归档记录09\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}, {\"ref\": \"S1:0\", \"title\": \"归档记录09\", \"offset\": 0, \"text\": \"青石内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}]}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_0qGtAuQWqoGX8bjdmMk09666",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录09\", \"offset\": 0, \"text\": \"青石内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\"}"
+        }
+      ]
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "expected": "answer",
+      "status": "candidate",
+      "text": "有效回收问卷为86份。统计口径上，重复提交的答卷以及空白答卷不计入有效样本。[S1:1767]",
+      "reason": "原稿仅为“需依据材料核对”的占位表述，未给出实质信息。按资料补写有效回收问卷数量（86份）及统计口径中的例外情形（重复提交、空白答卷不计入有效样本），未添加资料之外的推断。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 2270,
+              "total_tokens": 2300,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 0
+              },
+              "prompt_cache_hit_tokens": 0,
+              "prompt_cache_miss_tokens": 2270
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 73,
+              "prompt_tokens": 2351,
+              "total_tokens": 2424,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2176
+              },
+              "prompt_cache_hit_tokens": 2176,
+              "prompt_cache_miss_tokens": 175
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 36,
+              "prompt_tokens": 3411,
+              "total_tokens": 3447,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1107
+            },
+            "budget_slot": 2
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 223,
+              "prompt_tokens": 3602,
+              "total_tokens": 3825,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3328
+              },
+              "prompt_cache_hit_tokens": 3328,
+              "prompt_cache_miss_tokens": 274
+            },
+            "budget_slot": 3
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 180,
+              "prompt_tokens": 4022,
+              "total_tokens": 4202,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3712
+              },
+              "prompt_cache_hit_tokens": 3712,
+              "prompt_cache_miss_tokens": 310
+            },
+            "budget_slot": 4
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 128,
+              "prompt_tokens": 618,
+              "total_tokens": 746,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 490
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 5
+          }
+        ],
+        "reserved_calls": 6,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 318,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "有效回收问卷为86份。",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "有效回收问卷为86份。",
+              "explanation": "候选陈述与证据S1:1767逐字一致，构成直接支持。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "统计口径上，重复提交的答卷以及空白答卷不计入有效样本。",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "重复提交的答卷以及空白答卷不计入有效样本。",
+              "explanation": "候选陈述与证据S1:1767逐字一致，构成直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "有效回收问卷的数量",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "有效回收问卷为86份。"
+                }
+              ]
+            },
+            {
+              "requirement": "统计口径中的例外情形（哪些答卷不计入有效样本）",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "重复提交的答卷以及空白答卷不计入有效样本。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出有效回收问卷为86份，并说明重复提交与空白答卷不计入有效样本，可支持数量与口径两项要求。原稿仅有“需依据材料核对”的占位表述，无实质内容，按资料补写。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 238,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "有效回收问卷 数量 例外 统计口径",
+            "refs": [
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748",
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0",
+        "citations": [
+          {
+            "ref": "S1:1767",
+            "quote": "有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。",
+            "title": "归档记录09",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "elapsed_ms": 7234,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_nbj9QMPuntixDl3BLhC03775",
+          "content": "[{\"title\": \"归档记录09\", \"ref\": \"S1:0\", \"characters\": 3566}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_kKbNueDphBj9NhQ1G9Fu8539",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_m5YV6wMMjCpY6x7ZetfD5532",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录09\", \"offset\": 1767, \"text\": \"\\n有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:2306\", \"title\": \"归档记录09\", \"offset\": 2306, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:3086\", \"title\": \"归档记录09\", \"offset\": 3086, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录09\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录09\", \"offset\": 0, \"text\": \"青石内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 238, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_KW9MqHfv1cpeeUTbu8Dv0580",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录09\", \"offset\": 0, \"text\": \"青石内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_bBpuWEFX7B7rWyjRqd3e9119",
+          "content": "{\"ref\": \"S1:1767\", \"title\": \"归档记录09\", \"offset\": 1767, \"text\": \"\\n有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_53MWaC3ZVa7rkFEruVsi9609",
+          "content": "{\"status\": \"sufficient\", \"requirements\": [{\"requirement\": \"有效回收问卷的数量\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"有效回收问卷为86份。\"}]}, {\"requirement\": \"统计口径中的例外情形（哪些答卷不计入有效样本）\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"重复提交的答卷以及空白答卷不计入有效样本。\"}]}], \"missing\": [], \"explanation\": \"资料明确给出有效回收问卷为86份，并说明重复提交与空白答卷不计入有效样本，可支持数量与口径两项要求。原稿仅有“需依据材料核对”的占位表述，无实质内容，按资料补写。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_kUgYaAne0Nl7Tt1Ecuhh1481",
+          "content": "{\"valid\": true, \"note\": \"仅程序校验通过；事实支持程度仍需人工核对\"}"
+        }
+      ]
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v3",
+      "expected": "clarify",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 1680,
+              "total_tokens": 1710,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1408
+              },
+              "prompt_cache_hit_tokens": 1408,
+              "prompt_cache_miss_tokens": 272
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 35,
+              "prompt_tokens": 1761,
+              "total_tokens": 1796,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1536
+              },
+              "prompt_cache_hit_tokens": 1536,
+              "prompt_cache_miss_tokens": 225
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 42,
+              "prompt_tokens": 2474,
+              "total_tokens": 2516,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1792
+              },
+              "prompt_cache_hit_tokens": 1792,
+              "prompt_cache_miss_tokens": 682
+            },
+            "budget_slot": 2
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 416,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "strategy": "agent",
+        "prompt_version": "agent-v3.0"
+      },
+      "elapsed_ms": 2802,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_CuUTFXNCg4n1yDFBhRhM3460",
+          "content": "[{\"title\": \"归档记录11\", \"ref\": \"S1:0\", \"characters\": 3563}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_pK4aIEWydGpycydeLUC69592",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_Jjr1G1ohyP79bAdajtU33566",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_Bdi2WyoTqO41GJFbonQK1822",
+          "content": "{\"mode\": \"hybrid\", \"note\": \"关键词与语义排名融合（RRF）\", \"chunks\": [{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}, {\"ref\": \"S1:1528\", \"title\": \"归档记录11\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n售后保修期限为24个月。人为损坏及耗材不属于免费维修范围。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}, {\"ref\": \"S1:748\", \"title\": \"归档记录11\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}, {\"ref\": \"S1:2303\", \"title\": \"归档记录11\", \"offset\": 2303, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}, {\"ref\": \"S1:3083\", \"title\": \"归档记录11\", \"offset\": 3083, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4",
+      "expected": "clarify",
+      "status": "evidence_needed",
+      "message": "需要你补充信息：授权资料（归档记录11）只包含材料接收、页码与附件核对等归档操作流程，并注明“不代表真实业务”，没有任何关于远帆方案的内容，也没有五年后成功率或预测依据的数据。因此我无法给出有依据的成功率数字，也不能编造预测依据。请补充以下任一材料：①远帆方案的目标、范围与实施条件说明；②用于推算五年后成功率的历史数据、试点结果或预测模型/假设；③若已有官方或第三方给出的成功率估计，请提供出处。收到后我再据此撰写并标注引用。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 2270,
+              "total_tokens": 2300,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 222
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 74,
+              "prompt_tokens": 2351,
+              "total_tokens": 2425,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2176
+              },
+              "prompt_cache_hit_tokens": 2176,
+              "prompt_cache_miss_tokens": 175
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 282,
+              "prompt_tokens": 3428,
+              "total_tokens": 3710,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1124
+            },
+            "budget_slot": 2
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 150,
+              "prompt_tokens": 3966,
+              "total_tokens": 4116,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3584
+              },
+              "prompt_cache_hit_tokens": 3584,
+              "prompt_cache_miss_tokens": 382
+            },
+            "budget_slot": 3
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 290,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "request_clarification",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "missing",
+          "requirements": [
+            {
+              "requirement": "远帆方案五年后的成功率数值",
+              "evidence": []
+            },
+            {
+              "requirement": "该成功率的预测依据（模型、假设、历史数据等）",
+              "evidence": []
+            },
+            {
+              "requirement": "远帆相关表述的事实依据",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "远帆内部操作记录，供本次合成评测使用，不代表真实业务。"
+                }
+              ]
+            }
+          ],
+          "missing": [
+            "远帆方案五年后成功率的任何数值或区间",
+            "该成功率的预测依据（预测方法、假设条件、历史数据或模型）",
+            "远帆方案本身的内容描述（目标、范围、实施条件）"
+          ],
+          "explanation": "授权资料仅有一份归档记录，内容为材料接收、页码与附件核对等归档操作流程，并声明“不代表真实业务”；检索到的片段均为重复的归档条目，未涉及远帆方案的成功率或预测依据。因此无法给出有依据的成功率数字，也不能编造预测依据。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 264,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "远帆 方案 成功率 预测依据 五年",
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:748",
+              "S1:2303",
+              "S1:3083"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0"
+      },
+      "elapsed_ms": 6087,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_8qsG1SxZe362chA39vOq5221",
+          "content": "[{\"title\": \"归档记录11\", \"ref\": \"S1:0\", \"characters\": 3563}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_sVir7XcgzDgB1BbFfTbP9552",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_hVCnHZWS6oE2xh3K76f06580",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录11\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录11\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:2303\", \"title\": \"归档记录11\", \"offset\": 2303, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:3083\", \"title\": \"归档记录11\", \"offset\": 3083, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 264, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_RL5Dd1eZFjD2Yw4yqCbk1606",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_kzd0gA0eXyKK1Qgp3BFi9510",
+          "content": "{\"status\": \"missing\", \"requirements\": [{\"requirement\": \"远帆方案五年后的成功率数值\", \"evidence\": []}, {\"requirement\": \"该成功率的预测依据（模型、假设、历史数据等）\", \"evidence\": []}, {\"requirement\": \"远帆相关表述的事实依据\", \"evidence\": [{\"ref\": \"S1:0\", \"quote\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\"}]}], \"missing\": [\"远帆方案五年后成功率的任何数值或区间\", \"该成功率的预测依据（预测方法、假设条件、历史数据或模型）\", \"远帆方案本身的内容描述（目标、范围、实施条件）\"], \"explanation\": \"授权资料仅有一份归档记录，内容为材料接收、页码与附件核对等归档操作流程，并声明“不代表真实业务”；检索到的片段均为重复的归档条目，未涉及远帆方案的成功率或预测依据。因此无法给出有依据的成功率数字，也不能编造预测依据。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_pUiiiG2NfOIo9FUO4yEv0168",
+          "content": "{\"stopped\": true, \"message\": \"已停止，等待用户补充资料或修改要求\"}"
+        }
+      ]
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v3",
+      "expected": "conflict",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 66,
+              "prompt_tokens": 1708,
+              "total_tokens": 1774,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1408
+              },
+              "prompt_cache_hit_tokens": 1408,
+              "prompt_cache_miss_tokens": 300
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 72,
+              "prompt_tokens": 3116,
+              "total_tokens": 3188,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1664
+              },
+              "prompt_cache_hit_tokens": 1664,
+              "prompt_cache_miss_tokens": 1452
+            },
+            "budget_slot": 1
+          }
+        ],
+        "reserved_calls": 2,
+        "trace": [
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 622,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2306",
+              "S2:0",
+              "S2:1528"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 344,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2306",
+              "S2:0",
+              "S2:1528",
+              "S2:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "strategy": "agent",
+        "prompt_version": "agent-v3.0"
+      },
+      "elapsed_ms": 3012,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_n1QsqAGbiNZiZGxQdM283640",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_vwYq4MWizKJDblGwDAAJ0127",
+          "content": "{\"ref\": \"S2:0\", \"title\": \"归档记录14\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_Mn36Iwd180MgXHIcsZ6D9841",
+          "content": "{\"mode\": \"hybrid\", \"note\": \"关键词与语义排名融合（RRF）\", \"chunks\": [{\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}, {\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}, {\"ref\": \"S2:0\", \"title\": \"归档记录14\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}, {\"ref\": \"S1:2306\", \"title\": \"归档记录13\", \"offset\": 2306, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}]}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_iETymuyLdUSAInTbSBmq6306",
+          "content": "{\"mode\": \"hybrid\", \"note\": \"关键词与语义排名融合（RRF）\", \"chunks\": [{\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}, {\"ref\": \"S2:0\", \"title\": \"归档记录14\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}, {\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}, {\"ref\": \"S2:748\", \"title\": \"归档记录14\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4",
+      "expected": "conflict",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 66,
+              "prompt_tokens": 2298,
+              "total_tokens": 2364,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 250
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 71,
+              "prompt_tokens": 3706,
+              "total_tokens": 3777,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1402
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 321,
+              "prompt_tokens": 5727,
+              "total_tokens": 6048,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3712
+              },
+              "prompt_cache_hit_tokens": 3712,
+              "prompt_cache_miss_tokens": 2015
+            },
+            "budget_slot": 2
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S2:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 8,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 290,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S1:748",
+              "S2:0",
+              "S2:1528",
+              "S2:1767",
+              "S2:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S1:748",
+              "S2:0",
+              "S2:1528",
+              "S2:1767",
+              "S2:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "conflict",
+          "requirements": [
+            {
+              "requirement": "两份同日记录中服务暂停阈值的数值",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。"
+                },
+                {
+                  "ref": "S2:1767",
+                  "quote": "服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。"
+                }
+              ]
+            },
+            {
+              "requirement": "两份记录是否一致（冲突时指出差异）",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "服务暂停阈值为5次。"
+                },
+                {
+                  "ref": "S2:1767",
+                  "quote": "服务暂停阈值为8次。"
+                }
+              ]
+            }
+          ],
+          "missing": [
+            "两份记录均未标注具体日期，无法确认二者是否为“同日”记录",
+            "资料未说明哪一份阈值有效，也未提供裁决依据"
+          ],
+          "explanation": "两份记录对服务暂停阈值给出不同数值（5次 vs 8次），构成冲突；累计规则表述一致。资料未标注日期，无法核实“同日”，也不足以判定哪一数值正确，故不选数，仅并列指出差异。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 274,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "服务暂停阈值 同日记录",
+            "refs": [
+              "S1:1767",
+              "S1:1528",
+              "S2:1767",
+              "S2:1528",
+              "S1:0",
+              "S1:28"
+            ]
+          },
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 302,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "暂停 阈值 数值",
+            "refs": [
+              "S1:1767",
+              "S1:1528",
+              "S2:1767",
+              "S2:1528",
+              "S1:748",
+              "S2:748"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0"
+      },
+      "elapsed_ms": 4656,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_SgIJOKGui6Qjuz5TW9fW2578",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_8inS07OB60oWeHOoZO3D3033",
+          "content": "{\"ref\": \"S2:0\", \"title\": \"归档记录14\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_fpo39RQbpASsDtspNXf39383",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录13\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S2:1767\", \"title\": \"归档记录14\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:28\", \"title\": \"归档记录13\", \"offset\": 28, \"text\": \"归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 274, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_9P8tgiRaDTF1QCfaJWt63829",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录13\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S2:1767\", \"title\": \"归档记录14\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录13\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S2:748\", \"title\": \"归档记录14\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 302, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_ogugMrt0uL1YhhqvgfMu0118",
+          "content": "{\"status\": \"conflict\", \"requirements\": [{\"requirement\": \"两份同日记录中服务暂停阈值的数值\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\"}, {\"ref\": \"S2:1767\", \"quote\": \"服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\"}]}, {\"requirement\": \"两份记录是否一致（冲突时指出差异）\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"服务暂停阈值为5次。\"}, {\"ref\": \"S2:1767\", \"quote\": \"服务暂停阈值为8次。\"}]}], \"missing\": [\"两份记录均未标注具体日期，无法确认二者是否为“同日”记录\", \"资料未说明哪一份阈值有效，也未提供裁决依据\"], \"explanation\": \"两份记录对服务暂停阈值给出不同数值（5次 vs 8次），构成冲突；累计规则表述一致。资料未标注日期，无法核实“同日”，也不足以判定哪一数值正确，故不选数，仅并列指出差异。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        }
+      ]
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v3",
+      "expected": "answer",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 1674,
+              "total_tokens": 1704,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1408
+              },
+              "prompt_cache_hit_tokens": 1408,
+              "prompt_cache_miss_tokens": 266
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 35,
+              "prompt_tokens": 1755,
+              "total_tokens": 1790,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1536
+              },
+              "prompt_cache_hit_tokens": 1536,
+              "prompt_cache_miss_tokens": 219
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 40,
+              "prompt_tokens": 2463,
+              "total_tokens": 2503,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 1664
+              },
+              "prompt_cache_hit_tokens": 1664,
+              "prompt_cache_miss_tokens": 799
+            },
+            "budget_slot": 2
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 547,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "strategy": "agent",
+        "prompt_version": "agent-v3.0"
+      },
+      "elapsed_ms": 3219,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_IDf8ezTRNLYWnfQPBYjk7009",
+          "content": "[{\"title\": \"归档记录15\", \"ref\": \"S1:0\", \"characters\": 3564}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_DuAA41yK7htQewBxSVUw5580",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_dTSSpoFNukukO4HBvlvC6878",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_1wCuAxEldVzihcFoB5R08217",
+          "content": "{\"mode\": \"hybrid\", \"note\": \"关键词与语义排名融合（RRF）\", \"chunks\": [{\"ref\": \"S1:1528\", \"title\": \"归档记录15\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n资料保留期限为180天。处于法定保全状态的资料暂不自动清除。该记录只描述当前处理规则，没有长期效果或未来计划。\\n复核备注01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}, {\"ref\": \"S1:2304\", \"title\": \"归档记录15\", \"offset\": 2304, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}, {\"ref\": \"S1:748\", \"title\": \"归档记录15\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目15：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目16：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目17：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目18：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目19：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目20：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目21：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}, {\"ref\": \"S1:3084\", \"title\": \"归档记录15\", \"offset\": 3084, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注23：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注24：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注25：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注27：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注28：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n复核备注29：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}, {\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目02：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目03：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目04：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目05：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目06：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目07：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目08：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目10：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目11：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目12：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n归档条目14：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\"}]}"
+        }
+      ]
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4",
+      "expected": "answer",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 30,
+              "prompt_tokens": 2264,
+              "total_tokens": 2294,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 216
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 67,
+              "prompt_tokens": 2345,
+              "total_tokens": 2412,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2176
+              },
+              "prompt_cache_hit_tokens": 2176,
+              "prompt_cache_miss_tokens": 169
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 36,
+              "prompt_tokens": 4057,
+              "total_tokens": 4093,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1753
+            },
+            "budget_slot": 2
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 254,
+              "prompt_tokens": 4241,
+              "total_tokens": 4495,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3968
+              },
+              "prompt_cache_hit_tokens": 3968,
+              "prompt_cache_miss_tokens": 273
+            },
+            "budget_slot": 3
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "list_sources",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "read_preferences",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 297,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 382,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "日志/资料的清除期限（保留多久后清除）",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "资料保留期限为180天。处于法定保全状态的资料暂不自动清除。"
+                }
+              ]
+            },
+            {
+              "requirement": "原文“松林相关表述”的性质：资料为合成评测用内部记录，不代表真实业务",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "松林内部操作记录，供本次合成评测使用，不代表真实业务。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出保留期限180天及法定保全状态不自动清除的例外；另说明该记录为合成评测材料，不代表真实业务。原文“松林相关表述需要依据材料核对”属待核对占位句，可据资料改写为具体期限说明。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 236,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "日志清除 保留期限",
+            "refs": [
+              "S1:1767",
+              "S1:2304",
+              "S1:748",
+              "S1:3084",
+              "S1:0"
+            ]
+          },
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 264,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "松林",
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0"
+      },
+      "elapsed_ms": 4976,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_UcvjwHR8PUzVdFfnqcez0385",
+          "content": "[{\"title\": \"归档记录15\", \"ref\": \"S1:0\", \"characters\": 3564}]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_euAvGnR1oJ9OYJ5GAJJu3579",
+          "content": "[]"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_kDlrG098cImdJvNZQvCZ3978",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录15\", \"offset\": 1767, \"text\": \"\\n资料保留期限为180天。处于法定保全状态的资料暂不自动清除。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:2304\", \"title\": \"归档记录15\", \"offset\": 2304, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录15\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:3084\", \"title\": \"归档记录15\", \"offset\": 3084, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 236, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_GeRJGuXV84AGkYXOwSGM8788",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录15\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:2304\", \"title\": \"归档记录15\", \"offset\": 2304, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:3084\", \"title\": \"归档记录15\", \"offset\": 3084, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录15\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 264, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_qupWo1EY8KbSF7IxFq178016",
+          "content": "{\"ref\": \"S1:1767\", \"title\": \"归档记录15\", \"offset\": 1767, \"text\": \"\\n资料保留期限为180天。处于法定保全状态的资料暂不自动清除。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_FLw3rVNY35EAZ6i0rRVb1896",
+          "content": "{\"status\": \"sufficient\", \"requirements\": [{\"requirement\": \"日志/资料的清除期限（保留多久后清除）\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"资料保留期限为180天。处于法定保全状态的资料暂不自动清除。\"}]}, {\"requirement\": \"原文“松林相关表述”的性质：资料为合成评测用内部记录，不代表真实业务\", \"evidence\": [{\"ref\": \"S1:0\", \"quote\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\"}]}], \"missing\": [], \"explanation\": \"资料明确给出保留期限180天及法定保全状态不自动清除的例外；另说明该记录为合成评测材料，不代表真实业务。原文“松林相关表述需要依据材料核对”属待核对占位句，可据资料改写为具体期限说明。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "id": "stone-condition",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1680,
+        "total_tokens": 1710,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1408
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 272
+      },
+      "elapsed_ms": 1545
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 73,
+        "prompt_tokens": 1761,
+        "total_tokens": 1834,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1536
+        },
+        "prompt_cache_hit_tokens": 1536,
+        "prompt_cache_miss_tokens": 225
+      },
+      "elapsed_ms": 776
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 2270,
+        "total_tokens": 2300,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2270
+      },
+      "elapsed_ms": 732
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 73,
+        "prompt_tokens": 2351,
+        "total_tokens": 2424,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2176
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 175
+      },
+      "elapsed_ms": 867
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 3411,
+        "total_tokens": 3447,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1107
+      },
+      "elapsed_ms": 674
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 223,
+        "prompt_tokens": 3602,
+        "total_tokens": 3825,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3328
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 274
+      },
+      "elapsed_ms": 1231
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 180,
+        "prompt_tokens": 4022,
+        "total_tokens": 4202,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3712
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 310
+      },
+      "elapsed_ms": 1477
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "audit",
+      "usage": {
+        "completion_tokens": 128,
+        "prompt_tokens": 618,
+        "total_tokens": 746,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 490
+      },
+      "elapsed_ms": 1858
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1680,
+        "total_tokens": 1710,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1408
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 272
+      },
+      "elapsed_ms": 805
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 35,
+        "prompt_tokens": 1761,
+        "total_tokens": 1796,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1536
+        },
+        "prompt_cache_hit_tokens": 1536,
+        "prompt_cache_miss_tokens": 225
+      },
+      "elapsed_ms": 778
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 42,
+        "prompt_tokens": 2474,
+        "total_tokens": 2516,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1792
+        },
+        "prompt_cache_hit_tokens": 1792,
+        "prompt_cache_miss_tokens": 682
+      },
+      "elapsed_ms": 754
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 2270,
+        "total_tokens": 2300,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 222
+      },
+      "elapsed_ms": 778
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 2351,
+        "total_tokens": 2425,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2176
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 175
+      },
+      "elapsed_ms": 1098
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 282,
+        "prompt_tokens": 3428,
+        "total_tokens": 3710,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1124
+      },
+      "elapsed_ms": 2186
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 150,
+        "prompt_tokens": 3966,
+        "total_tokens": 4116,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3584
+        },
+        "prompt_cache_hit_tokens": 3584,
+        "prompt_cache_miss_tokens": 382
+      },
+      "elapsed_ms": 1681
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 1708,
+        "total_tokens": 1774,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1408
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 300
+      },
+      "elapsed_ms": 897
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 3116,
+        "total_tokens": 3188,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 1452
+      },
+      "elapsed_ms": 1112
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 2298,
+        "total_tokens": 2364,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 250
+      },
+      "elapsed_ms": 952
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 3706,
+        "total_tokens": 3777,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1402
+      },
+      "elapsed_ms": 1118
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 321,
+        "prompt_tokens": 5727,
+        "total_tokens": 6048,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3712
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 2015
+      },
+      "elapsed_ms": 2245
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1674,
+        "total_tokens": 1704,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1408
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 266
+      },
+      "elapsed_ms": 821
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 35,
+        "prompt_tokens": 1755,
+        "total_tokens": 1790,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1536
+        },
+        "prompt_cache_hit_tokens": 1536,
+        "prompt_cache_miss_tokens": 219
+      },
+      "elapsed_ms": 989
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v3",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 2463,
+        "total_tokens": 2503,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 1664
+        },
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 799
+      },
+      "elapsed_ms": 810
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 2264,
+        "total_tokens": 2294,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 216
+      },
+      "elapsed_ms": 959
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 2345,
+        "total_tokens": 2412,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2176
+        },
+        "prompt_cache_hit_tokens": 2176,
+        "prompt_cache_miss_tokens": 169
+      },
+      "elapsed_ms": 795
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 4057,
+        "total_tokens": 4093,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1753
+      },
+      "elapsed_ms": 636
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 254,
+        "prompt_tokens": 4241,
+        "total_tokens": 4495,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3968
+        },
+        "prompt_cache_hit_tokens": 3968,
+        "prompt_cache_miss_tokens": 273
+      },
+      "elapsed_ms": 1842
+    }
+  ],
+  "embedding_calls_total": 24,
+  "embedding_tokens_total": 50792,
+  "chat_tokens": 75503
+}

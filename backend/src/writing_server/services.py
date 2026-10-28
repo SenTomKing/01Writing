@@ -74,6 +74,8 @@ def task_data(session, task):
         "evidence_audit": (attempts[-1].usage or {}).get("evidence_audit", {}) if attempts else {},
         "strategy": task.strategy,
         "trace": (task.checkpoint or {}).get("trace", []),
+        "evidence_assessment": (task.checkpoint or {}).get("evidence_assessment", {}),
+        "retrieval_history": (task.checkpoint or {}).get("retrieval_history", []),
         "citations": ((task.checkpoint or {}).get("result") or {}).get("citations", []),
         "context_items": [{"id": item["id"], "title": item["title"], "kind": kind, "url": (item.get("provenance") or {}).get("url"), "fetched_at": (item.get("provenance") or {}).get("fetched_at")}
                           for kind in ("sources", "memories") for item in (task.context or {}).get(kind, [])],
@@ -173,7 +175,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         raise HTTPException(429, "已达到每日任务上限")
     if strategy not in {"direct", "workflow", "agent"}:
         raise HTTPException(422, "未知生成模式")
-    if allow_web and (strategy != "agent" or not settings.search_key):
+    if allow_web and (strategy != "agent" or not settings.search_available):
         raise HTTPException(422, "联网研究需要Agent模式及服务端搜索配置")
     feedback = []
     if previous_task_id:
@@ -211,7 +213,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         feedback=feedback,
         provider=settings.provider,
         model=settings.model if settings.provider == "deepseek" else "demo-v1",
-        prompt_version="agent-v3.0" if strategy == "agent" else "revision-v3.0",
+        prompt_version="agent-v4.0.2" if strategy == "agent" else "revision-v3.0",
         strategy=strategy,
         context=context,
     )

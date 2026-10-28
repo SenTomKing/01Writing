@@ -42,9 +42,27 @@ class Settings:
     daily_tasks: int = 100
     static_dir: Path | None = None
     search_key: str = field(default="", repr=False)
+    search_provider: str = "auto"
     embedding_key: str = field(default="", repr=False)
     embedding_url: str = ""
     embedding_model: str = ""
+
+    @property
+    def effective_search_provider(self) -> str:
+        if self.search_provider == "auto":
+            if self.search_key:
+                return "tavily"
+            if self.provider == "deepseek" and self.api_key and self.base_url.rstrip("/") in {
+                "https://api.deepseek.com", "https://api.deepseek.com/v1"
+            }:
+                return "deepseek"
+            return "none"
+        return self.search_provider
+
+    @property
+    def search_available(self) -> bool:
+        provider = self.effective_search_provider
+        return bool((provider == "deepseek" and self.api_key) or (provider == "tavily" and self.search_key))
 
     @classmethod
     def load(cls) -> "Settings":
@@ -78,7 +96,11 @@ class Settings:
         provider = os.getenv("WRITING_PROVIDER", "demo")
         if provider not in {"demo", "deepseek"}:
             raise ValueError("WRITING_PROVIDER 必须为 demo 或 deepseek")
+        search_provider = os.getenv("WRITING_SEARCH_PROVIDER", "auto").strip().lower()
+        if search_provider not in {"auto", "none", "deepseek", "tavily"}:
+            raise ValueError("WRITING_SEARCH_PROVIDER 必须是 auto、none、deepseek 或 tavily")
         return cls(
+            search_provider=search_provider,
             search_key=os.getenv("TAVILY_API_KEY", ""),
             embedding_key=os.getenv("EMBEDDING_API_KEY", ""),
             embedding_url=os.getenv("EMBEDDING_BASE_URL", ""),

@@ -36,7 +36,7 @@ def save(session, user_id, values, entry_id=None):
             raise HTTPException(429, "每个账户最多保存 100 项资料与记忆")
         row = Knowledge(user_id=user_id)
         session.add(row)
-    if entry_id and row.content != values.content:
+    if entry_id and (row.content != values.content or row.title != values.title):
         row.provenance = {"kind": "edited", "original_url": (row.provenance or {}).get("url") or (row.provenance or {}).get("original_url")}
         row.chunk_index = {}
     for name in ("kind", "title", "content", "expires_at"):
@@ -58,10 +58,12 @@ def snapshot(session, user_id, source_ids, memory_ids):
             expiry = row.expires_at
             if expiry and expiry.replace(tzinfo=expiry.tzinfo or timezone.utc) <= now():
                 raise HTTPException(409, "所选记忆已过期，请更新或取消选择")
-            result[key].append(
-                {"id": row.id, "title": row.title, "content": row.content, "updated_at": row.updated_at.isoformat(),
-                 "provenance": row.provenance or {}, "chunk_index": row.chunk_index or {}}
-            )
+            source = {"id": row.id, "title": row.title, "content": row.content, "updated_at": row.updated_at.isoformat(),
+                      "provenance": row.provenance or {}, "chunk_index": row.chunk_index or {}}
+            if key == "sources":
+                from .vector_store import snapshot_index
+                source = snapshot_index(session, user_id, source)
+            result[key].append(source)
     return result
 
 
@@ -74,16 +76,17 @@ def terms(text):
 
 
 def chunks(sources):
-    from .retrieval import split_content
+    from .retrieval import split_content, valid_index
     for index, source in enumerate(sources, 1):
         provenance = source.get("provenance") or {}
-        pieces = (source.get("chunk_index") or {}).get("chunks")
+        pieces = valid_index(source).get("chunks")
         if not pieces:
             pieces = split_content(source["content"], provenance.get("pages", []))
         for piece in pieces:
             yield {"ref": f"S{index}:{piece['offset']}", "title": source["title"],
                    "offset": piece["offset"], "text": piece["text"], "page": piece.get("page"),
-                   "url": provenance.get("url"), "fetched_at": provenance.get("fetched_at")}
+                   "url": provenance.get("url"), "fetched_at": provenance.get("fetched_at"),
+                   "source_version": source.get("updated_at"), "content_hash": (source.get("chunk_index") or {}).get("hash")}
 
 
 def search(sources, query):

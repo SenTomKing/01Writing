@@ -1,0 +1,676 @@
+[
+  {
+    "config": "fixed300/none/keyword",
+    "id": "return-q8",
+    "query": "根据棠溪设备售后细则的2026现行版，同时核对：使用一年后电池坏了，能按整机两年的承诺免费更换吗？另外，搬到别的城市以后，原先的保修是不是就失效了？",
+    "gold": [
+      {
+        "doc_id": "return",
+        "start": 348,
+        "end": 387,
+        "quote": "标准设备保修两年，电池保修六个月；进水和擅自拆机造成的损坏不在免费保修范围内。"
+      },
+      {
+        "doc_id": "return",
+        "start": 966,
+        "end": 1003,
+        "quote": "跨地区送修不影响原有保修资格，但海外购买型号需要核验序列号和当地服务范围。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "return",
+        "ref": "S3:300",
+        "start": 300,
+        "end": 600
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:0",
+        "start": 0,
+        "end": 300
+      },
+      {
+        "doc_id": "return",
+        "ref": "S3:0",
+        "start": 0,
+        "end": 300
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:300",
+        "start": 300,
+        "end": 600
+      },
+      {
+        "doc_id": "return",
+        "ref": "S3:600",
+        "start": 600,
+        "end": 900
+      }
+    ],
+    "metrics": {
+      "context_chars": 1500,
+      "redundancy": 0.0,
+      "returned": 5,
+      "evidence_recall@1": 0.5,
+      "evidence_recall@3": 0.5,
+      "evidence_recall@5": 0.5,
+      "hit@5": 1.0,
+      "all_evidence@5": 0.0,
+      "mrr@5": 1.0,
+      "precision@5": 0.2,
+      "evidence_recall_budget1500": 0.5
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "citation-q6",
+    "query": "根据文澜引用核对规范的2026现行版，参考文献缺页码，可以让模型编一个看起来合理的吗？",
+    "gold": [
+      {
+        "doc_id": "citation",
+        "start": 1005,
+        "end": 1052,
+        "quote": "无法定位支持陈述的原始资料时，保留待核对标记并请求补充依据，不得生成不存在的作者、刊名或页码。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "citation",
+        "ref": "S4:0",
+        "start": 0,
+        "end": 892
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:0",
+        "start": 0,
+        "end": 861
+      },
+      {
+        "doc_id": "citation",
+        "ref": "S4:772",
+        "start": 772,
+        "end": 1052
+      },
+      {
+        "doc_id": "service_old",
+        "ref": "S2:0",
+        "start": 0,
+        "end": 896
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:741",
+        "start": 741,
+        "end": 1065
+      }
+    ],
+    "metrics": {
+      "context_chars": 3253,
+      "redundancy": 0.0737780510298186,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.3333333333333333,
+      "precision@5": 0.2,
+      "evidence_recall_budget1500": 0.0
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "citation-q8",
+    "query": "根据文澜引用核对规范的2026现行版，同时核对：两个研究都出现15，能直接说他们提升幅度完全一致吗？另外，参考文献缺页码，可以让模型编一个看起来合理的吗？",
+    "gold": [
+      {
+        "doc_id": "citation",
+        "start": 350,
+        "end": 396,
+        "quote": "成果A报告降低15个百分点，而成果B报告相对降低15%；二者不能在摘要中合并写成同一个幅度。"
+      },
+      {
+        "doc_id": "citation",
+        "start": 1005,
+        "end": 1052,
+        "quote": "无法定位支持陈述的原始资料时，保留待核对标记并请求补充依据，不得生成不存在的作者、刊名或页码。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "citation",
+        "ref": "S4:0",
+        "start": 0,
+        "end": 892
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:0",
+        "start": 0,
+        "end": 861
+      },
+      {
+        "doc_id": "citation",
+        "ref": "S4:772",
+        "start": 772,
+        "end": 1052
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:741",
+        "start": 741,
+        "end": 1065
+      },
+      {
+        "doc_id": "service_old",
+        "ref": "S2:0",
+        "start": 0,
+        "end": 896
+      }
+    ],
+    "metrics": {
+      "context_chars": 3253,
+      "redundancy": 0.0737780510298186,
+      "returned": 5,
+      "evidence_recall@1": 0.5,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 1.0,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.5
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "return-q6",
+    "query": "根据棠溪设备售后细则的2026现行版，搬到别的城市以后，原先的保修是不是就失效了？",
+    "gold": [
+      {
+        "doc_id": "return",
+        "start": 966,
+        "end": 1003,
+        "quote": "跨地区送修不影响原有保修资格，但海外购买型号需要核验序列号和当地服务范围。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "return",
+        "ref": "S3:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:0",
+        "start": 0,
+        "end": 875
+      },
+      {
+        "doc_id": "return",
+        "ref": "S3:743",
+        "start": 743,
+        "end": 1003
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:755",
+        "start": 755,
+        "end": 1015
+      },
+      {
+        "doc_id": "water_old",
+        "ref": "S5:0",
+        "start": 0,
+        "end": 876
+      }
+    ],
+    "metrics": {
+      "context_chars": 3134,
+      "redundancy": 0.07657945118059983,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.3333333333333333,
+      "precision@5": 0.2,
+      "evidence_recall_budget1500": 0.0
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "return-q8",
+    "query": "根据棠溪设备售后细则的2026现行版，同时核对：使用一年后电池坏了，能按整机两年的承诺免费更换吗？另外，搬到别的城市以后，原先的保修是不是就失效了？",
+    "gold": [
+      {
+        "doc_id": "return",
+        "start": 348,
+        "end": 387,
+        "quote": "标准设备保修两年，电池保修六个月；进水和擅自拆机造成的损坏不在免费保修范围内。"
+      },
+      {
+        "doc_id": "return",
+        "start": 966,
+        "end": 1003,
+        "quote": "跨地区送修不影响原有保修资格，但海外购买型号需要核验序列号和当地服务范围。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "return",
+        "ref": "S3:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:0",
+        "start": 0,
+        "end": 875
+      },
+      {
+        "doc_id": "return",
+        "ref": "S3:743",
+        "start": 743,
+        "end": 1003
+      },
+      {
+        "doc_id": "return_old",
+        "ref": "S8:755",
+        "start": 755,
+        "end": 1015
+      },
+      {
+        "doc_id": "grant_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 862
+      }
+    ],
+    "metrics": {
+      "context_chars": 3120,
+      "redundancy": 0.07692307692307687,
+      "returned": 5,
+      "evidence_recall@1": 0.5,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 1.0,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.5
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "water-q4",
+    "query": "根据澄湾水质监测记录的2026现行版，有两次测量不可信，能不能直接从档案里抹掉？",
+    "gold": [
+      {
+        "doc_id": "water",
+        "start": 660,
+        "end": 699,
+        "quote": "仪器校准失败当天的两条记录被标注为无效，统计均值时排除，但原始记录保留供追溯。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "water_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:743",
+        "start": 743,
+        "end": 1015
+      },
+      {
+        "doc_id": "water_old",
+        "ref": "S1:756",
+        "start": 756,
+        "end": 1028
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:0",
+        "start": 0,
+        "end": 861
+      }
+    ],
+    "metrics": {
+      "context_chars": 3144,
+      "redundancy": 0.07633587786259544,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.5,
+      "precision@5": 0.2,
+      "evidence_recall_budget1500": 0.0
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "water-q5",
+    "query": "根据澄湾水质监测记录的2026现行版，为什么不能把变化全部归功于岸线清理？",
+    "gold": [
+      {
+        "doc_id": "water",
+        "start": 813,
+        "end": 852,
+        "quote": "同期开展了岸线清理且气温发生变化；现有观察不能把溶解氧上升全部归因于清理工程。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "water_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:743",
+        "start": 743,
+        "end": 1015
+      },
+      {
+        "doc_id": "water_old",
+        "ref": "S1:756",
+        "start": 756,
+        "end": 1028
+      },
+      {
+        "doc_id": "return",
+        "ref": "S2:0",
+        "start": 0,
+        "end": 863
+      }
+    ],
+    "metrics": {
+      "context_chars": 3146,
+      "redundancy": 0.07628734901462175,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.5,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.0
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "water-q6",
+    "query": "根据澄湾水质监测记录的2026现行版，过了一个季节，已有结论还足够支持新的治理安排吗？",
+    "gold": [
+      {
+        "doc_id": "water",
+        "start": 972,
+        "end": 1015,
+        "quote": "该报告用于2026年春季阶段评估；若用于夏季管理决策，必须补充当季采样，不能直接沿用。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "water_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:743",
+        "start": 743,
+        "end": 1015
+      },
+      {
+        "doc_id": "water_old",
+        "ref": "S1:756",
+        "start": 756,
+        "end": 1028
+      },
+      {
+        "doc_id": "schedule",
+        "ref": "S3:0",
+        "start": 0,
+        "end": 863
+      }
+    ],
+    "metrics": {
+      "context_chars": 3146,
+      "redundancy": 0.07628734901462175,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.3333333333333333,
+      "precision@5": 0.2,
+      "evidence_recall_budget1500": 0.0
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "water-q7",
+    "query": "根据澄湾水质监测记录的2026现行版，同时核对：只在岸边采样，就能说全湖水质都是这个水平吗？另外，工程一做水质就变好，是否足够证明只有这个工程带来了效果？",
+    "gold": [
+      {
+        "doc_id": "water",
+        "start": 189,
+        "end": 229,
+        "quote": "新版报告覆盖三处沿岸测站，未设置湖心测站；结果描述对象是沿岸水体，不是整个湖泊。"
+      },
+      {
+        "doc_id": "water",
+        "start": 813,
+        "end": 852,
+        "quote": "同期开展了岸线清理且气温发生变化；现有观察不能把溶解氧上升全部归因于清理工程。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "water_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:743",
+        "start": 743,
+        "end": 1015
+      },
+      {
+        "doc_id": "water_old",
+        "ref": "S1:756",
+        "start": 756,
+        "end": 1028
+      },
+      {
+        "doc_id": "return",
+        "ref": "S2:0",
+        "start": 0,
+        "end": 863
+      }
+    ],
+    "metrics": {
+      "context_chars": 3146,
+      "redundancy": 0.07628734901462175,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.5,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.5
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "water-q8",
+    "query": "根据澄湾水质监测记录的2026现行版，同时核对：报告里的读数能说明大雨后的晚上也一样吗？另外，过了一个季节，已有结论还足够支持新的治理安排吗？",
+    "gold": [
+      {
+        "doc_id": "water",
+        "start": 350,
+        "end": 388,
+        "quote": "采样于连续四周的周二上午进行，未覆盖夜间或强降雨时段；时段差异尚待补充观察。"
+      },
+      {
+        "doc_id": "water",
+        "start": 972,
+        "end": 1015,
+        "quote": "该报告用于2026年春季阶段评估；若用于夏季管理决策，必须补充当季采样，不能直接沿用。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "water_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "water",
+        "ref": "S6:743",
+        "start": 743,
+        "end": 1015
+      },
+      {
+        "doc_id": "citation",
+        "ref": "S4:0",
+        "start": 0,
+        "end": 892
+      },
+      {
+        "doc_id": "citation_old",
+        "ref": "S7:0",
+        "start": 0,
+        "end": 861
+      }
+    ],
+    "metrics": {
+      "context_chars": 3764,
+      "redundancy": 0.03188097768331566,
+      "returned": 5,
+      "evidence_recall@1": 0.0,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 0.5,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.5
+    }
+  },
+  {
+    "config": "boundary900_120/bge-m3/rrf_keyword",
+    "id": "schedule-q8",
+    "query": "根据远帆共享实验室预约的2026现行版，同时核对：为了保险同时占住两台同类仪器可以吗？另外，被暂停使用之后要怎么重新取得预约资格，信用会回满吗？",
+    "gold": [
+      {
+        "doc_id": "schedule",
+        "start": 342,
+        "end": 383,
+        "quote": "普通设备最多提前七天预约，每次占用不超过三小时；同一账户不得重叠预约两台同类设备。"
+      },
+      {
+        "doc_id": "schedule",
+        "start": 973,
+        "end": 1017,
+        "quote": "信用分低于80时暂停预约；完成复训并经管理员复核后恢复到80分，不会自动恢复为100分。"
+      }
+    ],
+    "top5": [
+      {
+        "doc_id": "schedule",
+        "ref": "S5:0",
+        "start": 0,
+        "end": 863
+      },
+      {
+        "doc_id": "schedule_old",
+        "ref": "S7:0",
+        "start": 0,
+        "end": 876
+      },
+      {
+        "doc_id": "schedule",
+        "ref": "S5:743",
+        "start": 743,
+        "end": 1017
+      },
+      {
+        "doc_id": "schedule_old",
+        "ref": "S7:756",
+        "start": 756,
+        "end": 1030
+      },
+      {
+        "doc_id": "service_old",
+        "ref": "S1:0",
+        "start": 0,
+        "end": 896
+      }
+    ],
+    "metrics": {
+      "context_chars": 3183,
+      "redundancy": 0.07540056550424123,
+      "returned": 5,
+      "evidence_recall@1": 0.5,
+      "evidence_recall@3": 1.0,
+      "evidence_recall@5": 1.0,
+      "hit@5": 1.0,
+      "all_evidence@5": 1.0,
+      "mrr@5": 1.0,
+      "precision@5": 0.4,
+      "evidence_recall_budget1500": 0.5
+    }
+  }
+]

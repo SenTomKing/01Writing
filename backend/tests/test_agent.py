@@ -38,8 +38,8 @@ def tool(name, arguments):
 def test_demo_dynamic_path_citations_and_budget():
     result = run(context=CONTEXT)
     assert result.candidate.text == "本实验共有12个样本。 [S1:0]"
-    assert [step["tool"] for step in result.usage["trace"]] == ["read_preferences", "read_source", "submit_revision"]
-    assert result.usage["reserved_calls"] == 3
+    assert [step["tool"] for step in result.usage["trace"]] == ["read_preferences", "read_source", "assess_evidence", "submit_revision"]
+    assert result.usage["reserved_calls"] == 4
     assert result.usage["citations"][0]["quote"] in CONTEXT["sources"][0]["content"]
 
 
@@ -54,8 +54,8 @@ def test_interruption_resumes_saved_tool_selection_without_repeating_model():
     with pytest.raises(InterruptedError):
         run(context=CONTEXT, save=save)
     result = run(context=CONTEXT, checkpoint=snapshots[-1])
-    assert result.usage["reserved_calls"] == 3
-    assert len(result.usage["trace"]) == 3
+    assert result.usage["reserved_calls"] == 4
+    assert len(result.usage["trace"]) == 4
 
 
 def test_pre_call_reservation_survives_crash():

@@ -145,6 +145,7 @@ def test_web_tools_snapshot_and_partial_recovery(monkeypatch):
     def fetch(*args):counts['fetch']+=1;return '样本数为12。'.encode(),'text/plain','https://example.com/report'
     monkeypatch.setattr(agent,'search_web',search);monkeypatch.setattr(agent,'fetch_page',fetch)
     responses=[('search_web',{'query':'样本'}),('read_web',{'url':'https://example.com/report'}),
+        ('assess_evidence',{'status':'sufficient','requirements':[{'requirement':'样本数','evidence':[{'ref':'S1:0','quote':'样本数为12。'}]}],'missing':[],'explanation':'样本数量有逐字依据'}),
         ('submit_revision',{'text':'样本数为12。[S1:0]','reason':'按来源纠错','citations':[{'ref':'S1:0','quote':'样本数为12。'}]})]
     def completion(messages,tools):
         name,args=responses.pop(0)

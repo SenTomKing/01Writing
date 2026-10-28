@@ -650,6 +650,14 @@ export interface components {
             allow_web: boolean;
             /** Strategy */
             strategy: string;
+            /** Evidence Assessment */
+            evidence_assessment?: {
+                [key: string]: unknown;
+            };
+            /** Retrieval History */
+            retrieval_history?: {
+                [key: string]: unknown;
+            }[];
             /** Trace */
             trace: {
                 [key: string]: unknown;
