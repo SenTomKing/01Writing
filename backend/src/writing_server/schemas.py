@@ -106,6 +106,8 @@ class TaskOut(BaseModel):
     evidence_audit: dict = Field(default_factory=dict)
     allow_web: bool = False
     strategy: str
+    evidence_assessment: dict = Field(default_factory=dict)
+    retrieval_history: list[dict] = Field(default_factory=list)
     trace: list[dict]
     citations: list[dict]
     context_items: list[dict]

@@ -17,7 +17,7 @@ jobs:
       WRITING_REDIS_URL: redis://localhost:6379/0
     services:
       postgres:
-        image: postgres:17
+        image: pgvector/pgvector:pg17@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
         env:
           POSTGRES_USER: writing_owner
           POSTGRES_PASSWORD: ci-owner-password
@@ -42,6 +42,7 @@ jobs:
           uv run python - <<'PY'
           import psycopg
           with psycopg.connect('postgresql://writing_owner:ci-owner-password@localhost/writing') as connection:
+              connection.execute('CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public')
               connection.execute("CREATE ROLE writing_app LOGIN PASSWORD 'ci-app-password' NOSUPERUSER NOCREATEDB NOCREATEROLE")
               connection.execute('GRANT USAGE ON SCHEMA public TO writing_app')
               connection.execute('ALTER DEFAULT PRIVILEGES FOR ROLE writing_owner IN SCHEMA public GRANT SELECT,INSERT,UPDATE,DELETE ON TABLES TO writing_app')

@@ -10,6 +10,7 @@ from sqlalchemy import select, func
 from .extraction import extract
 from .network import fetch_page, public_url
 from .retrieval import build_index
+from .vector_store import persist_index
 from .tables import ResearchJob, Knowledge, User, now, uid
 
 
@@ -133,6 +134,7 @@ def process(db, settings, job_id):
                     session.add(entry)
             entry.chunk_index=index;entry.updated_at=now()
             session.flush()
+            persist_index(session,user_id,{'id':entry.id,'title':entry.title,'content':entry.content,'chunk_index':index})
             row.status,row.progress,row.knowledge_id,row.finished_at='succeeded','已保存，可勾选用于修订',entry.id,now()
             row.payload,row.claim_token={},None
         return True

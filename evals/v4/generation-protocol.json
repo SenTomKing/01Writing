@@ -1,0 +1,15 @@
+{
+  "dataset": "eae04475c1e582bab95a707de2eb7703a8da6aa5d24e138a51a909c580930369",
+  "runner": "25e8635434cd9ae11bd86f784a6ef13321eded62370f2a7e9646631e4222424f",
+  "old_agent": "f4b46ec503b80e9962909992de6cdcc2b86acdafa7819234566856a4a560b7f7",
+  "new_agent": "7992aacce771612f06fb7245962f6a4e2d53fc3fd9fdfe1fa72d871fd89fee6b",
+  "case_ids": [
+    "stone-condition",
+    "sail-missing",
+    "moon-conflict",
+    "pine-fact"
+  ],
+  "max_calls": 48,
+  "model": "deepseek-flash",
+  "temperature": 0.2
+}

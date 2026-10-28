@@ -122,7 +122,7 @@ def create_app(settings: Settings | None = None):
         try:
             with db.sessions() as session:
                 revision = session.scalar(text("SELECT version_num FROM alembic_version"))
-            if revision != "v3_research":
+            if revision != "v4_vectors":
                 raise ValueError("schema")
         except (SQLAlchemyError, ValueError):
             return JSONResponse({"status": "unavailable", "detail": "请检查数据库并先执行迁移"}, 503)

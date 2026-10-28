@@ -1,0 +1,148 @@
+{
+  "candidate": {
+    "text": "10月培训有24名学生完成有效签到，只统计有效签到者，不包含重复签到。[S1:1423]",
+    "reason": "依据资料将签到人数由20纠正为24，并保留“不包含重复签到”的统计条件，合并为一句中文表述。"
+  },
+  "evidence_assessment": {
+    "status": "sufficient",
+    "requirements": [
+      {
+        "requirement": "10月培训完成有效签到的人数（原稿为20，需按资料纠正）",
+        "evidence": [
+          {
+            "ref": "S1:1423",
+            "quote": "活动记录：10月培训有24名学生完成签到。"
+          }
+        ]
+      },
+      {
+        "requirement": "保留不包含重复签到的条件",
+        "evidence": [
+          {
+            "ref": "S1:1423",
+            "quote": "只统计有效签到者，不包含重复签到。"
+          }
+        ]
+      }
+    ],
+    "missing": [],
+    "explanation": "资料明确记载10月培训有24名学生完成签到，且只统计有效签到者、不包含重复签到，可据此将原稿的20改为24并保留该条件。",
+    "method": "模型判断＋摘录程序校验，仍可能判断错误"
+  },
+  "retrieval_history": [
+    {
+      "mode": "pgvector_exact",
+      "note": "数据库授权快照内精确余弦检索",
+      "context_version": "evidence-context-v4.0",
+      "body_chars": 66,
+      "body_budget": 1800,
+      "evidence_status": "unassessed",
+      "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+      "query": "10月培训 有效签到 人数 重复签到",
+      "refs": [
+        "S1:1423",
+        "S1:1549",
+        "S1:0"
+      ]
+    }
+  ],
+  "evidence_audit": {
+    "status": "reviewed",
+    "review_version": "evidence-v3.0.1",
+    "findings": [
+      {
+        "claim": "10月培训有24名学生完成有效签到",
+        "verdict": "supported",
+        "ref": "S1:1423",
+        "quote": "活动记录：10月培训有24名学生完成签到。只统计有效签到者，不包含重复签到。",
+        "explanation": "证据明确记载10月培训有24名学生完成签到，且只统计有效签到者，与候选陈述一致。",
+        "page": null,
+        "url": null
+      },
+      {
+        "claim": "只统计有效签到者，不包含重复签到",
+        "verdict": "supported",
+        "ref": "S1:1423",
+        "quote": "只统计有效签到者，不包含重复签到。",
+        "explanation": "证据逐字包含该统计口径说明，直接支持候选陈述。",
+        "page": null,
+        "url": null
+      }
+    ],
+    "human_review_required": true,
+    "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+  },
+  "calls": [
+    {
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 43,
+        "prompt_tokens": 2360,
+        "total_tokens": 2403,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 256
+        },
+        "prompt_cache_hit_tokens": 256,
+        "prompt_cache_miss_tokens": 2104
+      },
+      "budget_slot": 0
+    },
+    {
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 220,
+        "prompt_tokens": 3044,
+        "total_tokens": 3264,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 740
+      },
+      "budget_slot": 1
+    },
+    {
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 157,
+        "prompt_tokens": 3458,
+        "total_tokens": 3615,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3200
+        },
+        "prompt_cache_hit_tokens": 3200,
+        "prompt_cache_miss_tokens": 258
+      },
+      "budget_slot": 2
+    },
+    {
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 143,
+        "prompt_tokens": 459,
+        "total_tokens": 602,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 331
+      },
+      "purpose": "evidence_audit",
+      "budget_slot": 3
+    }
+  ],
+  "duration_ms": 7296,
+  "accepted_and_relogin_verified": true
+}

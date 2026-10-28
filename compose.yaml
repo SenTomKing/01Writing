@@ -24,7 +24,7 @@ x-backend: &backend
   restart: unless-stopped
 services:
   postgres:
-    image: postgres:17
+    image: pgvector/pgvector:pg17@sha256:ac08538c6f8b9904c33c8224c5e5706dbe760aca29db1d096972b4052c22a75d
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${WRITING_DB_ADMIN_PASSWORD:?请先生成 .env.deploy}

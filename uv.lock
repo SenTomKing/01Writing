@@ -10,7 +10,7 @@ resolution-markers = [
 
 [[package]]
 name = "01writing"
-version = "3.0.0"
+version = "4.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },

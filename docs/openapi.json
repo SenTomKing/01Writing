@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "01Writing",
-    "version": "3.0.0"
+    "version": "4.0.0"
   },
   "paths": {
     "/api/v1/meta": {
@@ -3280,6 +3280,19 @@
           "strategy": {
             "type": "string",
             "title": "Strategy"
+          },
+          "evidence_assessment": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evidence Assessment"
+          },
+          "retrieval_history": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Retrieval History"
           },
           "trace": {
             "items": {

@@ -2,20 +2,22 @@
 
 一个带人工确认、版本历史和后台任务的 AI 写作工作台。用户在网页中保存正文、提出修改要求、比较候选，接受后形成新版本；拒绝原因会进入下一轮修改。历史恢复追加快照，不覆盖旧稿。
 
-## v3.0
+## v4.0
 
-在 v2 的资料修订 Agent 上增加后台资料导入和独立证据核对。上传 TXT、Markdown、文字 PDF，或者粘贴公开网页链接；系统提取正文、建立索引、保存来源快照，再供用户勾选用于修订。候选展示引用摘录及“资料支持／与资料矛盾／依据不足”核对结果，正文仍需人工接受后更新。
+在资料导入与核对基础上增加 pgvector、预算内证据窗口和逐项证据判断。上传 TXT、Markdown、文字 PDF，或者粘贴公开网页链接；系统提取正文、建立索引、保存来源快照，再供用户勾选用于修订。候选展示引用摘录及“资料支持／与资料矛盾／依据不足”核对结果，正文仍需人工接受后更新。
 
 - 无额外服务密钥也能导入文件、抓取给定网页，使用关键词和中文双字匹配检索。网页不执行脚本，不绕过登录、付费墙或访问限制。
 - 文件／网页最多2MB、正文100,000字符、PDF最多80页。PDF提取在Linux容器的受限子进程中运行；扫描件没有OCR，Windows原生开发模式不运行PDF提取。
 - 导入走PostgreSQL任务＋Celery，支持进度、取消、有限恢复、同账户去重和索引重建；每账户最多2个活跃导入、每天30次、资料与记忆合计100项。
 - 来源保存URL／文件名、抓取时间、哈希和PDF页码。修订保存所选资料快照；后续编辑或删除资料不改变旧任务依据。
 - DeepSeek / Tavily 搜索：可直接复用官方 DeepSeek 密钥，也可配置 Tavily，并由用户逐任务勾选联网；Agent最多搜索2次、读取3页。搜索摘要只作线索，抓取的正文才作为引用依据。
-- 可选兼容OpenAI接口的Embedding服务：需配置独立地址、模型和密钥；新导入或重建索引后，按关键词与向量排名融合检索。检索服务失败明确退回关键词模式。当前向量保存在PostgreSQL JSON中并对授权快照计算相似度，未使用pgvector索引，不适用于大规模向量库。
+- 可选兼容OpenAI接口的Embedding服务：需配置独立地址、模型和密钥；新导入或重建索引后，按关键词与向量排名融合检索。检索服务失败明确退回关键词模式。新任务的向量保存到 PostgreSQL pgvector 片段表，先限定账户和任务授权的不可变索引，再精确计算余弦相似度。旧JSON索引在新建任务时迁入，不额外请求Embedding；暂未启用HNSW近似索引。
 - 独立证据核对最多检查12条陈述，核验摘录确实存在；它评估给定资料是否支持候选，不能保证资料本身真实，也不能替代人工审稿。失败明确显示未完成，不伪装为通过。
-- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、24,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。
+- 三种修订方式继续保留：直接生成、固定流程、Agent。Agent上限6次模型请求、48,000 token保守预算、单次执行120秒，独立核对也计入预算；不足时保留候选并提示未完成核对。
 
-实际验收及小样本对照见 [v3验收记录](evals/v3.0.0-验收记录.md)。当前只使用DeepSeek也能完成“导入→勾选→生成→核对→接受”；搜索和Embedding并非必填，网页会显示是否配置。
+v4增加逐项证据判断：检索结果最多装配6个窗口、正文合计1800字符，保留原文位置与相邻限定语。证据不足可继续补查或询问；识别到资料冲突直接暂停，请用户确认。网页展示判断和实际检索记录。模型判断仍可能漏项或误判。
+
+实际对照、失败样例及限制见 [v4量化验收](evals/v4.0.0-检索与证据判断验收.md)，历史 [v3验收](evals/v3.0.0-验收记录.md) 保留。当前只使用DeepSeek也能完成“导入→勾选→生成→核对→接受”；搜索和Embedding并非必填，网页会显示是否配置。
 
 ## 原有全栈功能
 
@@ -52,6 +54,18 @@ docker compose --env-file .env.deploy down
 
 `down` 保留数据库卷；不要使用 `down -v` 作为日常停止方式。容器初始化使用独立的 postgres 管理员；迁移使用 writing_owner，日常 API／任务使用 writing_app，两者均无超级用户权限。管理员密码只提供给数据库容器。已有数据卷不会再次运行初始化脚本，改环境变量不会自动重设旧库密码。升级前备份，更新代码后重新构建，迁移服务成功以后 API 才启动。
 
+## 从 v3 升级已有数据卷
+
+升级前先备份，确认没有运行中的修订或导入，再停止 API、worker、dispatcher。数据库镜像保持 PostgreSQL 17；不要换成比现有数据库更旧的次版本。已有数据卷不会重新执行初始化脚本，因此先更新 postgres 容器，再执行：
+
+```powershell
+docker compose --env-file .env.deploy exec -T postgres psql -U postgres -d writing -c "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;"
+docker compose --env-file .env.deploy run --rm migrate
+docker compose --env-file .env.deploy up -d --no-build
+```
+
+先构建好应用镜像后再安排短暂升级窗口。若 PostgreSQL 提示 collation version mismatch，先保持应用停止，由管理员执行 `REINDEX DATABASE writing;`，成功后再执行 `ALTER DATABASE writing REFRESH COLLATION VERSION;`。排序库变化时不能仅刷新版本号而不重建索引。账号、正文与历史保留；不可变索引保留旧任务依据，删除资料不会抹去已创建任务的快照。若迁移失败，停止升级并恢复旧应用；不要删除数据卷。长期数据清理策略尚待完善。
+
 ## 可选搜索和语义服务
 
 联网搜索默认可复用官方 DeepSeek 密钥；语义检索使用独立的 Embedding 服务。在服务端私有 `.env.deploy` 中按需添加，之后重新创建API、worker和dispatcher容器：
@@ -68,7 +82,7 @@ EMBEDDING_API_KEY=
 
 ## 本机开发：复用已安装的 PostgreSQL
 
-建议 Python 3.13、Node.js 24、pnpm 10.20。先准备 `writing` 数据库，迁移账户能建表，应用账户能读写；给迁移账户创建的新表和序列设置默认授权。连接参数放在 `.env.postgres.local`，模型参数可放在 `.env`，格式参考 `.env.example`。
+建议 Python 3.13、Node.js 24、pnpm 10.20。本机 PostgreSQL 还须安装 pgvector 扩展文件，由管理员在目标库执行 `CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;`；普通应用角色不需要超级用户权限。先准备 `writing` 数据库，迁移账户能建表，应用账户能读写；给迁移账户创建的新表和序列设置默认授权。连接参数放在 `.env.postgres.local`，模型参数可放在 `.env`，格式参考 `.env.example`。
 
 ```powershell
 uv sync --locked --extra test

@@ -107,6 +107,7 @@ def process_task(db, settings, task_id, generator=generate):
             model=task.model,
         )
         strategy, context, checkpoint = task.strategy, task.context, task.checkpoint
+        task_user_id = task.user_id
     started = time.monotonic()
     result, failure = None, None
     try:
@@ -122,9 +123,13 @@ def process_task(db, settings, task_id, generator=generate):
                     event(saved, row, "agent_step", message=message,
                           calls=state["reserved_calls"], tools=len(state["trace"]))
 
-            result = run_agent(settings, **arguments, context=context, checkpoint=checkpoint, save=save_checkpoint)
+            from .vector_store import task_ranker
+            result = run_agent(settings, **arguments, context=context, checkpoint=checkpoint, save=save_checkpoint,
+                               retriever=task_ranker(db, settings, task_id, task_user_id))
         elif generator is generate:
-            result = generator(settings, **arguments, strategy=strategy, context=context)
+            from .vector_store import task_ranker
+            result = generator(settings, **arguments, strategy=strategy, context=context,
+                               retriever=task_ranker(db, settings, task_id, task_user_id))
         else:
             result = generator(settings, **arguments)
         from writing_assistant.validation import validate_candidate

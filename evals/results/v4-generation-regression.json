@@ -1,0 +1,1280 @@
+{
+  "protocol": {
+    "dataset": "eae04475c1e582bab95a707de2eb7703a8da6aa5d24e138a51a909c580930369",
+    "runner": "4ad08d553faaf68636a4ca04a48da919cf0b4c6b1e2a5d0f943275fd481e6f3a",
+    "old_agent": "f4b46ec503b80e9962909992de6cdcc2b86acdafa7819234566856a4a560b7f7",
+    "new_agent": "6ecbe1e848f319a072c8d91f27cccf19fbdd6a27684abee9f23209815e3c79ab",
+    "case_ids": [
+      "stone-condition",
+      "sail-missing",
+      "moon-conflict",
+      "pine-fact"
+    ],
+    "max_calls": 24,
+    "model": "deepseek-flash",
+    "temperature": 0.2
+  },
+  "rows": [
+    {
+      "id": "stone-condition",
+      "strategy": "v4.0.1",
+      "expected": "answer",
+      "status": "candidate",
+      "text": "有效回收问卷为86份。统计口径上，重复提交的答卷以及空白答卷不计入有效样本。[S1:1767]",
+      "reason": "按资料补充有效问卷数量与统计口径：有效样本86份，重复提交与空白答卷不计入有效样本。原稿中“青石相关表述需要依据材料核对”为待办说明，已由核对结果替代。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 42,
+              "prompt_tokens": 2322,
+              "total_tokens": 2364,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 0
+              },
+              "prompt_cache_hit_tokens": 0,
+              "prompt_cache_miss_tokens": 2322
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 361,
+              "prompt_tokens": 3209,
+              "total_tokens": 3570,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 905
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 129,
+              "prompt_tokens": 618,
+              "total_tokens": 747,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 384
+              },
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 234
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 2
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 5,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "有效回收问卷为86份。",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "有效回收问卷为86份。",
+              "explanation": "候选陈述与证据S1:1767逐字一致，构成直接支持。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "统计口径上，重复提交的答卷以及空白答卷不计入有效样本。",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "重复提交的答卷以及空白答卷不计入有效样本。",
+              "explanation": "候选陈述与证据S1:1767中的相应句子一致，构成直接支持。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "有效回收问卷数量",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "有效回收问卷为86份。"
+                }
+              ]
+            },
+            {
+              "requirement": "例外情形与统计口径（哪些答卷不计入有效样本）",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "重复提交的答卷以及空白答卷不计入有效样本。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出有效问卷数量及不计入有效样本的两类例外，足以回答本轮要求。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 238,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "有效回收问卷 数量 例外 统计口径",
+            "refs": [
+              "S1:1767",
+              "S1:2306",
+              "S1:3086",
+              "S1:748",
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.1",
+        "citations": [
+          {
+            "ref": "S1:1767",
+            "quote": "有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。",
+            "title": "归档记录09",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "elapsed_ms": 5139,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_RvKYayuGKkhOtnPtoacf3452",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录09\", \"offset\": 1767, \"text\": \"\\n有效回收问卷为86份。重复提交的答卷以及空白答卷不计入有效样本。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:2306\", \"title\": \"归档记录09\", \"offset\": 2306, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:3086\", \"title\": \"归档记录09\", \"offset\": 3086, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录09\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录09\", \"offset\": 0, \"text\": \"青石内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"f760c5e4b0b63fc8cbdde04474a58df4e01f3ae89f23117b261e21affc8d6beb\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 238, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_UwlNCkDAemIz6gyuu9XH1064",
+          "content": "{\"status\": \"sufficient\", \"requirements\": [{\"requirement\": \"有效回收问卷数量\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"有效回收问卷为86份。\"}]}, {\"requirement\": \"例外情形与统计口径（哪些答卷不计入有效样本）\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"重复提交的答卷以及空白答卷不计入有效样本。\"}]}], \"missing\": [], \"explanation\": \"资料明确给出有效问卷数量及不计入有效样本的两类例外，足以回答本轮要求。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_2DRXlhHoptzi93W0YAPP7103",
+          "content": "{\"valid\": true, \"note\": \"仅程序校验通过；事实支持程度仍需人工核对\"}"
+        }
+      ]
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4.0.1",
+      "expected": "clarify",
+      "status": "evidence_needed",
+      "message": "需要你补充信息：授权资料《归档记录11》只有归档操作流程条目，并注明“不代表真实业务”，其中没有远帆方案的成功率数据或任何预测依据，因此无法给出“五年后成功率”的数值和依据。请补充以下任一项：①远帆方案的具体内容与目标；②五年后成功率的测算结果或区间；③预测依据（测算模型与假设、历史数据、专家判断等）。若暂时没有这些材料，我可以改为写明“该成功率目前无法确定，需待补充测算依据”，请确认是否按此处理。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 75,
+              "prompt_tokens": 2322,
+              "total_tokens": 2397,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 274
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 262,
+              "prompt_tokens": 3400,
+              "total_tokens": 3662,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1096
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 148,
+              "prompt_tokens": 3898,
+              "total_tokens": 4046,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3584
+              },
+              "prompt_cache_hit_tokens": 3584,
+              "prompt_cache_miss_tokens": 314
+            },
+            "budget_slot": 2
+          }
+        ],
+        "reserved_calls": 3,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 534,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "request_clarification",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:2303",
+              "S1:3083",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "missing",
+          "requirements": [
+            {
+              "requirement": "远帆方案五年后的成功率数值",
+              "evidence": []
+            },
+            {
+              "requirement": "该成功率的预测依据（模型、假设、历史数据等）",
+              "evidence": []
+            },
+            {
+              "requirement": "远帆相关表述的事实依据",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "远帆内部操作记录，供本次合成评测使用，不代表真实业务。"
+                }
+              ]
+            }
+          ],
+          "missing": [
+            "远帆方案的具体内容与目标",
+            "五年后成功率的数值或测算结果",
+            "成功率的预测依据（测算方法、假设条件、历史数据或专家判断）",
+            "资料中仅有归档操作流程条目，未涉及方案成效或成功率"
+          ],
+          "explanation": "授权资料《归档记录11》仅为归档操作流程记录，并声明不代表真实业务，未包含远帆方案的成功率或任何预测依据，无法据此给出数值或依据。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 264,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "远帆 方案 五年后 成功率 预测依据",
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:748",
+              "S1:2303",
+              "S1:3083"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.1"
+      },
+      "elapsed_ms": 4639,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_0uEQpzSf1nE8ePHgUJef6955",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录11\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录11\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:2303\", \"title\": \"归档记录11\", \"offset\": 2303, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}, {\"ref\": \"S1:3083\", \"title\": \"归档记录11\", \"offset\": 3083, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 264, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_GdqjZA9rRRqlhyyibiMc3346",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录11\", \"offset\": 0, \"text\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7b4e852a1b0aa1d9739e1a5dcfc32dea0dace6a5dfbb38402d1674b0816f31df\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_VPrKe97ZPwQ7oOdwUFRU1596",
+          "content": "{\"status\": \"missing\", \"requirements\": [{\"requirement\": \"远帆方案五年后的成功率数值\", \"evidence\": []}, {\"requirement\": \"该成功率的预测依据（模型、假设、历史数据等）\", \"evidence\": []}, {\"requirement\": \"远帆相关表述的事实依据\", \"evidence\": [{\"ref\": \"S1:0\", \"quote\": \"远帆内部操作记录，供本次合成评测使用，不代表真实业务。\"}]}], \"missing\": [\"远帆方案的具体内容与目标\", \"五年后成功率的数值或测算结果\", \"成功率的预测依据（测算方法、假设条件、历史数据或专家判断）\", \"资料中仅有归档操作流程条目，未涉及方案成效或成功率\"], \"explanation\": \"授权资料《归档记录11》仅为归档操作流程记录，并声明不代表真实业务，未包含远帆方案的成功率或任何预测依据，无法据此给出数值或依据。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_FOV8RKdKIAxkohMDMm4e4549",
+          "content": "{\"stopped\": true, \"message\": \"已停止，等待用户补充资料或修改要求\"}"
+        }
+      ]
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "expected": "conflict",
+      "status": "context_budget",
+      "message": "上下文或用量预算不足，请减少正文或资料",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 72,
+              "prompt_tokens": 2350,
+              "total_tokens": 2422,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 302
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 286,
+              "prompt_tokens": 4336,
+              "total_tokens": 4622,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 2032
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 286,
+              "prompt_tokens": 4647,
+              "total_tokens": 4933,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 4480
+              },
+              "prompt_cache_hit_tokens": 4480,
+              "prompt_cache_miss_tokens": 167
+            },
+            "budget_slot": 2
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 270,
+              "prompt_tokens": 4958,
+              "total_tokens": 5228,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 4736
+              },
+              "prompt_cache_hit_tokens": 4736,
+              "prompt_cache_miss_tokens": 222
+            },
+            "budget_slot": 3
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 358,
+              "prompt_tokens": 5472,
+              "total_tokens": 5830,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 5120
+              },
+              "prompt_cache_hit_tokens": 5120,
+              "prompt_cache_miss_tokens": 352
+            },
+            "budget_slot": 4
+          }
+        ],
+        "reserved_calls": 5,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 285,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 391,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "未通过",
+            "duration_ms": 14,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": "参数格式错误"
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": "参数格式错误"
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "未通过",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1528",
+              "S1:1767",
+              "S1:28",
+              "S2:0",
+              "S2:1528",
+              "S2:1767"
+            ],
+            "message": "请先逐项判断证据；缺失或冲突时继续补查，无法解决则请求补充"
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {},
+        "evidence_assessment": {
+          "status": "conflict",
+          "requirements": [
+            {
+              "requirement": "归档记录13中服务暂停阈值的数值",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。"
+                }
+              ]
+            },
+            {
+              "requirement": "归档记录14中服务暂停阈值的数值",
+              "evidence": [
+                {
+                  "ref": "S2:1767",
+                  "quote": "服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。"
+                }
+              ]
+            },
+            {
+              "requirement": "两份记录是否为同日记录",
+              "evidence": []
+            }
+          ],
+          "missing": [
+            "两份记录的具体日期，无法确认是否同日"
+          ],
+          "explanation": "两份资料对服务暂停阈值给出不同数值（5次与8次），构成冲突；但资料中未见日期信息，无法核实“同日”。修改稿将如实指出冲突与差异，不选定任一数值，并说明同日性无法确认。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 274,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "服务暂停阈值 记录",
+            "refs": [
+              "S1:1767",
+              "S1:1528",
+              "S2:1767",
+              "S2:1528",
+              "S1:0",
+              "S1:28"
+            ]
+          },
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 240,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "月桥 暂停阈值 同日",
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:1528",
+              "S2:1767",
+              "S2:1528",
+              "S2:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.1"
+      },
+      "elapsed_ms": 8703,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_HIkAKw7qtJfoBAfVVgH63937",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录13\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S2:1767\", \"title\": \"归档记录14\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:28\", \"title\": \"归档记录13\", \"offset\": 28, \"text\": \"归档条目01：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 274, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_6PRYNypKpfIvGIUXBbfa9669",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:0\", \"title\": \"归档记录13\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:1767\", \"title\": \"归档记录13\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S1:1528\", \"title\": \"归档记录13\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"c74829d1210ee1516777f5f268d801038acb36706102c68512b4a58e05b06cc4\", \"index_id\": null}, {\"ref\": \"S2:1767\", \"title\": \"归档记录14\", \"offset\": 1767, \"text\": \"\\n服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S2:1528\", \"title\": \"归档记录14\", \"offset\": 1528, \"text\": \"归档条目26：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}, {\"ref\": \"S2:0\", \"title\": \"归档记录14\", \"offset\": 0, \"text\": \"月桥内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"76229bc3b2473fcfacc9bed85d4a7b5e04628a1b8c2b85c61f2510b9d9cd910e\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 240, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_ebNilRDpTI4C63OEdKrs6280",
+          "content": "{\"error\": \"参数格式错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_ZfoyjUSL4hvsYNRZtn7W9156",
+          "content": "{\"error\": \"参数格式错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_GExavPnA0g2mLiRyi8s28826",
+          "content": "{\"status\": \"conflict\", \"requirements\": [{\"requirement\": \"归档记录13中服务暂停阈值的数值\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"服务暂停阈值为5次。只有连续失败才累计，成功一次就重新开始计数。\"}]}, {\"requirement\": \"归档记录14中服务暂停阈值的数值\", \"evidence\": [{\"ref\": \"S2:1767\", \"quote\": \"服务暂停阈值为8次。只有连续失败才累计，成功一次就重新开始计数。\"}]}, {\"requirement\": \"两份记录是否为同日记录\", \"evidence\": []}], \"missing\": [\"两份记录的具体日期，无法确认是否同日\"], \"explanation\": \"两份资料对服务暂停阈值给出不同数值（5次与8次），构成冲突；但资料中未见日期信息，无法核实“同日”。修改稿将如实指出冲突与差异，不选定任一数值，并说明同日性无法确认。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_lFkYyLaxw0tl3e95DMzf3445",
+          "content": "{\"error\": \"请先逐项判断证据；缺失或冲突时继续补查，无法解决则请求补充\"}"
+        }
+      ]
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4.0.1",
+      "expected": "answer",
+      "status": "candidate",
+      "text": "关于日志的清除时间：资料保留期限为180天，处于法定保全状态的资料暂不自动清除[S1:1767]。\n\n需要说明的是，上述内容出自“松林内部操作记录”，该记录供本次合成评测使用，不代表真实业务[S1:0]。原文中“松林相关表述需要依据材料核对”的待办事项，已按材料核对并改写为上述具体表述；如需用于正式业务场景，请以正式制度文件为准。",
+      "reason": "按本轮要求回答“日志过多久清除”，并依据资料将原稿中“松林相关表述需要依据材料核对”的待办说明改写为具体结论：保留期限180天、法定保全状态暂不自动清除；同时保留资料对自身性质的限定（合成评测材料、不代表真实业务），避免把评测材料当作真实业务规则。",
+      "usage": {
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 68,
+              "prompt_tokens": 2316,
+              "total_tokens": 2384,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2048
+              },
+              "prompt_cache_hit_tokens": 2048,
+              "prompt_cache_miss_tokens": 268
+            },
+            "budget_slot": 0
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 234,
+              "prompt_tokens": 3339,
+              "total_tokens": 3573,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 2304
+              },
+              "prompt_cache_hit_tokens": 2304,
+              "prompt_cache_miss_tokens": 1035
+            },
+            "budget_slot": 1
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 297,
+              "prompt_tokens": 3781,
+              "total_tokens": 4078,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 3456
+              },
+              "prompt_cache_hit_tokens": 3456,
+              "prompt_cache_miss_tokens": 325
+            },
+            "budget_slot": 2
+          },
+          {
+            "model": "deepseek-flash",
+            "usage": {
+              "completion_tokens": 179,
+              "prompt_tokens": 690,
+              "total_tokens": 869,
+              "completion_tokens_details": null,
+              "prompt_tokens_details": {
+                "audio_tokens": null,
+                "cache_write_tokens": null,
+                "cached_tokens": 128
+              },
+              "prompt_cache_hit_tokens": 128,
+              "prompt_cache_miss_tokens": 562
+            },
+            "purpose": "evidence_audit",
+            "budget_slot": 3
+          }
+        ],
+        "reserved_calls": 4,
+        "trace": [
+          {
+            "tool": "search_sources",
+            "outcome": "成功",
+            "duration_ms": 4,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "read_source",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "assess_evidence",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          },
+          {
+            "tool": "submit_revision",
+            "outcome": "成功",
+            "duration_ms": 0,
+            "refs": [
+              "S1:0",
+              "S1:1767",
+              "S1:2304",
+              "S1:3084",
+              "S1:748"
+            ],
+            "message": ""
+          }
+        ],
+        "web_sources": [],
+        "evidence_audit": {
+          "status": "reviewed",
+          "review_version": "evidence-v3.0.1",
+          "findings": [
+            {
+              "claim": "资料保留期限为180天",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "资料保留期限为180天。",
+              "explanation": "候选中的保留期限与证据原文一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "处于法定保全状态的资料暂不自动清除",
+              "verdict": "supported",
+              "ref": "S1:1767",
+              "quote": "处于法定保全状态的资料暂不自动清除。",
+              "explanation": "候选表述与证据原文完全一致。",
+              "page": null,
+              "url": null
+            },
+            {
+              "claim": "上述内容出自“松林内部操作记录”，该记录供本次合成评测使用，不代表真实业务",
+              "verdict": "supported",
+              "ref": "S1:0",
+              "quote": "松林内部操作记录，供本次合成评测使用，不代表真实业务。",
+              "explanation": "证据原文明确说明该记录供合成评测使用且不代表真实业务，候选引用一致。",
+              "page": null,
+              "url": null
+            }
+          ],
+          "human_review_required": true,
+          "warning": "模型辅助核对，最多12条陈述；可能遗漏或误判，不等于全文事实认证。"
+        },
+        "evidence_assessment": {
+          "status": "sufficient",
+          "requirements": [
+            {
+              "requirement": "日志/资料保留期限（多久清除）",
+              "evidence": [
+                {
+                  "ref": "S1:1767",
+                  "quote": "资料保留期限为180天。处于法定保全状态的资料暂不自动清除。"
+                }
+              ]
+            },
+            {
+              "requirement": "资料性质说明（松林相关表述依据）",
+              "evidence": [
+                {
+                  "ref": "S1:0",
+                  "quote": "松林内部操作记录，供本次合成评测使用，不代表真实业务。"
+                }
+              ]
+            }
+          ],
+          "missing": [],
+          "explanation": "资料明确给出保留期限180天及法定保全例外，并说明该记录为合成评测材料、不代表真实业务。原文“松林相关表述需要依据材料核对”属待办说明，可据资料改写为具体结论。",
+          "method": "模型判断＋摘录程序校验，仍可能判断错误"
+        },
+        "retrieval_history": [
+          {
+            "mode": "cached_exact",
+            "note": "评测内使用缓存向量精确余弦，生产数据库链路另测",
+            "context_version": "evidence-context-v4.0",
+            "body_chars": 236,
+            "body_budget": 1800,
+            "evidence_status": "unassessed",
+            "warning": "检索命中不表示证据充分；版本日期不表示事实更可信",
+            "query": "日志清除 保留期限",
+            "refs": [
+              "S1:1767",
+              "S1:2304",
+              "S1:748",
+              "S1:3084",
+              "S1:0"
+            ]
+          }
+        ],
+        "strategy": "agent",
+        "prompt_version": "agent-v4.0.1",
+        "citations": [
+          {
+            "ref": "S1:1767",
+            "quote": "资料保留期限为180天。处于法定保全状态的资料暂不自动清除。",
+            "title": "归档记录15",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          },
+          {
+            "ref": "S1:0",
+            "quote": "松林内部操作记录，供本次合成评测使用，不代表真实业务。",
+            "title": "归档记录15",
+            "page": null,
+            "url": null,
+            "fetched_at": null
+          }
+        ]
+      },
+      "elapsed_ms": 6342,
+      "tool_outputs": [
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_P2CA1DUVwDDMXfmPUkQ61430",
+          "content": "{\"mode\": \"cached_exact\", \"note\": \"评测内使用缓存向量精确余弦，生产数据库链路另测\", \"chunks\": [{\"ref\": \"S1:1767\", \"title\": \"归档记录15\", \"offset\": 1767, \"text\": \"\\n资料保留期限为180天。处于法定保全状态的资料暂不自动清除。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:2304\", \"title\": \"归档记录15\", \"offset\": 2304, \"text\": \"复核备注09：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:748\", \"title\": \"归档记录15\", \"offset\": 748, \"text\": \"归档条目13：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:3084\", \"title\": \"归档记录15\", \"offset\": 3084, \"text\": \"复核备注22：材料接收后由经办人员核对页码、附件完整性和签收手续。缺少附件的记录退回补充，未签字的文件不进入归档清单。\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}, {\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}], \"context_version\": \"evidence-context-v4.0\", \"body_chars\": 236, \"body_budget\": 1800, \"evidence_status\": \"unassessed\", \"warning\": \"检索命中不表示证据充分；版本日期不表示事实更可信\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_01_imtalb3esr30RdxJA2tr9148",
+          "content": "{\"ref\": \"S1:0\", \"title\": \"归档记录15\", \"offset\": 0, \"text\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\\n\", \"page\": null, \"url\": null, \"fetched_at\": null, \"source_version\": \"2026-10-01T00:00:00Z\", \"content_hash\": \"7f97c94b70c397d19ef423265d772423e4b34b6be68515804d8bab4338c6768c\", \"index_id\": null}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_lBq3kKSgnx4GQAQVcsju6315",
+          "content": "{\"status\": \"sufficient\", \"requirements\": [{\"requirement\": \"日志/资料保留期限（多久清除）\", \"evidence\": [{\"ref\": \"S1:1767\", \"quote\": \"资料保留期限为180天。处于法定保全状态的资料暂不自动清除。\"}]}, {\"requirement\": \"资料性质说明（松林相关表述依据）\", \"evidence\": [{\"ref\": \"S1:0\", \"quote\": \"松林内部操作记录，供本次合成评测使用，不代表真实业务。\"}]}], \"missing\": [], \"explanation\": \"资料明确给出保留期限180天及法定保全例外，并说明该记录为合成评测材料、不代表真实业务。原文“松林相关表述需要依据材料核对”属待办说明，可据资料改写为具体结论。\", \"method\": \"模型判断＋摘录程序校验，仍可能判断错误\"}"
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_uuFFycKkResHlKHXZPZc9842",
+          "content": "{\"valid\": true, \"note\": \"仅程序校验通过；事实支持程度仍需人工核对\"}"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "id": "stone-condition",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 42,
+        "prompt_tokens": 2322,
+        "total_tokens": 2364,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2322
+      },
+      "elapsed_ms": 1468
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 361,
+        "prompt_tokens": 3209,
+        "total_tokens": 3570,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 905
+      },
+      "elapsed_ms": 1871
+    },
+    {
+      "id": "stone-condition",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "audit",
+      "usage": {
+        "completion_tokens": 129,
+        "prompt_tokens": 618,
+        "total_tokens": 747,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 384
+        },
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 234
+      },
+      "elapsed_ms": 1762
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 2322,
+        "total_tokens": 2397,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 274
+      },
+      "elapsed_ms": 879
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 262,
+        "prompt_tokens": 3400,
+        "total_tokens": 3662,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1096
+      },
+      "elapsed_ms": 1689
+    },
+    {
+      "id": "sail-missing",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 148,
+        "prompt_tokens": 3898,
+        "total_tokens": 4046,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3584
+        },
+        "prompt_cache_hit_tokens": 3584,
+        "prompt_cache_miss_tokens": 314
+      },
+      "elapsed_ms": 1495
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 2350,
+        "total_tokens": 2422,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 302
+      },
+      "elapsed_ms": 1063
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 286,
+        "prompt_tokens": 4336,
+        "total_tokens": 4622,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 2032
+      },
+      "elapsed_ms": 1696
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 286,
+        "prompt_tokens": 4647,
+        "total_tokens": 4933,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 4480
+        },
+        "prompt_cache_hit_tokens": 4480,
+        "prompt_cache_miss_tokens": 167
+      },
+      "elapsed_ms": 1580
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 270,
+        "prompt_tokens": 4958,
+        "total_tokens": 5228,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 4736
+        },
+        "prompt_cache_hit_tokens": 4736,
+        "prompt_cache_miss_tokens": 222
+      },
+      "elapsed_ms": 1338
+    },
+    {
+      "id": "moon-conflict",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 358,
+        "prompt_tokens": 5472,
+        "total_tokens": 5830,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 5120
+        },
+        "prompt_cache_hit_tokens": 5120,
+        "prompt_cache_miss_tokens": 352
+      },
+      "elapsed_ms": 2270
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 2316,
+        "total_tokens": 2384,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2048
+        },
+        "prompt_cache_hit_tokens": 2048,
+        "prompt_cache_miss_tokens": 268
+      },
+      "elapsed_ms": 894
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 234,
+        "prompt_tokens": 3339,
+        "total_tokens": 3573,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 2304
+        },
+        "prompt_cache_hit_tokens": 2304,
+        "prompt_cache_miss_tokens": 1035
+      },
+      "elapsed_ms": 1641
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "agent",
+      "usage": {
+        "completion_tokens": 297,
+        "prompt_tokens": 3781,
+        "total_tokens": 4078,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 3456
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 325
+      },
+      "elapsed_ms": 1816
+    },
+    {
+      "id": "pine-fact",
+      "strategy": "v4.0.1",
+      "status": "ok",
+      "purpose": "audit",
+      "usage": {
+        "completion_tokens": 179,
+        "prompt_tokens": 690,
+        "total_tokens": 869,
+        "completion_tokens_details": null,
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cache_write_tokens": null,
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 562
+      },
+      "elapsed_ms": 1944
+    }
+  ],
+  "embedding_calls_total": 27,
+  "embedding_tokens_total": 50829,
+  "chat_tokens": 50725
+}

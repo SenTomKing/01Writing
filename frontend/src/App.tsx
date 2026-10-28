@@ -42,7 +42,7 @@ export default function App() {
       <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
     <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing 3.0 <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    <footer className="footer">01Writing {meta.data?.version??'4.0.0'} <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 
@@ -140,7 +140,9 @@ function Editor({doc}:{doc:Doc}) {
         {active.status==='rejected'&&<><p className="feedback">你的反馈：{active.rejection_reason}</p><button className="primary" disabled={action.isPending||dirty} onClick={retry}>根据反馈重新生成</button></>}
         {active.status==='failed'&&<button disabled={action.isPending||dirty} onClick={retry}>重新尝试</button>}
         {!!active.context_items?.length&&<details><summary>本次使用的资料与记忆</summary>{active.context_items.map((item,index)=><p key={index}>{String(item.title)}</p>)}</details>}
-        {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({search_web:'搜索公开资料',read_web:'读取网页',request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
+        {!!active.trace?.length&&<details open><summary>Agent 执行步骤</summary><ol>{active.trace.map((step,index)=><li key={index}>{({assess_evidence:'判断证据是否充分',search_web:'搜索公开资料',read_web:'读取网页',request_clarification:'请求补充信息',list_sources:'查看资料目录',search_sources:'检索参考资料',read_source:'读取证据',read_preferences:'读取写作记忆',check_revision:'检查候选',submit_revision:'提交候选'} as Record<string,string>)[String(step.tool)]??String(step.tool)} · {String(step.outcome)} {String(step.message??'')}</li>)}</ol></details>}
+        {!!active.evidence_assessment?.status&&<section><h3>证据是否充分</h3><p>{({sufficient:'已有依据，可形成候选',missing:'仍有信息缺口',conflict:'资料存在冲突'} as Record<string,string>)[String(active.evidence_assessment.status)]}</p><p>{String(active.evidence_assessment.explanation??'')}</p><p className="muted">这是模型的判断，摘录已做程序校验；接受前仍请核对关键事实。</p></section>}
+        {!!active.retrieval_history?.length&&<details><summary>检索与上下文记录</summary>{active.retrieval_history.map((item,index)=><p key={index}>{String(item.query)} · {String(item.note)} · 本次带入{String(item.body_chars)}字符／预算{String(item.body_budget)}字符</p>)}</details>}
         <EvidenceAudit report={active.evidence_audit??{}}/>
         {!!active.citations?.length&&<section className="citations"><h3>引用依据</h3><p className="muted">摘录与来源已核对；摘录是否支持结论仍请你判断。</p>{active.citations.map((item,index)=><blockquote key={index}><strong>[{String(item.ref)}] {String(item.title)}</strong><p>{String(item.quote)}</p></blockquote>)}</section>}
         {!!active.runs.length&&<details className="run-details"><summary>运行记录 · {active.runs.length} 次尝试</summary>{active.runs.map(run=><div key={run.number}><strong>第 {run.number} 次 · {run.model}</strong><p>结果：{run.outcome} · 耗时：{run.duration_ms??'未知'} 毫秒</p><p>提示词版本：{run.prompt_version}</p><pre>{run.usage?JSON.stringify(run.usage,null,2):'演示模式或供应商未提供用量'}</pre></div>)}</details>}
