@@ -24,6 +24,11 @@ def main():
     importer = commands.add_parser("import-json", help="显式导入旧版项目 JSON，保留源文件")
     importer.add_argument("file", type=Path)
     importer.add_argument("--username", required=True)
+    cleaner = commands.add_parser("cleanup-indexes", help="预览孤立索引；只有--apply实际清理")
+    cleaner.add_argument("--username", required=True)
+    cleaner.add_argument("--days", type=int, default=7)
+    cleaner.add_argument("--limit", type=int, default=100)
+    cleaner.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     settings = Settings.load()
     if args.command == "migrate":
@@ -31,6 +36,19 @@ def main():
         try:
             db.migrate()
             print("数据库迁移完成")
+        finally:
+            db.close()
+    elif args.command == "cleanup-indexes":
+        from sqlalchemy import select
+        from .tables import User
+        from .maintenance import cleanup_indexes
+        db = Database(settings)
+        try:
+            with db.sessions.begin() as session:
+                user = session.scalar(select(User).where(User.username==args.username))
+                if not user: parser.error("找不到账户")
+                print(json.dumps(cleanup_indexes(session, user.id, days=args.days, limit=args.limit,
+                    apply=args.apply), ensure_ascii=False, indent=2))
         finally:
             db.close()
     elif args.command == "serve":

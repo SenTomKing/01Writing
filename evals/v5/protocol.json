@@ -1,0 +1,24 @@
+{
+  "dataset_sha256": "53984096d137878f26b4574105379756d4d12e3de99a43fab5d247ece527433d",
+  "model": "configured DeepSeek",
+  "strategies": [
+    "direct",
+    "workflow",
+    "agent"
+  ],
+  "trials": 36,
+  "max_requests": 150,
+  "concurrency": 1,
+  "max_total_reported_tokens": 300000,
+  "tuning": "本批次不用于调参；首次完整结果全部保留，不择优重跑。",
+  "metrics": [
+    "program_checks",
+    "pause_or_explicit_uncertainty",
+    "semantic_review_by_assistant",
+    "reported_tokens",
+    "duration_ms"
+  ],
+  "limits": "12题小样本、单次采样、项目产品说明领域；不是通用基准。词项断言不理解否定；语义复核是助手人工式审读，不是独立真人盲评或用户接受率。",
+  "comparability": "三策略获得相同选中资料，Agent可调用工具；基线没有暂停接口，缺口题允许明确不确定性并请求补充。h类隔离评估补充后的生成质量；真实父子任务链另外做API/浏览器验收。",
+  "fees": "只调用聊天模型；评测禁用搜索和Embedding。保留原文及调用记录。未配置计价金额为null。"
+}

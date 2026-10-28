@@ -158,3 +158,12 @@ def test_resumed_checkpoint_keeps_prompt_provenance(recorded):
     result = run(context=CONTEXT, checkpoint=checkpoint)
     assert result.usage["prompt_version"] == "agent-v2.0"
     assert result.usage["reserved_calls"] == 3
+
+
+def test_skipped_evidence_audit_does_not_invent_a_model_call():
+    sent = []
+    result = run_agent(SETTINGS, source="正文啊", instruction="只删除啊", feedback=[],
+        provider="deepseek", model="scripted", context={}, on_call=lambda: sent.append(1),
+        completion=lambda *_: tool("submit_revision", {"text":"正文", "reason":"删除啊", "citations":[]}))
+    assert len(sent) == result.usage["reserved_calls"] == len(result.usage["calls"]) == 1
+    assert result.usage["evidence_audit"]["status"] == "unavailable"

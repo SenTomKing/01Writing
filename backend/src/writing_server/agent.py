@@ -293,6 +293,7 @@ def run_agent(
         persist(current, "正在分析下一步动作")
         if on_call:
             on_call()
+        call_started = time.monotonic()
         if completion:
             response = completion(deepcopy(current["messages"]), available_tools)
         elif provider == "demo":
@@ -341,6 +342,7 @@ def run_agent(
                 "model": response.get("model", model),
                 "usage": response.get("usage"),
                 "budget_slot": len(reservations) - 1,
+                "duration_ms": int((time.monotonic() - call_started) * 1000),
             }
         )
         current["messages"].append({"role": "assistant", "content": message.get("content"), "tool_calls": calls})
@@ -484,6 +486,10 @@ def run_agent(
                 result["evidence_audit"] = evidence.unavailable("上次证据核对中断，未重复调用；请人工核对")
             elif provider == "demo":
                 result["evidence_audit"] = evidence.unavailable("离线演示不提供语义核验")
+            elif not result["seen"]:
+                result["evidence_audit"] = evidence.unavailable("没有参考证据，未进行事实核验")
+            elif len(candidate.text) > 12000:
+                result["evidence_audit"] = evidence.unavailable("候选过长，未进行完整证据核对，请分段修订")
             elif result["reserved_calls"] >= MAX_CALLS or time.monotonic() + 25 >= deadline:
                 result["evidence_audit"] = evidence.unavailable("剩余调用或时间预算不足，未进行证据核对")
             else:
@@ -500,9 +506,10 @@ def run_agent(
                     result["reserved_calls"] += 1
                     result["token_reservations"].append(audit_bound)
                     persist(result, "正在独立核对候选证据")
+                    audit_started = time.monotonic()
                     report, measured = evidence.audit(settings, candidate.text, list(result["seen"].values()), provider=provider, model=model, on_call=on_call)
                     result["evidence_audit"] = report
-                    result["calls"].append({"model": model, "usage": measured, "purpose": "evidence_audit", "budget_slot": len(result["token_reservations"])-1})
+                    result["calls"].append({"model": model, "usage": measured, "purpose": "evidence_audit", "budget_slot": len(result["token_reservations"])-1, "duration_ms": int((time.monotonic()-audit_started)*1000)})
             persist(result, "证据核对结束，等待人工决定")
         return Generation(candidate, usage(result) | {"citations": result["result"]["citations"]})
     finally:

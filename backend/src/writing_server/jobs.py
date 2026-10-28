@@ -62,7 +62,14 @@ def dispatch(db, sender):
             except Exception:
                 # 不把 broker 地址、密码或供应商异常原文记录到事件。
                 task.dispatch_after = now() + timedelta(seconds=5)
+                # 一次持续故障只保留首个事件，避免每五秒写一行无限增长。
+                if not (task.context or {}).get("broker_unavailable"):
+                    task.context = {**(task.context or {}), "broker_unavailable": True}
+                    event(session, task, "dispatch_failed", code="broker_unavailable", message="队列暂时不可用，任务已保存在数据库")
                 continue
+            if (task.context or {}).get("broker_unavailable"):
+                task.context = {**task.context, "broker_unavailable": False}
+                event(session, task, "dispatch_restored", message="队列连接已恢复")
             task.dispatch_after = now() + timedelta(seconds=30)
             sent += 1
     return sent
@@ -108,6 +115,10 @@ def process_task(db, settings, task_id, generator=generate):
         )
         strategy, context, checkpoint = task.strategy, task.context, task.checkpoint
         task_user_id = task.user_id
+        clarifications = (context or {}).get("clarifications", [])
+        if clarifications:
+            arguments["instruction"] += "\n\n用户后续补充（最新说明优先；不得将缺失的证据当作已核实事实）：\n" + "\n".join(
+                f"第 {i} 轮待确认：{item.get('question', '')}\n用户补充：{item['text']}" for i, item in enumerate(clarifications, 1))
     started = time.monotonic()
     result, failure = None, None
     try:
@@ -120,6 +131,9 @@ def process_task(db, settings, task_id, generator=generate):
                     if row.status != "running" or row.claim_token != token or row.lease_until <= now():
                         raise ModelFailure("claim_lost", "任务已取消或执行权已过期")
                     row.checkpoint = state
+                    live = saved.scalar(select(Attempt).where(Attempt.claim_token == token))
+                    if live:
+                        live.usage = {"calls": state.get("calls", []), "reserved_calls": state.get("reserved_calls", 0)}
                     event(saved, row, "agent_step", message=message,
                           calls=state["reserved_calls"], tools=len(state["trace"]))
 
@@ -140,6 +154,7 @@ def process_task(db, settings, task_id, generator=generate):
     except Exception:
         failure = ModelFailure("generation_failed", "生成过程失败，请稍后重试")
     duration = int((time.monotonic() - started) * 1000)
+    save_started = time.monotonic()
     with db.sessions.begin() as session:
         task = session.scalar(select(Task).where(Task.id == task_id).with_for_update())
         attempt = session.scalar(select(Attempt).where(Attempt.claim_token == token))
@@ -169,4 +184,6 @@ def process_task(db, settings, task_id, generator=generate):
             task.status, task.finished_at, task.error_code, task.error_message = "review", now(), None, None
             attempt.outcome = "succeeded"
             event(session, task, "review", message="候选已保存，等待人工确认")
+        session.flush()
+        attempt.usage = {**(attempt.usage or {}), "save_flush_ms": int((time.monotonic()-save_started)*1000)}
     return True

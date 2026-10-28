@@ -52,6 +52,14 @@ class CreateTask(Input):
     base_version_id: str = Field(pattern=r"^[0-9a-f-]{36}$")
 
 
+class Clarify(Input):
+    clarification: Instruction
+    base_version_id: str = Field(pattern=r"^[0-9a-f-]{36}$")
+    source_ids: list[str] = Field(default_factory=list, max_length=8)
+    memory_ids: list[str] = Field(default_factory=list, max_length=8)
+    allow_web: bool = False
+
+
 class Reject(Input):
     reason: Instruction
 
@@ -103,6 +111,8 @@ class RunOut(BaseModel):
 
 
 class TaskOut(BaseModel):
+    clarification: dict = Field(default_factory=dict)
+    telemetry: dict = Field(default_factory=dict)
     evidence_audit: dict = Field(default_factory=dict)
     allow_web: bool = False
     strategy: str
