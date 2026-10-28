@@ -109,7 +109,7 @@ def create_app(settings: Settings | None = None):
     @app.get("/api/v1/meta", response_model=dto.MetaOut)
     def meta():
         return {
-            "web_search_available": bool(settings.search_key),
+            "web_search_available": bool(settings.search_available),
             "semantic_search_available": bool(settings.embedding_key and settings.embedding_url and settings.embedding_model),
             "version": __version__,
             "provider": settings.provider,

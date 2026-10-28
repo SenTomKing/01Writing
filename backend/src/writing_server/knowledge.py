@@ -74,10 +74,10 @@ def terms(text):
 
 
 def chunks(sources):
-    from .retrieval import split_content
+    from .retrieval import split_content, valid_index
     for index, source in enumerate(sources, 1):
         provenance = source.get("provenance") or {}
-        pieces = (source.get("chunk_index") or {}).get("chunks")
+        pieces = valid_index(source).get("chunks")
         if not pieces:
             pieces = split_content(source["content"], provenance.get("pages", []))
         for piece in pieces:

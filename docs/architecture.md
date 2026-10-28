@@ -44,7 +44,7 @@ TaskEvent 保存状态事件，Attempt 保存尝试、模型、提示词版本�
 
 ## Agent 执行与依据
 
-创建任务时按账户归属读取所选资料和记忆，将当时内容保存为任务快照。模型只看到授权目录，通过只读工具检索片段、读取原文和偏好。当前检索采用关键词与中文双字匹配，不依赖向量数据库。每份资料分成最多900字符的连续片段，优先按段落及PDF页边界切分，引用编号记录资料序号与字符起点；编号仅在该任务快照内有效。
+创建任务时按账户归属读取所选资料和记忆，将当时内容保存为任务快照。模型只看到授权目录，通过只读工具检索片段、读取原文和偏好。当前检索采用关键词与中文双字匹配，并可结合语义向量，不依赖专用向量数据库。新索引每份资料分成最多900字符的片段，优先按段落、句末及PDF页边界切分，同页相邻片段最多重叠120字符，引用编号记录资料序号与字符起点；编号仅在该任务快照内有效。
 
 LangGraph 调度模型节点和工具节点。参数用严格模型校验，工具只能访问当前快照；没有任意SQL、本地文件或代码执行入口；联网只通过单独授权的受限搜索／抓取工具。模型可先检查候选再提交，也可因证据不足请求补充信息并停止。引用标记必须对应已经读取的原文，摘录必须逐字存在；这不能证明摘录语义支持结论，因此仍保留人工核对和接受。
 
@@ -67,8 +67,8 @@ LangGraph 调度模型节点和工具节点。参数用严格模型校验，工�
 
 给定URL抓取不需要搜索API。网络层校验协议、默认端口、凭据、域名和所有DNS解析IP，并固定连接到已校验地址，HTTPS仍验证原域名证书；跳转重新验证。正文最多2MB，不执行JavaScript，不转发用户Cookie。读取有8秒socket超时与25秒循环时间检查；DNS和整体进程还受worker任务时间上限约束，不把循环检查描述为严格25秒总截止时间。PDF通过Linux子进程限制内存512MB、CPU15秒及父进程20秒等待；不支持OCR、加密PDF或超限文档。
 
-用户额外授权联网时，search_web仅返回候选链接和摘要；read_web只能读取本轮搜索返回的链接，并保存正文快照。最多2次搜索与3次抓取，调用前保存计数，防止恢复无限重试。正文仍是不具指令权限的数据，工具能力和账户权限不由网页内容改变。
+搜索支持官方 DeepSeek `/v1/tools/search`，复用 DeepSeek 密钥；Tavily保持兼容。认证请求禁止重定向，响应有大小上限，错误隐藏供应商原文。用户额外授权联网时，search_web仅返回候选链接和摘要；read_web只能读取本轮搜索返回的链接，并保存正文快照。最多2次搜索与3次抓取，调用前保存计数，防止恢复无限重试。正文仍是不具指令权限的数据，工具能力和账户权限不由网页内容改变。
 
 生成后独立核对员检查候选陈述与已读资料的支持关系。输出经Pydantic校验，claim必须属于候选，quote必须属于对应片段，supported／contradicted必须提供有效依据。模型仍可能误判含义，因此界面保持人工确认，未完成核对也不会自动更新正文。该阶段有单独提示版本和用量记录；共享Agent调用预算，服务失败或预算不足明确标记unavailable。
 
-实现参考：[Tavily搜索接口](https://docs.tavily.com/documentation/api-reference/endpoint/search)、[pypdf文字提取限制](https://pypdf.readthedocs.io/en/stable/user/extract-text.html)、[OWASP SSRF防护](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)。这些措施提供明确边界，不承诺任意互联网内容均能抓取或模型完全免受提示注入影响。
+实现参考：[DeepSeek搜索接口](https://api-docs.deepseek.com/zh-cn/api/search/)、[硅基流动Embedding接口](https://docs.siliconflow.cn/docs/api/embeddings-post)、[Tavily搜索接口](https://docs.tavily.com/documentation/api-reference/endpoint/search)、[pypdf文字提取限制](https://pypdf.readthedocs.io/en/stable/user/extract-text.html)、[OWASP SSRF防护](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)。这些措施提供明确边界，不承诺任意互联网内容均能抓取或模型完全免受提示注入影响。

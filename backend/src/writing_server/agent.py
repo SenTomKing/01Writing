@@ -52,6 +52,10 @@ class Search(Arguments):
     query: str = Field(min_length=1, max_length=200)
 
 
+class WebSearch(Arguments):
+    query: str = Field(min_length=1, max_length=128)
+
+
 class WebRead(Arguments):
     url: str = Field(min_length=8, max_length=2000)
 
@@ -76,7 +80,7 @@ class Submission(Arguments):
 
 
 TOOL_TYPES = {
-    "search_web": Search,
+    "search_web": WebSearch,
     "read_web": WebRead,
     "request_clarification": Clarification,
     "list_sources": Empty,
@@ -91,7 +95,7 @@ DESCRIPTIONS = {
     "read_web": "读取本任务搜索结果中的网页并保存来源快照，最多3个网页，每页最多12000字符",
     "request_clarification": "资料不足或要求冲突时停止，向用户说明需要补充什么；不生成候选",
     "list_sources": "列出本任务用户选择的参考资料，不包含正文",
-    "search_sources": "按关键词检索本任务资料，返回最多三个带位置的证据片段",
+    "search_sources": "检索本任务授权资料，配置语义索引时结合关键词与语义，返回最多五个带位置的证据片段及实际检索模式",
     "read_source": "读取指定证据片段，ref 来自资料列表或检索结果",
     "read_preferences": "读取用户本次选择的写作偏好和术语记忆",
     "check_revision": "检查候选格式、数字保留、引用位置和摘录是否可核对",
@@ -201,7 +205,7 @@ def run_agent(
         state["messages"][-1]["content"] += "\n本任务授权资料目录（仅标题）：\n" + json.dumps(
             manifest, ensure_ascii=False
         )
-    allow_web = bool(context.get("allow_web") and settings.search_key)
+    allow_web = bool(context.get("allow_web") and settings.search_available)
     available_tools = [tool for tool in TOOLS if allow_web or tool["function"]["name"] not in {"search_web", "read_web"}]
     def task_context(current):
         return {**context, "sources": [*context.get("sources", []), *current.get("web_sources", [])]}

@@ -173,7 +173,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         raise HTTPException(429, "已达到每日任务上限")
     if strategy not in {"direct", "workflow", "agent"}:
         raise HTTPException(422, "未知生成模式")
-    if allow_web and (strategy != "agent" or not settings.search_key):
+    if allow_web and (strategy != "agent" or not settings.search_available):
         raise HTTPException(422, "联网研究需要Agent模式及服务端搜索配置")
     feedback = []
     if previous_task_id:
