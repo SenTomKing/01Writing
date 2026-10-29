@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "functions": { "api/proxy.mjs": { "maxDuration": 60 } },
+  "rewrites": [{ "source": "/api/v1/:path*", "destination": "/api/proxy?__path=:path*" }],
+  "headers": [{ "source": "/api/:path*", "headers": [
+    { "key": "Cache-Control", "value": "private, no-store" },
+    { "key": "CDN-Cache-Control", "value": "no-store" },
+    { "key": "Vercel-CDN-Cache-Control", "value": "no-store" }
+  ] }]
+}

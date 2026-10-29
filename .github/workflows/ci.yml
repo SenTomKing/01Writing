@@ -56,6 +56,8 @@ jobs:
         working-directory: frontend
       - run: npx --yes pnpm@10.20.0 generate-api && git -C .. diff --exit-code -- docs/openapi.json frontend/src/generated/api.d.ts
         working-directory: frontend
+      - run: npx --yes pnpm@10.20.0 test:proxy
+        working-directory: frontend
       - run: npx --yes pnpm@10.20.0 build
         working-directory: frontend
       - run: npx --yes pnpm@10.20.0 exec playwright install --with-deps chromium

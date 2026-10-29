@@ -122,6 +122,9 @@ def process_task(db, settings, task_id, generator=generate):
     started = time.monotonic()
     result, failure = None, None
     try:
+        from .credentials import resolve
+        with db.sessions() as session:
+            settings = resolve(session, settings, task_user_id, expected_revision=(context or {}).get("credential_revision", ""))
         if strategy == "agent" and generator is generate:
             from .agent import run_agent
 

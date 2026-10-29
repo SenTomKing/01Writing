@@ -38,6 +38,14 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 
+class UserCredential(Base):
+    __tablename__ = "wa_user_credentials"
+    user_id: Mapped[str] = mapped_column(ForeignKey("wa_users.id"), primary_key=True)
+    revision: Mapped[str] = mapped_column(String(36))
+    ciphertext: Mapped[str] = mapped_column(Text)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class LoginSession(Base):
     __tablename__ = "wa_sessions"
     token_hash: Mapped[str] = mapped_column(String(64), primary_key=True)

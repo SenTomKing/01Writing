@@ -167,6 +167,8 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         if existing.request_hash != fingerprint:
             raise HTTPException(409, "相同幂等键不能用于不同请求")
         return existing
+    from .credentials import for_request
+    settings = for_request(session, settings, user_id)
     document = owned_document(session, user_id, document_id, lock=True)
     if document.current_version_id != base_version_id:
         raise HTTPException(409, "正文已更新，请刷新后生成")
@@ -235,7 +237,7 @@ def create_task(session, user_id, document_id, instruction, base_version_id, key
         context["allow_web"] = allow_web
     if sum(len(item["content"]) for item in context.get("memories", [])) > 4000:
         raise HTTPException(422, "本次记忆总长度不能超过 4000 字符")
-    context = {**context, "request_id": request_id}
+    context = {**context, "request_id": request_id, "credential_revision": settings.credential_revision}
     task = Task(
         id=uid(),
         user_id=user_id,

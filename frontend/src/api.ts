@@ -6,7 +6,10 @@ export type Task = components['schemas']['TaskOut'];
 export type Version = components['schemas']['VersionOut'];
 export type Me = components['schemas']['UserOut'];
 
-export const client = createClient<paths>({ credentials: 'include' });
+export const client = createClient<paths>({ credentials: 'include', fetch: async request => {
+  try { return await fetch(request); }
+  catch { throw new Error('暂时无法连接后端，请确认部署者电脑、Docker 和隧道仍在运行'); }
+} });
 let csrf = '';
 export function setCsrf(value: string) { csrf = value; }
 client.use({ onRequest({request}) {

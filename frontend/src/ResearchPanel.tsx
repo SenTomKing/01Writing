@@ -24,7 +24,7 @@ export function ResearchPanel(){
   const failure=error||submit.error?.message||cancel.error?.message||jobs.error?.message;
   return <div className="research-import"><h3>导入研究资料</h3>
     <p className="muted">资料先解析、索引，再供你勾选使用。最多2MB、80页或100,000字符；暂不识别扫描件。网页正文只保存快照，不执行脚本。</p>
-    <p className="muted">联网搜索：{meta.data?.web_search_available?'已配置，需逐任务授权':'未配置，可手动导入网页链接'} · 语义服务：{meta.data?.semantic_search_available?'已配置，新导入或重建后使用':'未配置，当前使用关键词检索'}</p>
+    <p className="muted">联网搜索：{meta.data?.web_search_available?'已配置，需逐任务授权':'未配置或不可用，请检查个人模型设置'} · 语义服务：{meta.data?.semantic_search_available?'已配置，新导入或重建后使用':'未配置；真实模式须先保存个人密钥，演示模式使用关键词'}</p>
     <label>导入文件<input type="file" accept=".txt,.md,.pdf" disabled={submit.isPending} onChange={e=>{upload(e.target.files?.[0]);e.target.value='';}}/></label>
     <form onSubmit={e=>{e.preventDefault();submit.mutate({kind:'url',title:title.trim()||'网页资料',url});}}>
       <label>网页资料标题<input value={title} maxLength={200} onChange={e=>setTitle(e.target.value)}/></label>
