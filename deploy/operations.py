@@ -55,7 +55,7 @@ def restore_drill():
     target='writing_restore_'+uuid4().hex
     assert re.fullmatch('writing_restore_[0-9a-f]{32}',target)
     folder=ROOT/'private/backups';folder.mkdir(parents=True,exist_ok=True)
-    backup=folder/f'before-v5-{stamp}.dump'
+    backup=folder/f'before-upgrade-{stamp}.dump'
     if backup.exists():raise RuntimeError('备份已存在，拒绝覆盖')
     before=fingerprints('writing');start=time.monotonic()
     payload=run(COMPOSE+['exec','-T','postgres','pg_dump','-U','postgres','-d','writing','-Fc','--no-owner','--no-privileges'])
@@ -74,7 +74,7 @@ def restore_drill():
             'all_table_hashes_match':True,'dump_seconds':round(dump_seconds,3),'restore_seconds':round(restore_seconds,3),
             'database':state,'scope':'同一数据库实例中新建隔离数据库恢复；不等于异机灾备或权限配置恢复',
             'notes':'备份排除角色所有权和ACL；角色由deploy/init-db.sh重建，另执行check-db.sql验证。'}
-        (folder/'v5-restore-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        (folder/f'restore-report-{stamp}.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
         return report
     finally:
         if created:

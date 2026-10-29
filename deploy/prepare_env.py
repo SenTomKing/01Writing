@@ -1,6 +1,7 @@
 """生成独立容器环境配置；不覆盖现有文件，不输出凭证。"""
 from pathlib import Path
 import secrets
+import base64
 
 root = Path(__file__).resolve().parents[1]
 path = root / '.env.deploy'
@@ -8,6 +9,7 @@ content = f'''WRITING_DB_ADMIN_PASSWORD={secrets.token_urlsafe(32)}
 WRITING_DB_PASSWORD={secrets.token_urlsafe(32)}
 WRITING_DB_MIGRATION_PASSWORD={secrets.token_urlsafe(32)}
 WRITING_PROVIDER=demo
+WRITING_CREDENTIAL_MASTER_KEY={base64.urlsafe_b64encode(secrets.token_bytes(32)).decode()}
 WRITING_ORIGINS=http://localhost:8080
 WRITING_SECURE_COOKIE=false
 DEEPSEEK_API_KEY=

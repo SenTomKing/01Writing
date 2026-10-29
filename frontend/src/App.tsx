@@ -1,3 +1,4 @@
+import {ModelSettings, useModelSettings} from './ModelSettings';
 import {AccountStatistics, TaskTelemetry, EvidenceRequirements} from './Operations';
 import {EvidenceAudit} from './ResearchPanel';
 import { useEffect, useState } from 'react';
@@ -22,14 +23,17 @@ export default function App() {
     setCsrf(result.data.csrf_token); return result.data;
   }});
   const meta = useQuery({queryKey:['meta'], queryFn:()=>unwrap(client.GET('/api/v1/meta'))});
+  const keys = useModelSettings(!!me.data);
   const [exitError, setExitError] = useState('');
   const updateSession = async (user: Me | null) => {
     // 先取消旧请求，防止旧会话结果覆盖刚完成的登录或退出。
-    await queries.cancelQueries({predicate: query => query.queryKey[0] !== 'meta'});
+    await queries.cancelQueries();
     // 保留页面正在监听的身份查询，只移除上一账户的业务数据。
     queries.removeQueries({predicate: query => !['me', 'meta'].includes(String(query.queryKey[0]))});
     setCsrf(user?.csrf_token ?? '');
     queries.setQueryData<Me | null>(['me'], user);
+    queries.setQueryData(['meta'], undefined);
+    await queries.invalidateQueries({queryKey:['meta']});
     setExitError('');
     navigate('/', {replace: true});
   };
@@ -40,10 +44,11 @@ export default function App() {
   if (!me.data) return <Login onLogin={updateSession}/>;
   return <div className="app-shell">
     <header className="topbar"><Link to="/" className="brand"><span className="brand-symbol">W</span>01Writing<span className="brand-note">写作工作台</span></Link>
-      <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : 'DeepSeek 已接入'}</span><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
+      <div className="account"><span className="mode">{meta.data?.provider === 'demo' ? '离线演示' : keys.data?.configured ? '个人模型已配置' : '待配置个人模型'}</span><Link to="/settings">模型设置</Link><span>{me.data.username}</span><button className="quiet" disabled={logout.isPending} onClick={()=>logout.mutate()}>退出</button></div></header>
     {exitError && <div role="alert" className="error">{exitError}</div>}
-    <Routes><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
-    <footer className="footer">01Writing {meta.data?.version??'5.0.0'} <span>每次修改都有来处，每个版本都可回看。</span></footer>
+    {keys.data?.required&&!keys.data.configured&&<div className="setup-notice">使用 AI 前，请先<Link to="/settings">配置自己的两个 API 密钥</Link>。已有文档仍可查看和编辑。</div>}
+    <Routes><Route path="/settings" element={<ModelSettings/>}/><Route path="/" element={<Library/>}/><Route path="/documents/:id" element={<Workbench/>}/><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
+    <footer className="footer">01Writing {meta.data?.version??'6.0.0'} <span>每次修改都有来处，每个版本都可回看。</span></footer>
   </div>;
 }
 
@@ -104,13 +109,6 @@ function Editor({doc}:{doc:Doc}) {
   const task=useQuery({queryKey:['task',taskId],enabled:!!taskId,queryFn:()=>unwrap(client.GET('/api/v1/tasks/{task_id}',{params:taskPath(taskId)})),refetchInterval:query=>query.state.data&&['queued','running'].includes(query.state.data.status)?1500:false});
   const active=task.data;
   useEffect(()=>{if(base!==doc.current_version_id&&!dirty){setDraft(doc.current_version.content);setSaved(doc.current_version.content);setBase(doc.current_version_id);}},[doc.current_version_id,doc.current_version.content,base,dirty]);
-  useEffect(()=>{
-    if(!active||!['queued','running'].includes(active.status))return;
-    const events=new EventSource(`/api/v1/tasks/${active.id}/events`,{withCredentials:true});
-    events.addEventListener('progress',()=>queries.invalidateQueries({queryKey:['task',active.id]}));
-    events.onerror=()=>events.close();
-    return ()=>events.close();
-  },[active?.id,active?.status,queries]);
   const action=useMutation({mutationFn:(work:()=>Promise<unknown>)=>work(),onSuccess:async()=>{
     setNotice('操作已保存');
     await Promise.all(['document','documents','versions','tasks','task'].map(key=>queries.invalidateQueries({queryKey:key==='documents'?[key]:key==='task'?[key]:[key,doc.id]})));

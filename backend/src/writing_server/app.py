@@ -10,6 +10,10 @@ from uuid import UUID
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.exception_handlers import request_validation_exception_handler
+from . import credentials
+from .generation import ModelFailure
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select, text
@@ -91,6 +95,16 @@ def create_app(settings: Settings | None = None):
         )
         return response
 
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(request, exc):
+        if request.url.path.startswith('/api/v1/account/model-settings'):
+            return JSONResponse({'detail': '请同时填写两个正确格式的密钥'}, 422)
+        return await request_validation_exception_handler(request, exc)
+
+    @app.exception_handler(ModelFailure)
+    async def credential_error(request, exc):
+        return JSONResponse({'detail': exc.message}, 503)
+
     @app.exception_handler(SQLAlchemyError)
     async def database_error(request, exc):
         # 不记录 SQL 参数、原稿、密码或连接 URL。
@@ -108,10 +122,19 @@ def create_app(settings: Settings | None = None):
         return identity(request, session, write=write)[0]
 
     @app.get("/api/v1/meta", response_model=dto.MetaOut)
-    def meta():
+    def meta(request: Request, session: SessionDep):
+        ready = False
+        if request.cookies.get(COOKIE):
+            try:
+                user = auth(request, session)
+                ready = credentials.status(session, settings, user.id)['configured']
+            except HTTPException:
+                pass
         return {
-            "web_search_available": bool(settings.search_available),
-            "semantic_search_available": bool(settings.embedding_key and settings.embedding_url and settings.embedding_model),
+            "credentials_required": settings.provider != 'demo',
+            "progress_transport": "poll",
+            "web_search_available": ready and settings.provider != 'demo',
+            "semantic_search_available": ready and settings.provider != 'demo',
             "version": __version__,
             "provider": settings.provider,
             "model": settings.model if settings.provider == "deepseek" else "demo-v1",
@@ -123,7 +146,7 @@ def create_app(settings: Settings | None = None):
         try:
             with db.sessions() as session:
                 revision = session.scalar(text("SELECT version_num FROM alembic_version"))
-            if revision != "v4_vectors":
+            if revision != "v6_credentials":
                 raise ValueError("schema")
         except (SQLAlchemyError, ValueError):
             return JSONResponse({"status": "unavailable", "detail": "请检查数据库并先执行迁移"}, 503)
@@ -169,10 +192,49 @@ def create_app(settings: Settings | None = None):
         response.delete_cookie(CSRF_COOKIE, path="/")
         return {"message": "已退出登录"}
 
+    @app.get('/api/v1/account/model-settings', response_model=dto.ProviderKeysOut)
+    def get_model_settings(request: Request, session: SessionDep):
+        return credentials.status(session, settings, auth(request, session).id)
+
+    @app.post('/api/v1/account/model-settings', response_model=dto.ProviderKeysOut)
+    def set_model_settings(data: dto.ProviderKeys, request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        rate_limit(db, 'credentials', user.id, limit=10, seconds=600)
+        return credentials.save(session, settings, user.id, data.deepseek_key.get_secret_value(), data.embedding_key.get_secret_value())
+
+    @app.post('/api/v1/account/model-settings/test', response_model=dto.MessageOut)
+    def test_model_settings(request: Request, session: SessionDep):
+        user = auth(request, session, True)
+        rate_limit(db, 'credential-test', user.id, limit=2, seconds=60)
+        personal = credentials.for_request(session, settings, user.id)
+        if personal.provider == 'demo':
+            return {'message': '当前为离线演示，不会发起真实服务调用'}
+        from openai import OpenAI
+        results = []
+        for provider in ('DeepSeek', '硅基流动'):
+            try:
+                key, url = (personal.api_key, personal.base_url) if provider == 'DeepSeek' else (personal.embedding_key, personal.embedding_url)
+                with OpenAI(api_key=key, base_url=url, timeout=10, max_retries=0) as remote:
+                    if provider == 'DeepSeek':
+                        remote.models.list()
+                    else:
+                        result = remote.embeddings.create(model=personal.embedding_model, input=['连接检测'], encoding_format='float')
+                        if not result.data or not result.data[0].embedding:
+                            raise ValueError('empty')
+                results.append(provider + '：连接成功')
+            except Exception:
+                results.append(provider + '：检测失败，请检查密钥、余额、服务权限或网络')
+        return {'message': '；'.join(results)}
+
+    @app.delete('/api/v1/account/model-settings', response_model=dto.MessageOut)
+    def delete_model_settings(request: Request, session: SessionDep):
+        credentials.remove(session, auth(request, session, True).id)
+        return {'message': '两个密钥已删除。排队任务会停止；已经开始执行的调用可能完成。'}
+
     @app.post("/api/v1/research/imports", response_model=dto.ResearchOut, status_code=202)
     def import_source(data: dto.ResearchInput, request: Request, session: SessionDep):
         user = auth(request, session, True)
-        return research.job_data(research.enqueue(session, user.id, data))
+        return research.job_data(research.enqueue(session, user.id, data, settings))
 
     @app.get("/api/v1/research/imports", response_model=list[dto.ResearchOut])
     def import_status(request: Request, session: SessionDep):

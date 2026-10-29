@@ -58,3 +58,6 @@ frontend/dist/
 playwright-report/
 test-results/
 .env.deploy
+
+# Vercel本地关联及下载的环境变量
+.vercel/

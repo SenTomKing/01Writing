@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 
 Title = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
 Content = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=20_000)]
@@ -17,6 +17,23 @@ class Input(BaseModel):
 class Credentials(Input):
     username: Annotated[str, StringConstraints(strip_whitespace=True, to_lower=True, pattern=r"^[a-z0-9_]{3,40}$")]
     password: Annotated[str, StringConstraints(min_length=12, max_length=128)]
+
+
+class ProviderKeys(Input):
+    deepseek_key: SecretStr
+    embedding_key: SecretStr
+
+
+class ProviderKeysOut(BaseModel):
+    configured: bool
+    storage_ready: bool
+    required: bool
+    deepseek_mask: str
+    embedding_mask: str
+    model: str
+    embedding_model: str
+    updated_at: datetime | None
+    error: str | None
 
 
 class UserOut(BaseModel):
@@ -140,6 +157,8 @@ class TaskOut(BaseModel):
 
 
 class MetaOut(BaseModel):
+    credentials_required: bool = True
+    progress_transport: str = "poll"
     web_search_available: bool = False
     semantic_search_available: bool = False
     version: str

@@ -26,8 +26,11 @@ def owned(session, user_id, job_id, lock=False):
     return row
 
 
-def enqueue(session, user_id, data):
+def enqueue(session, user_id, data, settings=None):
     session.scalar(select(User).where(User.id==user_id).with_for_update())
+    from .credentials import for_request
+    if settings is not None:
+        settings = for_request(session, settings, user_id)
     active = session.scalar(select(func.count()).select_from(ResearchJob).where(ResearchJob.user_id==user_id, ResearchJob.status.in_(['queued','running'])))
     daily = session.scalar(select(func.count()).select_from(ResearchJob).where(ResearchJob.user_id==user_id, ResearchJob.created_at>now()-timedelta(days=1)))
     if active >= 2 or daily >= 30:
@@ -51,6 +54,7 @@ def enqueue(session, user_id, data):
                        'hash':hashlib.sha256(row.content.encode()).hexdigest()}
     except ValueError as exc:
         raise HTTPException(422,str(exc)) from exc
+    payload["credential_revision"] = settings.credential_revision if settings else ""
     row = ResearchJob(user_id=user_id, kind=data.kind, title=data.title, payload=payload)
     session.add(row);session.flush()
     return row
@@ -99,6 +103,9 @@ def process(db, settings, job_id):
                 raise ValueError('任务已取消或执行权已过期')
             row.progress=message
     try:
+        from .credentials import resolve
+        with db.sessions() as session:
+            settings = resolve(session, settings, user_id, expected_revision=payload.get("credential_revision", ""))
         if kind=='reindex':
             content=payload['content'];provenance=payload['provenance'];pages=provenance.get('pages',[])
         else:
@@ -139,7 +146,8 @@ def process(db, settings, job_id):
             row.payload,row.claim_token={},None
         return True
     except Exception as exc:
-        message=str(exc) if isinstance(exc,ValueError) else '导入或索引服务失败，请检查配置后重新提交'
+        from .generation import ModelFailure
+        message=exc.message if isinstance(exc,ModelFailure) else str(exc) if isinstance(exc,ValueError) else '导入或索引服务失败，请检查个人密钥、余额后重新提交'
         with db.sessions.begin() as session:
             row=session.scalar(select(ResearchJob).where(ResearchJob.id==job_id).with_for_update())
             if row.status=='running' and row.claim_token==token:

@@ -23,6 +23,8 @@ class Settings:
     database_url: str | URL = field(repr=False)
     migration_url: str | URL | None = field(repr=False)
     redis_url: str = field(default="redis://localhost:6379/0", repr=False)
+    credential_master_key: str = field(default="", repr=False)
+    credential_revision: str = ""
     provider: str = "demo"
     model: str = "deepseek-flash"
     api_key: str = field(default="", repr=False)
@@ -108,6 +110,7 @@ class Settings:
             database_url=url(),
             migration_url=url(True),
             redis_url=os.getenv("WRITING_REDIS_URL", "redis://localhost:6379/0"),
+            credential_master_key=os.getenv("WRITING_CREDENTIAL_MASTER_KEY", ""),
             provider=provider,
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-flash"),
             api_key=os.getenv("DEEPSEEK_API_KEY", ""),
